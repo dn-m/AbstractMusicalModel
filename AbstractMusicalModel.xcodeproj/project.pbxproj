@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0749BED91E1EE7460024E0F1 /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0749BED81E1EE7460024E0F1 /* Entity.swift */; };
+		0749BEDA1E1EE7460024E0F1 /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0749BED81E1EE7460024E0F1 /* Entity.swift */; };
+		0749BEDC1E1EE7AE0024E0F1 /* PerformanceContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0749BEDB1E1EE7AE0024E0F1 /* PerformanceContext.swift */; };
+		0749BEDD1E1EE7AE0024E0F1 /* PerformanceContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0749BEDB1E1EE7AE0024E0F1 /* PerformanceContext.swift */; };
 		075458A31E1EAB6900E55F41 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075458A21E1EAB6900E55F41 /* Event.swift */; };
 		075458A41E1EAB6900E55F41 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075458A21E1EAB6900E55F41 /* Event.swift */; };
 		075458A61E1EAD7B00E55F41 /* Spanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075458A51E1EAD7B00E55F41 /* Spanner.swift */; };
@@ -39,6 +43,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0749BED81E1EE7460024E0F1 /* Entity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Entity.swift; path = AbstractMusicalModel/Entity.swift; sourceTree = "<group>"; };
+		0749BEDB1E1EE7AE0024E0F1 /* PerformanceContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PerformanceContext.swift; path = AbstractMusicalModel/PerformanceContext.swift; sourceTree = "<group>"; };
 		075458A21E1EAB6900E55F41 /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Event.swift; path = AbstractMusicalModel/Event.swift; sourceTree = "<group>"; };
 		075458A51E1EAD7B00E55F41 /* Spanner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Spanner.swift; path = AbstractMusicalModel/Spanner.swift; sourceTree = "<group>"; };
 		075458A81E1EBA0D00E55F41 /* Attribution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Attribution.swift; path = AbstractMusicalModel/Attribution.swift; sourceTree = "<group>"; };
@@ -167,6 +173,8 @@
 				075458A21E1EAB6900E55F41 /* Event.swift */,
 				075458A51E1EAD7B00E55F41 /* Spanner.swift */,
 				075458A81E1EBA0D00E55F41 /* Attribution.swift */,
+				0749BED81E1EE7460024E0F1 /* Entity.swift */,
+				0749BEDB1E1EE7AE0024E0F1 /* PerformanceContext.swift */,
 			);
 			name = AbstractMusicalModel;
 			sourceTree = "<group>";
@@ -199,6 +207,7 @@
 			buildPhases = (
 				8991ED4687ACDB8C6C824ADF /* Sources */,
 				B446DA4C4F51CD09A53363EF /* Frameworks */,
+				FA17717BC7ED933C47E79E4E /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -250,6 +259,7 @@
 			buildPhases = (
 				00C46901037569D47E10D929 /* Sources */,
 				6CB9DF1F4359487AEB769BA8 /* Frameworks */,
+				6370FF89929470C632C7DEBC /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -298,6 +308,49 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		6370FF89929470C632C7DEBC /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/ArithmeticTools.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Articulations.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Collections.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Dynamics.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/IntervalTools.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Pitch.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Rhythm.framework",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
+		};
+		FA17717BC7ED933C47E79E4E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/ArithmeticTools.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Articulations.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Collections.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Dynamics.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/IntervalTools.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Pitch.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Rhythm.framework",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		00C46901037569D47E10D929 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -310,6 +363,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0749BEDA1E1EE7460024E0F1 /* Entity.swift in Sources */,
+				0749BEDD1E1EE7AE0024E0F1 /* PerformanceContext.swift in Sources */,
 				075458AA1E1EBA0D00E55F41 /* Attribution.swift in Sources */,
 				075458A41E1EAB6900E55F41 /* Event.swift in Sources */,
 				075458A71E1EAD7B00E55F41 /* Spanner.swift in Sources */,
@@ -327,6 +382,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0749BED91E1EE7460024E0F1 /* Entity.swift in Sources */,
+				0749BEDC1E1EE7AE0024E0F1 /* PerformanceContext.swift in Sources */,
 				075458A91E1EBA0D00E55F41 /* Attribution.swift in Sources */,
 				075458A31E1EAB6900E55F41 /* Event.swift in Sources */,
 				075458A61E1EAD7B00E55F41 /* Spanner.swift in Sources */,
@@ -409,6 +466,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/Carthage/Build/Mac";
 				FRAMEWORK_VERSION = A;
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = AbstractMusicalModel/Info.plist;
@@ -434,6 +492,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/Carthage/Build/Mac";
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = AbstractMusicalModelTests/Info.plist;
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
@@ -491,7 +550,9 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/Carthage/Build/iOS";
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = AbstractMusicalModel/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -516,6 +577,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/Carthage/Build/Mac";
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = AbstractMusicalModelTests/Info.plist;
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
@@ -532,6 +594,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/Carthage/Build/iOS";
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = AbstractMusicalModelTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
@@ -556,6 +619,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/Carthage/Build/Mac";
 				FRAMEWORK_VERSION = A;
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = AbstractMusicalModel/Info.plist;
@@ -580,6 +644,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/Carthage/Build/iOS";
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = AbstractMusicalModelTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
@@ -601,7 +666,9 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/Carthage/Build/iOS";
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = AbstractMusicalModel/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";

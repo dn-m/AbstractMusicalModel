@@ -17,4 +17,4 @@ typealias Attribution <Attribute> = Dictionary<Event, Attribute>
 typealias AttributeIdentifier = String
 
 /// Dictionary mapping `AttributionIdentifier` values to `Attribution` values.
-typealias AttributionModel <Attribute> = Dictionary<AttributeIdentifier, Attribution>
+typealias AttributionModel <Attribute> = Dictionary<AttributeIdentifier, Attribution<Attribute>>
