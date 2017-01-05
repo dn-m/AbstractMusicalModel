@@ -6,8 +6,8 @@
 //
 //
 
-typealias Attribution <Attribute> = Dictionary<Entity.Identifier, Attribute>
-typealias AttributionIdentifier = Int
-typealias AttributionModel <Attribute> =
+public typealias Attribution <Attribute> = Dictionary<Entity.Identifier, Attribute>
+public typealias AttributionIdentifier = Int
+public typealias AttributionCollection <Attribute> =
     Dictionary<AttributionIdentifier, Attribution<Attribute>>
 

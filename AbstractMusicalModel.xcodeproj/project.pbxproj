@@ -19,6 +19,8 @@
 		0749BEE61E1EE96A0024E0F1 /* Voice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0749BEE41E1EE96A0024E0F1 /* Voice.swift */; };
 		0749BEE91E1EF0940024E0F1 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0749BEE81E1EF0940024E0F1 /* Model.swift */; };
 		0749BEEA1E1EF0940024E0F1 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0749BEE81E1EF0940024E0F1 /* Model.swift */; };
+		0749BEF21E1EF40C0024E0F1 /* ModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0749BEF11E1EF40C0024E0F1 /* ModelTests.swift */; };
+		0749BEF31E1EF40C0024E0F1 /* ModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0749BEF11E1EF40C0024E0F1 /* ModelTests.swift */; };
 		075458A91E1EBA0D00E55F41 /* Attribution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075458A81E1EBA0D00E55F41 /* Attribution.swift */; };
 		075458AA1E1EBA0D00E55F41 /* Attribution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075458A81E1EBA0D00E55F41 /* Attribution.swift */; };
 		4F7B3BABEFDC1BCCC4CEA415 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E639F950750760A09916195 /* Cocoa.framework */; };
@@ -53,6 +55,7 @@
 		0749BEE11E1EE94C0024E0F1 /* Instrument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Instrument.swift; path = AbstractMusicalModel/Instrument.swift; sourceTree = "<group>"; };
 		0749BEE41E1EE96A0024E0F1 /* Voice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Voice.swift; path = AbstractMusicalModel/Voice.swift; sourceTree = "<group>"; };
 		0749BEE81E1EF0940024E0F1 /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Model.swift; path = AbstractMusicalModel/Model.swift; sourceTree = "<group>"; };
+		0749BEF11E1EF40C0024E0F1 /* ModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ModelTests.swift; path = AbstractMusicalModelTests/ModelTests.swift; sourceTree = "<group>"; };
 		075458A81E1EBA0D00E55F41 /* Attribution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Attribution.swift; path = AbstractMusicalModel/Attribution.swift; sourceTree = "<group>"; };
 		0F00F43B61629E6D4F01447F /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; name = Info.plist; path = AbstractMusicalModelTests/Info.plist; sourceTree = "<group>"; };
 		1750BA9A002148FB24D3445D /* AbstractMusicalModel iOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "AbstractMusicalModel iOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -167,6 +170,7 @@
 		CE5A5BE02485AA71F5D8A822 /* AbstractMusicalModelTests */ = {
 			isa = PBXGroup;
 			children = (
+				0749BEF11E1EF40C0024E0F1 /* ModelTests.swift */,
 				60EEAFA063AD3DF51715FA33 /* Supporting Files */,
 			);
 			name = AbstractMusicalModelTests;
@@ -187,8 +191,8 @@
 			isa = PBXGroup;
 			children = (
 				45B1A349ADA08AB9C03F07C4 /* Supporting Files */,
-				075458A81E1EBA0D00E55F41 /* Attribution.swift */,
 				0749BEE81E1EF0940024E0F1 /* Model.swift */,
+				075458A81E1EBA0D00E55F41 /* Attribution.swift */,
 				0749BED81E1EE7460024E0F1 /* Entity.swift */,
 				0749BEE71E1EE9810024E0F1 /* PerformanceContext */,
 			);
@@ -221,9 +225,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1D61D97F919A4F7C132E63EC /* Build configuration list for PBXNativeTarget "AbstractMusicalModel macOS Tests" */;
 			buildPhases = (
+				FA17717BC7ED933C47E79E4E /* ShellScript */,
 				8991ED4687ACDB8C6C824ADF /* Sources */,
 				B446DA4C4F51CD09A53363EF /* Frameworks */,
-				FA17717BC7ED933C47E79E4E /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -273,9 +277,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8227323202D9CCEDBD53FFFF /* Build configuration list for PBXNativeTarget "AbstractMusicalModel iOS Tests" */;
 			buildPhases = (
+				6370FF89929470C632C7DEBC /* ShellScript */,
 				00C46901037569D47E10D929 /* Sources */,
 				6CB9DF1F4359487AEB769BA8 /* Frameworks */,
-				6370FF89929470C632C7DEBC /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -296,10 +300,16 @@
 				LastSwiftUpdateCheck = 0730;
 				LastUpgradeCheck = 0700;
 				TargetAttributes = {
+					2E2B125DFB023D4DF17EB54D = {
+						LastSwiftMigration = 0820;
+					};
 					3887ECD5DF40C4761E9EC607 = {
 						LastSwiftMigration = 0820;
 					};
 					470651F1C4837681B1C9509E = {
+						LastSwiftMigration = 0820;
+					};
+					8A92D2873FFC73ECDC8550ED = {
 						LastSwiftMigration = 0820;
 					};
 				};
@@ -372,6 +382,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0749BEF21E1EF40C0024E0F1 /* ModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -393,6 +404,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0749BEF31E1EF40C0024E0F1 /* ModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -509,16 +521,20 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/Carthage/Build/Mac";
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = AbstractMusicalModelTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -594,16 +610,19 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/Carthage/Build/Mac";
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = AbstractMusicalModelTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -611,6 +630,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -618,9 +638,11 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = AbstractMusicalModelTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -661,6 +683,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -668,9 +691,12 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = AbstractMusicalModelTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
