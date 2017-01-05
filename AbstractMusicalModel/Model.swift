@@ -19,9 +19,10 @@ public final class Model {
     private var attributions: AttributionCollection <Any> = [:]
     
     // TODO: Make `throws`.
+    // FIXME: Confront API, types, etc.
     public func add <Attribute> (
         attribute: Attribute,
-        identifier attributionID: AttributionIdentifier,
+        identifier attributionID: String,
         in interval: MetricalDurationInterval,
         with context: PerformanceContext
     )
@@ -30,7 +31,7 @@ public final class Model {
         entities[entityID] = entity
         
         // FIXME: This will be throwing with update to `Collections` API.
-        attributions.update(attribute, keyPath: [attributionID, entityID])
+        attributions.update(attribute, keyPath: [attributionID.hashValue, entityID])
     }
     
     public func makeEntity(

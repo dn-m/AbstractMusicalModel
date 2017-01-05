@@ -7,7 +7,19 @@
 //
 
 public struct PerformanceContext {
-    let performerID: Performer.Identifier
-    let instrumentID: Instrument.Identifier
+    
+    let performerIdentifier: Performer.Identifier
+    let instrumentIdentifier: Instrument.Identifier
     let voice: Voice.Identifier
+    
+    public init(
+        performer: Performer.Identifier,
+        instrument: Instrument.Identifier,
+        voice: Voice.Identifier
+    )
+    {
+        self.performerIdentifier = performer
+        self.instrumentIdentifier = instrument
+        self.voice = voice
+    }
 }
