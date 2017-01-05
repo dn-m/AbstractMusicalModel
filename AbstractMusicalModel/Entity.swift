@@ -25,17 +25,3 @@ public struct Entity {
     /// - note: Currently only `MetricalDurationInterval` values. Expand outward incrementally.
     let interval: MetricalDurationInterval
 }
-
-extension Entity: Equatable {
-    
-    public static func == (lhs: Entity, rhs: Entity) -> Bool {
-        return lhs.identifier == rhs.identifier
-    }
-}
-
-extension Entity: Hashable {
-    
-    public var hashValue: Int {
-        return identifier.hashValue
-    }
-}

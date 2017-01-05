@@ -8,7 +8,7 @@
 
 import Collections
 
-typealias Attribution <Attribute> = Dictionary<Entity, Attribute>
+typealias Attribution <Attribute> = Dictionary<Entity.Identifier, Attribute>
 
 typealias AttributionIdentifier = Int
 
