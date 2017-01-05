@@ -11,10 +11,12 @@
 		0749BEDA1E1EE7460024E0F1 /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0749BED81E1EE7460024E0F1 /* Entity.swift */; };
 		0749BEDC1E1EE7AE0024E0F1 /* PerformanceContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0749BEDB1E1EE7AE0024E0F1 /* PerformanceContext.swift */; };
 		0749BEDD1E1EE7AE0024E0F1 /* PerformanceContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0749BEDB1E1EE7AE0024E0F1 /* PerformanceContext.swift */; };
-		075458A31E1EAB6900E55F41 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075458A21E1EAB6900E55F41 /* Event.swift */; };
-		075458A41E1EAB6900E55F41 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075458A21E1EAB6900E55F41 /* Event.swift */; };
-		075458A61E1EAD7B00E55F41 /* Spanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075458A51E1EAD7B00E55F41 /* Spanner.swift */; };
-		075458A71E1EAD7B00E55F41 /* Spanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075458A51E1EAD7B00E55F41 /* Spanner.swift */; };
+		0749BEDF1E1EE92A0024E0F1 /* Performer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0749BEDE1E1EE92A0024E0F1 /* Performer.swift */; };
+		0749BEE01E1EE92A0024E0F1 /* Performer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0749BEDE1E1EE92A0024E0F1 /* Performer.swift */; };
+		0749BEE21E1EE94C0024E0F1 /* Instrument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0749BEE11E1EE94C0024E0F1 /* Instrument.swift */; };
+		0749BEE31E1EE94C0024E0F1 /* Instrument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0749BEE11E1EE94C0024E0F1 /* Instrument.swift */; };
+		0749BEE51E1EE96A0024E0F1 /* Voice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0749BEE41E1EE96A0024E0F1 /* Voice.swift */; };
+		0749BEE61E1EE96A0024E0F1 /* Voice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0749BEE41E1EE96A0024E0F1 /* Voice.swift */; };
 		075458A91E1EBA0D00E55F41 /* Attribution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075458A81E1EBA0D00E55F41 /* Attribution.swift */; };
 		075458AA1E1EBA0D00E55F41 /* Attribution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075458A81E1EBA0D00E55F41 /* Attribution.swift */; };
 		4F7B3BABEFDC1BCCC4CEA415 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E639F950750760A09916195 /* Cocoa.framework */; };
@@ -45,8 +47,9 @@
 /* Begin PBXFileReference section */
 		0749BED81E1EE7460024E0F1 /* Entity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Entity.swift; path = AbstractMusicalModel/Entity.swift; sourceTree = "<group>"; };
 		0749BEDB1E1EE7AE0024E0F1 /* PerformanceContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PerformanceContext.swift; path = AbstractMusicalModel/PerformanceContext.swift; sourceTree = "<group>"; };
-		075458A21E1EAB6900E55F41 /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Event.swift; path = AbstractMusicalModel/Event.swift; sourceTree = "<group>"; };
-		075458A51E1EAD7B00E55F41 /* Spanner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Spanner.swift; path = AbstractMusicalModel/Spanner.swift; sourceTree = "<group>"; };
+		0749BEDE1E1EE92A0024E0F1 /* Performer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Performer.swift; path = AbstractMusicalModel/Performer.swift; sourceTree = "<group>"; };
+		0749BEE11E1EE94C0024E0F1 /* Instrument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Instrument.swift; path = AbstractMusicalModel/Instrument.swift; sourceTree = "<group>"; };
+		0749BEE41E1EE96A0024E0F1 /* Voice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Voice.swift; path = AbstractMusicalModel/Voice.swift; sourceTree = "<group>"; };
 		075458A81E1EBA0D00E55F41 /* Attribution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Attribution.swift; path = AbstractMusicalModel/Attribution.swift; sourceTree = "<group>"; };
 		0F00F43B61629E6D4F01447F /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; name = Info.plist; path = AbstractMusicalModelTests/Info.plist; sourceTree = "<group>"; };
 		1750BA9A002148FB24D3445D /* AbstractMusicalModel iOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "AbstractMusicalModel iOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -95,6 +98,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0749BEE71E1EE9810024E0F1 /* PerformanceContext */ = {
+			isa = PBXGroup;
+			children = (
+				0749BEDB1E1EE7AE0024E0F1 /* PerformanceContext.swift */,
+				0749BEDE1E1EE92A0024E0F1 /* Performer.swift */,
+				0749BEE11E1EE94C0024E0F1 /* Instrument.swift */,
+				0749BEE41E1EE96A0024E0F1 /* Voice.swift */,
+			);
+			name = PerformanceContext;
+			sourceTree = "<group>";
+		};
 		22C5585D0996CA26FB79F4BE /* iOS */ = {
 			isa = PBXGroup;
 			children = (
@@ -170,11 +184,9 @@
 			isa = PBXGroup;
 			children = (
 				45B1A349ADA08AB9C03F07C4 /* Supporting Files */,
-				075458A21E1EAB6900E55F41 /* Event.swift */,
-				075458A51E1EAD7B00E55F41 /* Spanner.swift */,
 				075458A81E1EBA0D00E55F41 /* Attribution.swift */,
 				0749BED81E1EE7460024E0F1 /* Entity.swift */,
-				0749BEDB1E1EE7AE0024E0F1 /* PerformanceContext.swift */,
+				0749BEE71E1EE9810024E0F1 /* PerformanceContext */,
 			);
 			name = AbstractMusicalModel;
 			sourceTree = "<group>";
@@ -366,8 +378,9 @@
 				0749BEDA1E1EE7460024E0F1 /* Entity.swift in Sources */,
 				0749BEDD1E1EE7AE0024E0F1 /* PerformanceContext.swift in Sources */,
 				075458AA1E1EBA0D00E55F41 /* Attribution.swift in Sources */,
-				075458A41E1EAB6900E55F41 /* Event.swift in Sources */,
-				075458A71E1EAD7B00E55F41 /* Spanner.swift in Sources */,
+				0749BEE61E1EE96A0024E0F1 /* Voice.swift in Sources */,
+				0749BEE31E1EE94C0024E0F1 /* Instrument.swift in Sources */,
+				0749BEE01E1EE92A0024E0F1 /* Performer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -385,8 +398,9 @@
 				0749BED91E1EE7460024E0F1 /* Entity.swift in Sources */,
 				0749BEDC1E1EE7AE0024E0F1 /* PerformanceContext.swift in Sources */,
 				075458A91E1EBA0D00E55F41 /* Attribution.swift in Sources */,
-				075458A31E1EAB6900E55F41 /* Event.swift in Sources */,
-				075458A61E1EAD7B00E55F41 /* Spanner.swift in Sources */,
+				0749BEE51E1EE96A0024E0F1 /* Voice.swift in Sources */,
+				0749BEE21E1EE94C0024E0F1 /* Instrument.swift in Sources */,
+				0749BEDF1E1EE92A0024E0F1 /* Performer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,12 +7,7 @@
 //
 
 public struct PerformanceContext {
-    
-    public typealias PerformerIdentifier = Int
-    public typealias InstrumentIdentifier = Int
-    public typealias VoiceIdentifier = Int
-    
-    let performerID: PerformerIdentifier
-    let instrumentID: InstrumentIdentifier
-    let voice: Int
+    let performerID: Performer.Identifier
+    let instrumentID: Instrument.Identifier
+    let voice: Voice.Identifier
 }
