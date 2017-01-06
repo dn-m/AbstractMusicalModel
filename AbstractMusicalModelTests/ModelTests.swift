@@ -23,7 +23,7 @@ class ModelTests: XCTestCase {
         do {
             
             try model.addAttribute(attribute,
-                kind: "kind",
+                identifier: "kind",
                 interval: interval,
                 context: context
             )
@@ -48,7 +48,7 @@ class ModelTests: XCTestCase {
         
         do {
             try model.addAttribute(pitch,
-                kind: kind,
+                identifier: kind,
                 interval: interval,
                 context: context
             )
@@ -61,9 +61,6 @@ class ModelTests: XCTestCase {
         
         XCTAssertNotNil(model.entities[0])
         XCTAssertEqual(model.attributions[kind]![0]! as! Pitch, 60)
-
-        try? model.addAttribute("a", kind: "pitch", interval: interval, context: context)
-        print(model.attributions)
     }
     
     func testAddPitchArrayAttribute() {
@@ -80,10 +77,46 @@ class ModelTests: XCTestCase {
         let context = PerformanceContext(performer: "a", instrument: "b", voice: 0)
         
         do {
-            try model.addAttribute(pitches, kind: kind, interval: interval, context: context)
+            
+            try model.addAttribute(pitches,
+                identifier: kind,
+                interval: interval,
+                context: context
+            )
+            
             XCTAssert(model.attributions["pitch"]![0] is [Pitch])
+            
         } catch {
             XCTFail()
         }
+    }
+    
+    func testEntitySubscript() {
+        
+        // Prepare model
+        let model = Model()
+        
+        // Prepare attribute
+        let kind = "pitch"
+        let pitch: Pitch = 60
+        
+        // Prepare context
+        let interval = MetricalDurationInterval(.zero, .zero)
+        let context = PerformanceContext(performer: "a", instrument: "b", voice: 0)
+        
+        do {
+            try model.addAttribute(pitch,
+                identifier: kind,
+                interval: interval,
+                context: context
+            )
+        } catch {
+            XCTFail()
+        }
+        
+        let result = model.entity(identifier: 0)!
+        let expected = Entity(interval: interval, context: context)
+        
+        XCTAssertEqual(result, expected)
     }
 }

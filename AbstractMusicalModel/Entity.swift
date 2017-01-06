@@ -37,3 +37,10 @@ public struct Entity {
         self.context = context
     }
 }
+
+extension Entity: Equatable {
+    
+    public static func == (lhs: Entity, rhs: Entity) -> Bool {
+        return lhs.context == rhs.context && lhs.interval == rhs.interval
+    }
+}

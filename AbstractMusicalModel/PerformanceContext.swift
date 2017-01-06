@@ -23,3 +23,14 @@ public struct PerformanceContext {
         self.voice = voice
     }
 }
+
+extension PerformanceContext: Equatable {
+    
+    public static func == (lhs: PerformanceContext, rhs: PerformanceContext) -> Bool {
+        return (
+            lhs.performerIdentifier == rhs.performerIdentifier &&
+            lhs.instrumentIdentifier == rhs.instrumentIdentifier &&
+            lhs.voice == rhs.voice
+        )
+    }
+}

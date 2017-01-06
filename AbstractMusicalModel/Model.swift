@@ -28,11 +28,9 @@ public final class Model {
     
     /// Add an generic attribute, of a given `kind`, within a given `interval, with a given
     /// `context`.
-    ///
-    /// - FIXME: AttributeID / EntityID
     public func addAttribute <Attribute> (
         _ attribute: Attribute,
-        kind attributeID: String,
+        identifier attributeID: String,
         interval: MetricalDurationInterval,
         context: PerformanceContext
     ) throws
@@ -55,5 +53,13 @@ public final class Model {
         defer { identifier += 1 }
         let entity = Entity(interval: interval, context: context)
         return (identifier, entity)
+    }
+}
+
+extension Model: CustomStringConvertible {
+    
+    public var description: String {
+        
+        return ""
     }
 }

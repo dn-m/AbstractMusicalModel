@@ -6,5 +6,5 @@
 //
 //
 
-/// Mapping of an identifier of an `Entity` to a generic `Attribute`. 
+/// Mapping of an identifier of an `Entity` to a generic `Attribute`.
 public typealias Attribution <Attribute> = Dictionary<Entity.Identifier, Attribute>
