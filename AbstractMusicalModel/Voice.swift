@@ -7,6 +7,6 @@
 //
 
 public struct Voice {
-    
+
     public typealias Identifier = Int
 }

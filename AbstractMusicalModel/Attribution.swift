@@ -6,8 +6,5 @@
 //
 //
 
+/// Mapping of an identifier of an `Entity` to a generic `Attribute`. 
 public typealias Attribution <Attribute> = Dictionary<Entity.Identifier, Attribute>
-public typealias AttributionIdentifier = Int
-public typealias AttributionCollection <Attribute> =
-    Dictionary<AttributionIdentifier, Attribution<Attribute>>
-

@@ -11,30 +11,43 @@ import Rhythm
 
 public final class Model {
     
+    // MARK: - Instance Properties
+    
     internal private(set) var identifier: Entity.Identifier = 0
     
     // `Entity` values stored by a unique identifier.
-    private var entities: [Entity.Identifier: Entity] = [:]
+    /// - TODO: Make `private` / `fileprivate`
+    internal var entities: [Entity.Identifier: Entity] = [:]
+    internal var attributions: AttributionCollection <Any> = [:]
+
+    // MARK: - Initializers
     
-    private var attributions: AttributionCollection <Any> = [:]
+    public init() { }
     
-    // TODO: Make `throws`.
-    // FIXME: Confront API, types, etc.
-    public func add <Attribute> (
-        attribute: Attribute,
-        identifier attributionID: String,
-        in interval: MetricalDurationInterval,
-        with context: PerformanceContext
-    )
+    // MARK: - Instance Methods
+    
+    /// Add an generic attribute, of a given `kind`, within a given `interval, with a given
+    /// `context`.
+    ///
+    /// - FIXME: AttributeID / EntityID
+    public func addAttribute <Attribute> (
+        _ attribute: Attribute,
+        kind attributeID: String,
+        interval: MetricalDurationInterval,
+        context: PerformanceContext
+    ) throws
     {
         let (entityID, entity) = makeEntity(in: interval, with: context)
         entities[entityID] = entity
-        
-        // FIXME: This will be throwing with update to `Collections` API.
-        attributions.update(attribute, keyPath: [attributionID.hashValue, entityID])
+        try attributions.update(attribute, keyPath: [attributeID, entityID])
     }
     
-    public func makeEntity(
+    /// - returns: The `Entity` with the given `identifier`, if it exists. Otherwise, `nil`.
+    public func entity(identifier: Entity.Identifier) -> Entity? {
+        return entities[identifier]
+    }
+    
+    private func makeEntity(
         in interval: MetricalDurationInterval,
         with context: PerformanceContext
     ) -> (Entity.Identifier, Entity)
@@ -43,6 +56,4 @@ public final class Model {
         let entity = Entity(interval: interval, context: context)
         return (identifier, entity)
     }
-    
-    public init() { }
 }

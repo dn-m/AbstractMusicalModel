@@ -8,5 +8,6 @@
 
 public struct Instrument {
     
-    public typealias Identifier = Int
+    /// - TODO: Consider using `Int` instead
+    public typealias Identifier = String
 }
