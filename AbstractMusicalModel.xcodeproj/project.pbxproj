@@ -207,10 +207,10 @@
 			isa = PBXGroup;
 			children = (
 				45B1A349ADA08AB9C03F07C4 /* Supporting Files */,
-				0749BEE81E1EF0940024E0F1 /* Model.swift */,
-				0729F1111E1FEF7D004D2067 /* Attribution */,
 				0749BED81E1EE7460024E0F1 /* Entity.swift */,
 				0749BEE71E1EE9810024E0F1 /* PerformanceContext */,
+				0729F1111E1FEF7D004D2067 /* Attribution */,
+				0749BEE81E1EF0940024E0F1 /* Model.swift */,
 			);
 			name = AbstractMusicalModel;
 			sourceTree = "<group>";
