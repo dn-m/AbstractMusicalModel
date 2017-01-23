@@ -7,8 +7,10 @@
 //
 
 import Collections
+import IntervalTools
 import Rhythm
 
+/// - TODO: Conform to `AnyCollectionWrapping`.
 public final class Model {
     
     // MARK: - Instance Properties
@@ -35,9 +37,32 @@ public final class Model {
         context: PerformanceContext
     ) throws
     {
-        let (entityID, entity) = makeEntity(in: interval, with: context)
+        let (entity, entityID) = makeEntityWithIdentifier(in: interval, with: context)
         entities[entityID] = entity
-        try attributions.update(attribute, keyPath: [attributeID, entityID])
+        
+        // FIXME: Fix Collections update API !
+        if attributions[attributeID] != nil {
+            attributions[attributeID]![entityID] = attribute
+        } else {
+            attributions[attributeID] = [entityID: attribute]
+        }
+        
+        //try attributions.update(attribute, keyPath: [attributeID, entityID])
+    }
+    
+    public func entities(in interval: MetricalDurationInterval) -> [Entity.Identifier] {
+        
+        // TODO: Refactor
+        let allowed: Relationship = [.contains, .starts, .finishes]
+        return entities
+            .filter { id, entity
+                in allowed.contains(entity.interval.relationship(with: interval))
+            }.reduce([:]) { accum, idAndEntity in
+                var accum = accum
+                let (id, entity) = idAndEntity
+                accum[id] = entity
+                return accum
+            }.map { $0.0 }
     }
     
     /// - returns: The `Entity` with the given `identifier`, if it exists. Otherwise, `nil`.
@@ -45,21 +70,20 @@ public final class Model {
         return entities[identifier]
     }
     
-    private func makeEntity(
+    private func makeEntityWithIdentifier(
         in interval: MetricalDurationInterval,
         with context: PerformanceContext
-    ) -> (Entity.Identifier, Entity)
+    ) -> (Entity, Entity.Identifier)
     {
         defer { identifier += 1 }
         let entity = Entity(interval: interval, context: context)
-        return (identifier, entity)
+        return (entity, identifier)
     }
 }
 
 extension Model: CustomStringConvertible {
     
     public var description: String {
-        
-        return ""
+        return "\(attributions)"
     }
 }

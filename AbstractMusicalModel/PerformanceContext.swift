@@ -13,9 +13,9 @@ public struct PerformanceContext {
     let voice: Voice.Identifier
     
     public init(
-        performer: Performer.Identifier,
-        instrument: Instrument.Identifier,
-        voice: Voice.Identifier
+        performer: Performer.Identifier = "P",
+        instrument: Instrument.Identifier = "I",
+        voice: Voice.Identifier = 0
     )
     {
         self.performerIdentifier = performer

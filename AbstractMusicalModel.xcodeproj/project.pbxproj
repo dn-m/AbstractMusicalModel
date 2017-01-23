@@ -208,9 +208,9 @@
 			children = (
 				45B1A349ADA08AB9C03F07C4 /* Supporting Files */,
 				0749BED81E1EE7460024E0F1 /* Entity.swift */,
+				0749BEE81E1EF0940024E0F1 /* Model.swift */,
 				0749BEE71E1EE9810024E0F1 /* PerformanceContext */,
 				0729F1111E1FEF7D004D2067 /* Attribution */,
-				0749BEE81E1EF0940024E0F1 /* Model.swift */,
 			);
 			name = AbstractMusicalModel;
 			sourceTree = "<group>";
@@ -377,13 +377,13 @@
 			files = (
 			);
 			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/ArithmeticTools.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/Articulations.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/Collections.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/Dynamics.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/IntervalTools.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/Pitch.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/Rhythm.framework",
+				"$(SRCROOT)/Carthage/Build/Mac/ArithmeticTools.framework",
+				"$(SRCROOT)/Carthage/Build/Mac/Articulations.framework",
+				"$(SRCROOT)/Carthage/Build/Mac/Collections.framework",
+				"$(SRCROOT)/Carthage/Build/Mac/Dynamics.framework",
+				"$(SRCROOT)/Carthage/Build/Mac/IntervalTools.framework",
+				"$(SRCROOT)/Carthage/Build/Mac/Pitch.framework",
+				"$(SRCROOT)/Carthage/Build/Mac/Rhythm.framework",
 			);
 			outputPaths = (
 			);
@@ -658,7 +658,7 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = AbstractMusicalModelTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks $(SRCROOT)/Carthage/Build/iOS";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -711,7 +711,7 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = AbstractMusicalModelTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks $(SRCROOT)/Carthage/Build/iOS";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;

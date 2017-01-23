@@ -11,7 +11,7 @@ import Rhythm
 
 /// Durational and performative context for musical attributes.
 /// 
-/// - TODO: Consider making more generic.
+/// - TODO: Consider making more generic re: `interval`.
 public struct Entity {
     
     // MARK: - Associated Types
