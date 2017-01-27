@@ -8,8 +8,8 @@
 
 public struct PerformanceContext {
     
-    let performerIdentifier: Performer.Identifier
-    let instrumentIdentifier: Instrument.Identifier
+    let performer: Performer.Identifier
+    let instrument: Instrument.Identifier
     let voice: Voice.Identifier
     
     public init(
@@ -18,18 +18,20 @@ public struct PerformanceContext {
         voice: Voice.Identifier = 0
     )
     {
-        self.performerIdentifier = performer
-        self.instrumentIdentifier = instrument
+        self.performer = performer
+        self.instrument = instrument
         self.voice = voice
     }
 }
 
 extension PerformanceContext: Equatable {
     
+    /// - returns: `true` if `performer`, `instrument` and `voice` values of each 
+    /// `PerformanceContext` are equivalent.
     public static func == (lhs: PerformanceContext, rhs: PerformanceContext) -> Bool {
         return (
-            lhs.performerIdentifier == rhs.performerIdentifier &&
-            lhs.instrumentIdentifier == rhs.instrumentIdentifier &&
+            lhs.performer == rhs.performer &&
+            lhs.instrument == rhs.instrument &&
             lhs.voice == rhs.voice
         )
     }
