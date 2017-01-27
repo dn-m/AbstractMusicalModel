@@ -27,6 +27,8 @@
 		0749BEF31E1EF40C0024E0F1 /* ModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0749BEF11E1EF40C0024E0F1 /* ModelTests.swift */; };
 		075458A91E1EBA0D00E55F41 /* Attribution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075458A81E1EBA0D00E55F41 /* Attribution.swift */; };
 		075458AA1E1EBA0D00E55F41 /* Attribution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075458A81E1EBA0D00E55F41 /* Attribution.swift */; };
+		07C5A9591E3BD57300167870 /* PerformanceContextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07C5A9581E3BD57300167870 /* PerformanceContextTests.swift */; };
+		07C5A95A1E3BD57300167870 /* PerformanceContextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07C5A9581E3BD57300167870 /* PerformanceContextTests.swift */; };
 		4F7B3BABEFDC1BCCC4CEA415 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E639F950750760A09916195 /* Cocoa.framework */; };
 		5C2A67BA5FD4F61DA0ABFF84 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF1AFA0FC9731EBBEEA117D6 /* Foundation.framework */; };
 		9C440EA9D00B89C0F8ADB3FB /* AbstractMusicalModel.h in Headers */ = {isa = PBXBuildFile; fileRef = F63987C29DAD391ED523C342 /* AbstractMusicalModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -63,6 +65,7 @@
 		0749BEE81E1EF0940024E0F1 /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Model.swift; path = AbstractMusicalModel/Model.swift; sourceTree = "<group>"; };
 		0749BEF11E1EF40C0024E0F1 /* ModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ModelTests.swift; path = AbstractMusicalModelTests/ModelTests.swift; sourceTree = "<group>"; };
 		075458A81E1EBA0D00E55F41 /* Attribution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Attribution.swift; path = AbstractMusicalModel/Attribution.swift; sourceTree = "<group>"; };
+		07C5A9581E3BD57300167870 /* PerformanceContextTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PerformanceContextTests.swift; path = AbstractMusicalModelTests/PerformanceContextTests.swift; sourceTree = "<group>"; };
 		0F00F43B61629E6D4F01447F /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; name = Info.plist; path = AbstractMusicalModelTests/Info.plist; sourceTree = "<group>"; };
 		1750BA9A002148FB24D3445D /* AbstractMusicalModel iOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "AbstractMusicalModel iOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1C8F7EA446AB936C8DCEC20E /* AbstractMusicalModel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AbstractMusicalModel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -188,6 +191,7 @@
 			children = (
 				0749BEF11E1EF40C0024E0F1 /* ModelTests.swift */,
 				60EEAFA063AD3DF51715FA33 /* Supporting Files */,
+				07C5A9581E3BD57300167870 /* PerformanceContextTests.swift */,
 			);
 			name = AbstractMusicalModelTests;
 			sourceTree = "<group>";
@@ -398,6 +402,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				07C5A9591E3BD57300167870 /* PerformanceContextTests.swift in Sources */,
 				0749BEF21E1EF40C0024E0F1 /* ModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -422,6 +427,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				07C5A95A1E3BD57300167870 /* PerformanceContextTests.swift in Sources */,
 				0749BEF31E1EF40C0024E0F1 /* ModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

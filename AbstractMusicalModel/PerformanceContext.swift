@@ -6,33 +6,24 @@
 //
 //
 
+/// Descriptor to whom (or what) a given `Entity` belongs.
 public struct PerformanceContext {
     
-    let performer: Performer.Identifier
-    let instrument: Instrument.Identifier
-    let voice: Voice.Identifier
+    /// `Performer` of a given `PerformanceContext`.
+    public let performer: Performer
     
-    public init(
-        performer: Performer.Identifier = "P",
-        instrument: Instrument.Identifier = "I",
-        voice: Voice.Identifier = 0
-    )
-    {
+    public init(_ performer: Performer = Performer("abc", [])) {
         self.performer = performer
-        self.instrument = instrument
-        self.voice = voice
     }
+    
+    // contains()
 }
 
 extension PerformanceContext: Equatable {
     
-    /// - returns: `true` if `performer`, `instrument` and `voice` values of each 
-    /// `PerformanceContext` are equivalent.
+    /// - returns: `true` if the `performer` values of each `PerformanceContext` are
+    /// equivalent.
     public static func == (lhs: PerformanceContext, rhs: PerformanceContext) -> Bool {
-        return (
-            lhs.performer == rhs.performer &&
-            lhs.instrument == rhs.instrument &&
-            lhs.voice == rhs.voice
-        )
+        return lhs.performer == rhs.performer
     }
 }
