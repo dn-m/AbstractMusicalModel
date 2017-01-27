@@ -39,7 +39,9 @@ public struct Entity {
 }
 
 extension Entity: Equatable {
-    
+
+    /// - returns: `true` if the `context` and `interval` of each `Entity` are equivalent.
+    /// Otherwise, `nil`.
     public static func == (lhs: Entity, rhs: Entity) -> Bool {
         return lhs.context == rhs.context && lhs.interval == rhs.interval
     }
