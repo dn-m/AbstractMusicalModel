@@ -13,20 +13,22 @@ public struct Instrument {
     
     public typealias Identifier = String
     
-    // TODO: Add more complex naming structure
-    struct Name {
-        let long: String
-        let short: String
-    }
-    
-    // public let name: Name
-    
+//    // TODO: Add more complex naming structure
+//    struct Name {
+//        let long: String
+//        let short: String
+//    }
+
+    /// Identifier.
     public let identifier: Identifier
-    public let voices: [Voice]
     
+    /// Storage of `Voice` values by their `identifier`.
+    public let voices: [Voice.Identifier: Voice]
+    
+    /// Create an `Instrument` with an `identifier` and an array of `Voice` values.
     public init(_ identifier: Identifier, _ voices: [Voice]) {
         self.identifier = identifier
-        self.voices = voices
+        self.voices = Dictionary(voices.map { ($0.identifier, $0) })
     }
 }
 
@@ -41,7 +43,7 @@ extension Instrument: CustomStringConvertible {
 extension Instrument: AnyCollectionWrapping {
     
     public var collection: AnyCollection<Voice> {
-        return AnyCollection(voices)
+        return AnyCollection(voices.values)
     }
 }
 
