@@ -39,15 +39,7 @@ public final class Model {
     {
         let (entity, entityID) = makeEntityWithIdentifier(in: interval, with: context)
         entities[entityID] = entity
-        
-        // FIXME: Fix Collections update API !
-        if attributions[attributeID] != nil {
-            attributions[attributeID]![entityID] = attribute
-        } else {
-            attributions[attributeID] = [entityID: attribute]
-        }
-        
-        //try attributions.update(attribute, keyPath: [attributeID, entityID])
+        try attributions.update(attribute, keyPath: [attributeID, entityID])
     }
     
     public func entities(in interval: MetricalDurationInterval) -> [Entity.Identifier] {
