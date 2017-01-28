@@ -36,6 +36,24 @@ public struct Entity {
         self.interval = interval
         self.context = context
     }
+    
+    public func isContained(
+        by interval: MetricalDurationInterval,
+        _ scope: PerformanceContext.Scope = PerformanceContext.Scope()
+    ) -> Bool
+    {
+        return isContained(by: scope) && isContained(by: interval)
+    }
+    
+    private func isContained(by scope: PerformanceContext.Scope) -> Bool {
+        return context.isContained(by: scope)
+    }
+    
+    private func isContained(by interval: MetricalDurationInterval) -> Bool {
+        let allowed: Relationship = [.contains, .starts, .finishes, .equals]
+        let relationship = interval.relationship(with: interval)
+        return allowed.contains(relationship)
+    }
 }
 
 extension Entity: Equatable {

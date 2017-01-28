@@ -74,19 +74,30 @@ class ModelTests: XCTestCase {
     func testSingleEntityNotInInterval() {
         let model = Model()
         let pitch: Pitch = 60
+        let interval = MetricalDurationInterval(MetricalDuration(1,8), MetricalDuration(2,8))
+        add(pitch, id: "pitch", to: model, interval: interval, context: PerformanceContext())
+        
+        let searchInterval = MetricalDurationInterval(
+            MetricalDuration(3,8),
+            MetricalDuration(4,8)
+        )
+        
+        XCTAssertEqual(model.entities(in: searchInterval).count, 0)
+    }
+    
+    func testSingleEntityEqualToInterval() {
+        let model = Model()
+        let pitch: Pitch = 60
         let interval = MetricalDurationInterval(MetricalDuration(1,8), MetricalDuration(3,16))
         add(pitch, id: "pitch", to: model, interval: interval, context: PerformanceContext())
         
         let searchInterval = MetricalDurationInterval(
-            MetricalDuration(5,16),
-            MetricalDuration(13,32)
+            MetricalDuration(1,8),
+            MetricalDuration(3,16)
         )
         
-        XCTAssertEqual(model.entities(in: searchInterval), [])
+        XCTAssertEqual(model.entities(in: searchInterval).count, 1)
     }
     
-    func testSingleEntityInInterval() {
-        let model = Model()
-        
-    }
+    //let context = PerformanceContext(Performer("P", [Instrument("I", [Voice(0)])]))
 }
