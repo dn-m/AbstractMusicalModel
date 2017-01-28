@@ -66,7 +66,28 @@ public struct PerformanceContext {
         }
         
         public func contains(_ context: PerformanceContext) -> Bool {
-            return context.isContained(by: self)
+            
+            guard let performerID = performer else {
+                return true
+            }
+
+            guard context.performer.identifier == performerID else {
+                return false
+            }
+
+            guard let instrumentID = instrument else {
+                return true
+            }
+
+            guard let instrument = context.performer.instrument(with: instrumentID) else {
+                return false
+            }
+
+            guard let voiceID = voice else {
+                return true
+            }
+
+            return instrument.voice(with: voiceID) != nil
         }
     }
     
@@ -86,28 +107,7 @@ public struct PerformanceContext {
     }
 
     public func isContained(by scope: Scope) -> Bool {
-        
-        guard let performerID = scope.performer else {
-            return true
-        }
-        
-        guard performer.identifier == performerID else {
-            return false
-        }
-        
-        guard let instrumentID = scope.instrument else {
-            return true
-        }
-        
-        guard let instrument = performer.instrument(with: instrumentID) else {
-            return false
-        }
-        
-        guard let voiceID = scope.voice else {
-            return true
-        }
-        
-        return instrument.voice(with: voiceID) != nil
+        return scope.contains(self)
     }
 }
 
