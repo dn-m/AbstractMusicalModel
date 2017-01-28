@@ -29,7 +29,7 @@ public final class Model {
     
     // MARK: - Instance Methods
     
-    /// Add an generic attribute, of a given `kind`, within a given `interval`, with a given
+    /// Add a generic attribute, of a given `kind`, within a given `interval`, with a given
     /// `context`.
     ///
     /// - TODO: Improve naming for `attributeID`.

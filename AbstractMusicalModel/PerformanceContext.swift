@@ -6,6 +6,8 @@
 //
 //
 
+import Foundation
+
 /// Description of the performing forces of a given `Entity`.
 public struct PerformanceContext {
     
@@ -99,7 +101,7 @@ public struct PerformanceContext {
             }
 
             // If the `instrument` is specified, it must match
-            guard let instrument = context.performer.instrument(with: instrumentID) else {
+            guard let instrument = context.performer.instrument(id: instrumentID) else {
                 return false
             }
 
@@ -109,7 +111,7 @@ public struct PerformanceContext {
             }
 
             // If the `voice` is specified, it must match
-            return instrument.voice(with: voiceID) != nil
+            return instrument.voice(id: voiceID) != nil
         }
     }
     
@@ -117,7 +119,7 @@ public struct PerformanceContext {
     public let performer: Performer
     
     /// Create a `PerformanceContext` with a `Performer`
-    public init(_ performer: Performer = Performer("abc", [])) {
+    public init(_ performer: Performer = Performer()) {
         self.performer = performer
     }
     

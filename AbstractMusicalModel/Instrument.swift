@@ -8,22 +8,23 @@
 
 import Collections
 
-/// - TODO: Add instrument specifications (vn, vc, tpt, bfl cl, etc.)
+/// - TODO: Add instrument specifications (`vn`, `vc`, `tpt`, `bfl cl`, etc.)
+/// - TODO: Add rich naming `(Name(long:, short:)`)
 public struct Instrument {
     
-    public typealias Identifier = String
+    // MARK: - Associated Types
     
-//    // TODO: Add more complex naming structure
-//    struct Name {
-//        let long: String
-//        let short: String
-//    }
+    public typealias Identifier = String
 
+    // MARK: - Instance Properties
+    
     /// Identifier.
     public let identifier: Identifier
     
     /// Storage of `Voice` values by their `identifier`.
     public let voices: [Voice.Identifier: Voice]
+    
+    // MARK: - Initializers
     
     /// Create an `Instrument` with an `identifier` and an array of `Voice` values.
     public init(_ identifier: Identifier, _ voices: [Voice]) {
@@ -31,7 +32,10 @@ public struct Instrument {
         self.voices = Dictionary(voices.map { ($0.identifier, $0) })
     }
     
-    public func voice(with id: Voice.Identifier) -> Voice? {
+    // MARK: - Instance Methods
+    
+    /// - returns: The `Voice` with the given `id`, if present. Otherwise, `nil`.
+    public func voice(id: Voice.Identifier) -> Voice? {
         return voices[id]
     }
 }

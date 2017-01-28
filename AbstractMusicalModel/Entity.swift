@@ -26,7 +26,7 @@ public struct Entity {
     
     /// Interval in which this `Entity` occurs.
     ///
-    /// - note: Currently only `MetricalDurationInterval` values. Expand outward incrementally.
+    /// - note: Currently only `MetricalDurationInterval` values. Make more geneic.
     public let interval: MetricalDurationInterval
     
     // MARK: - Initializers
