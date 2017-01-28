@@ -34,4 +34,50 @@ class PerformanceContextTests: XCTestCase {
         let p = Performer("ABC", [i1, i2, i3])
         print(p)
     }
+
+    func testPerformerHasInstrumentWithIdentifierTrue() {
+        
+        let i = Instrument("I", [0].map(Voice.init))
+        let p = Performer("P", [i])
+        XCTAssertNotNil(p.instruments["I"])
+    }
+    
+    func testPerformerHasInstrumentWithIdentifierFalse() {
+        
+        let i = Instrument("I", [0].map(Voice.init))
+        let p = Performer("P", [i])
+        XCTAssertNil(p.instruments["J"])
+    }
+    
+    func testContextContainsPathTrue() {
+        let i = Instrument("I", [0].map(Voice.init))
+        let p = Performer("P", [i])
+        let context = PerformanceContext(p)
+        let path = PerformanceContext.Path("P", "I", 0)
+        XCTAssert(context.contains(path))
+    }
+    
+    func testContextContainsPathFalseWrongInstrument() {
+        let i = Instrument("I", [0].map(Voice.init))
+        let p = Performer("P", [i])
+        let context = PerformanceContext(p)
+        let path = PerformanceContext.Path("P", "J", 0)
+        XCTAssertFalse(context.contains(path))
+    }
+    
+    func testContextContainsPathFalseWrongVoice() {
+        let i = Instrument("I", [0].map(Voice.init))
+        let p = Performer("P", [i])
+        let context = PerformanceContext(p)
+        let path = PerformanceContext.Path("P", "I", 1)
+        XCTAssertFalse(context.contains(path))
+    }
+    
+    func testContextContainsPathFalseWrongVoiceAndInstrument() {
+        let i = Instrument("I", [0].map(Voice.init))
+        let p = Performer("P", [i])
+        let context = PerformanceContext(p)
+        let path = PerformanceContext.Path("P", "J", 1)
+        XCTAssertFalse(context.contains(path))
+    }
 }

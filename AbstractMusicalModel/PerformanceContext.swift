@@ -15,6 +15,7 @@ public struct PerformanceContext {
         let instrument: Instrument.Identifier
         let voice: Voice.Identifier
         
+        /// Create a `Path` with identifiers of a `performer`, `instrument`, and `voice`.
         public init(
             _ performer: Performer.Identifier,
             _ instrument: Instrument.Identifier,
@@ -35,10 +36,10 @@ public struct PerformanceContext {
         self.performer = performer
     }
     
-    /// - returns:
-    public func contains(path: Path) -> Bool {
+    /// - returns: `true` if this `PerformanceContext` contains the given `Path`.
+    public func contains(_ path: Path) -> Bool {
         guard performer.identifier == path.performer else { return false }
-        guard let instrument = performer.instruments[path.performer] else { return false }
+        guard let instrument = performer.instruments[path.instrument] else { return false }
         return instrument.voices[path.voice] != nil
     }
 }
