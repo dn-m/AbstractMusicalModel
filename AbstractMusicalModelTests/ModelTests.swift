@@ -129,6 +129,4 @@ class ModelTests: XCTestCase {
         
         XCTAssertEqual(model.entities(in: searchInterval, scope).count, 1)
     }
-    
-    //let context = PerformanceContext(Performer("P", [Instrument("I", [Voice(0)])]))
 }
