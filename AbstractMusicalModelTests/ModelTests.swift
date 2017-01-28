@@ -52,17 +52,17 @@ class ModelTests: XCTestCase {
         add(pitches, id: "pitch", to: model)
     }
     
-//    func testEntitySubscript() {
-//        let model = Model()
-//        let pitch: Pitch = 60
-//        let interval = MetricalDurationInterval(.zero, .zero)
-//        let context = PerformanceContext(performer: "a", instrument: "b", voice: 0)
-//        add(pitch, id: "pitch", to: model, interval: interval, context: context)
-//
-//        let result = model.entity(identifier: 0)!
-//        let expected = Entity(interval: interval, context: context)
-//        XCTAssertEqual(result, expected)
-//    }
+    func testEntitySubscript() {
+        let model = Model()
+        let pitch: Pitch = 60
+        let interval = MetricalDurationInterval(.zero, .zero)
+        let context = PerformanceContext(Performer("P", [Instrument("I", [Voice(0)])]))
+        add(pitch, id: "pitch", to: model, interval: interval, context: context)
+
+        let result = model.entity(identifier: 0)!
+        let expected = Entity(interval: interval, context: context)
+        XCTAssertEqual(result, expected)
+    }
     
     func testCustomStringConvertible() {
         let pitches: [Pitch] = [60,61,62,63,65,66,67,68,69,70,71,72]

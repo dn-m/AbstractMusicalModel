@@ -47,8 +47,9 @@ public final class Model {
         // TODO: Refactor
         let allowed: Relationship = [.contains, .starts, .finishes]
         return entities
-            .filter { id, entity
-                in allowed.contains(entity.interval.relationship(with: interval))
+            .lazy
+            .filter { id, entity in
+                allowed.contains(entity.interval.relationship(with: interval))
             }.reduce([:]) { accum, idAndEntity in
                 var accum = accum
                 let (id, entity) = idAndEntity
@@ -60,6 +61,13 @@ public final class Model {
     /// - returns: The `Entity` with the given `identifier`, if it exists. Otherwise, `nil`.
     public func entity(identifier: Entity.Identifier) -> Entity? {
         return entities[identifier]
+    }
+    
+    public func entities(in scope: PerformanceContext.Scope) -> [Entity] {
+        return entities
+            .lazy
+            .map { $0.1 }
+            .filter { scope.contains($0.context) }
     }
     
     private func makeEntityWithIdentifier(

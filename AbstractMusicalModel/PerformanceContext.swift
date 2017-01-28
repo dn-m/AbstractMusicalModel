@@ -9,7 +9,8 @@
 /// Description of the performing forces of a given `Entity`.
 public struct PerformanceContext {
     
-    /// Path within a `PerformanceContext` hierarchy.
+    /// Particular `Voice` -> `Instrument` -> `Performer` path within a `PerformanceContext`
+    /// hierarchy.
     public struct Path {
     
         /// `Performer.Identifier`
