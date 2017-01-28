@@ -11,9 +11,10 @@ public struct PerformanceContext {
     
     /// `Path` within a `PerformanceContext` hierarchy.
     public struct Path {
-        let performer: Performer.Identifier
-        let instrument: Instrument.Identifier
-        let voice: Voice.Identifier
+        
+        public let performer: Performer.Identifier
+        public let instrument: Instrument.Identifier
+        public let voice: Voice.Identifier
         
         /// Create a `Path` with identifiers of a `performer`, `instrument`, and `voice`.
         public init(
@@ -25,6 +26,47 @@ public struct PerformanceContext {
             self.performer = performer
             self.instrument = instrument
             self.voice = voice
+        }
+    }
+    
+    
+    public struct Scope {
+        
+        public let performer: Performer.Identifier?
+        public let instrument: Instrument.Identifier?
+        public let voice: Voice.Identifier?
+        
+        public init() {
+            self.performer = nil
+            self.instrument = nil
+            self.voice = nil
+        }
+        
+        public init(_ performer: (Performer.Identifier)) {
+            self.performer = performer
+            self.instrument = nil
+            self.voice = nil
+        }
+        
+        public init(_ performer: Performer.Identifier, _ instrument: Instrument.Identifier) {
+            self.performer = performer
+            self.instrument = instrument
+            self.voice = nil
+        }
+        
+        public init(
+            _ performer: Performer.Identifier,
+            _ instrument: Instrument.Identifier,
+            _ voice: Voice.Identifier
+        )
+        {
+            self.performer = performer
+            self.instrument = instrument
+            self.voice = voice
+        }
+        
+        public func contains(_ context: PerformanceContext) -> Bool {
+            return context.isContained(by: self)
         }
     }
     
@@ -41,6 +83,31 @@ public struct PerformanceContext {
         guard performer.identifier == path.performer else { return false }
         guard let instrument = performer.instruments[path.instrument] else { return false }
         return instrument.voices[path.voice] != nil
+    }
+
+    public func isContained(by scope: Scope) -> Bool {
+        
+        guard let performerID = scope.performer else {
+            return true
+        }
+        
+        guard performer.identifier == performerID else {
+            return false
+        }
+        
+        guard let instrumentID = scope.instrument else {
+            return true
+        }
+        
+        guard let instrument = performer.instrument(with: instrumentID) else {
+            return false
+        }
+        
+        guard let voiceID = scope.voice else {
+            return true
+        }
+        
+        return instrument.voice(with: voiceID) != nil
     }
 }
 

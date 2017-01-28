@@ -25,6 +25,10 @@ public struct Performer {
         self.identifier = identifier
         self.instruments = Dictionary(instruments.map { ($0.identifier, $0) })
     }
+    
+    public func instrument(with id: Instrument.Identifier) -> Instrument? {
+        return instruments[id]
+    }
 }
 
 extension Performer: CustomStringConvertible {

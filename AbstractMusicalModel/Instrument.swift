@@ -30,6 +30,10 @@ public struct Instrument {
         self.identifier = identifier
         self.voices = Dictionary(voices.map { ($0.identifier, $0) })
     }
+    
+    public func voice(with id: Voice.Identifier) -> Voice? {
+        return voices[id]
+    }
 }
 
 extension Instrument: CustomStringConvertible {

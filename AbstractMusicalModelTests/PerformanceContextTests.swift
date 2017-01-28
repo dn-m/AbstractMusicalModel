@@ -50,7 +50,7 @@ class PerformanceContextTests: XCTestCase {
     }
     
     func testContextContainsPathTrue() {
-        let i = Instrument("I", [0].map(Voice.init))
+        let i = Instrument("I", [Voice(0)])
         let p = Performer("P", [i])
         let context = PerformanceContext(p)
         let path = PerformanceContext.Path("P", "I", 0)
@@ -58,7 +58,7 @@ class PerformanceContextTests: XCTestCase {
     }
     
     func testContextContainsPathFalseWrongInstrument() {
-        let i = Instrument("I", [0].map(Voice.init))
+        let i = Instrument("I", [Voice(0)])
         let p = Performer("P", [i])
         let context = PerformanceContext(p)
         let path = PerformanceContext.Path("P", "J", 0)
@@ -66,7 +66,7 @@ class PerformanceContextTests: XCTestCase {
     }
     
     func testContextContainsPathFalseWrongVoice() {
-        let i = Instrument("I", [0].map(Voice.init))
+        let i = Instrument("I", [Voice(0)])
         let p = Performer("P", [i])
         let context = PerformanceContext(p)
         let path = PerformanceContext.Path("P", "I", 1)
@@ -74,10 +74,74 @@ class PerformanceContextTests: XCTestCase {
     }
     
     func testContextContainsPathFalseWrongVoiceAndInstrument() {
-        let i = Instrument("I", [0].map(Voice.init))
+        let i = Instrument("I", [Voice(0)])
         let p = Performer("P", [i])
         let context = PerformanceContext(p)
         let path = PerformanceContext.Path("P", "J", 1)
         XCTAssertFalse(context.contains(path))
+    }
+    
+    func testScopeEmptyInit() {
+        let scope = PerformanceContext.Scope()
+        XCTAssertNil(scope.performer)
+        XCTAssertNil(scope.instrument)
+        XCTAssertNil(scope.voice)
+    }
+    
+    func testScopeInitWithPerformer() {
+        let scope = PerformanceContext.Scope("P")
+        XCTAssertNotNil(scope.performer)
+    }
+    
+    func testScopeInitWithPerformerAndInstrument() {
+        let scope = PerformanceContext.Scope("P", "I")
+        XCTAssertNotNil(scope.performer)
+    }
+    
+    func testScopeInitWithPerformerInstrumentAndVoice() {
+        let scope = PerformanceContext.Scope("P", "I", 0)
+        XCTAssertNotNil(scope.voice)
+    }
+    
+    func testContextIsInScopeFullyOpen() {
+        let context = PerformanceContext(Performer("P", [Instrument("I", [Voice(0)])]))
+        let scope = PerformanceContext.Scope()
+        XCTAssert(scope.contains(context))
+    }
+    
+    func testContextIsInScopePerformerSpecified() {
+        let context = PerformanceContext(Performer("P", [Instrument("I", [Voice(0)])]))
+        let scope = PerformanceContext.Scope("P")
+        XCTAssert(scope.contains(context))
+    }
+    
+    func testContextIsInScopePerformerSpecifiedFalse() {
+        let context = PerformanceContext(Performer("P", [Instrument("I", [Voice(0)])]))
+        let scope = PerformanceContext.Scope("Q")
+        XCTAssertFalse(scope.contains(context))
+    }
+    
+    func testContextIsInScopePerformerAndInstrumentSpecified() {
+        let context = PerformanceContext(Performer("P", [Instrument("I", [Voice(0)])]))
+        let scope = PerformanceContext.Scope("P", "I")
+        XCTAssert(scope.contains(context))
+    }
+    
+    func testContextIsInScopePerformerAndInstrumentSpecifiedFalse() {
+        let context = PerformanceContext(Performer("P", [Instrument("I", [Voice(0)])]))
+        let scope = PerformanceContext.Scope("P", "J")
+        XCTAssertFalse(scope.contains(context))
+    }
+    
+    func testContextIsInScopePerformerInstrumentAndVoiceSpecified() {
+        let context = PerformanceContext(Performer("P", [Instrument("I", [Voice(0)])]))
+        let scope = PerformanceContext.Scope("P", "I", 0)
+        XCTAssert(scope.contains(context))
+    }
+    
+    func testContextIsInScopePerformerInstrumentAndVoiceSpecifiedFalse() {
+        let context = PerformanceContext(Performer("P", [Instrument("I", [Voice(0)])]))
+        let scope = PerformanceContext.Scope("P", "J", 1)
+        XCTAssertFalse(scope.contains(context))
     }
 }
