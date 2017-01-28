@@ -19,7 +19,7 @@ public final class Model {
     
     // `Entity` values stored by a unique identifier.
     /// - TODO: Make `private` / `fileprivate`
-    private var entities: [Entity.Identifier: Entity] = [:]
+    internal var entities: [Entity.Identifier: Entity] = [:]
     internal var attributions: AttributionCollection <Any> = [:]
 
     // MARK: - Initializers
@@ -29,7 +29,7 @@ public final class Model {
     
     // MARK: - Instance Methods
     
-    /// Add an generic attribute, of a given `kind`, within a given `interval, with a given
+    /// Add an generic attribute, of a given `kind`, within a given `interval`, with a given
     /// `context`.
     ///
     /// - TODO: Improve naming for `attributeID`.
