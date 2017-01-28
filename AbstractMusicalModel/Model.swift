@@ -19,11 +19,12 @@ public final class Model {
     
     // `Entity` values stored by a unique identifier.
     /// - TODO: Make `private` / `fileprivate`
-    internal var entities: [Entity.Identifier: Entity] = [:]
+    private var entities: [Entity.Identifier: Entity] = [:]
     internal var attributions: AttributionCollection <Any> = [:]
 
     // MARK: - Initializers
     
+    /// Create an empty `Model`.
     public init() { }
     
     // MARK: - Instance Methods
@@ -78,6 +79,9 @@ public final class Model {
 
 extension Model: CustomStringConvertible {
     
+    // MARK: - CustomStringConvertible
+    
+    /// Printed description.
     public var description: String {
         return "\(attributions)"
     }
