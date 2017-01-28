@@ -6,7 +6,7 @@
 //
 //
 
-/// Descriptor to whom (or what) a given `Entity` belongs.
+/// Description of the performing forces of a given `Entity`.
 public struct PerformanceContext {
     
     /// Path within a `PerformanceContext` hierarchy.
