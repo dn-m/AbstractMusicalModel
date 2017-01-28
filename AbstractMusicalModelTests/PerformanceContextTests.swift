@@ -81,67 +81,52 @@ class PerformanceContextTests: XCTestCase {
         XCTAssertFalse(context.contains(path))
     }
     
-    func testScopeEmptyInit() {
-        let scope = PerformanceContext.Scope()
-        XCTAssertNil(scope.performer)
-        XCTAssertNil(scope.instrument)
-        XCTAssertNil(scope.voice)
-    }
-    
-    func testScopeInitWithPerformer() {
-        let scope = PerformanceContext.Scope("P")
-        XCTAssertNotNil(scope.performer)
-    }
-    
-    func testScopeInitWithPerformerAndInstrument() {
-        let scope = PerformanceContext.Scope("P", "I")
-        XCTAssertNotNil(scope.performer)
-    }
-    
-    func testScopeInitWithPerformerInstrumentAndVoice() {
-        let scope = PerformanceContext.Scope("P", "I", 0)
-        XCTAssertNotNil(scope.voice)
-    }
-    
     func testContextIsInScopeFullyOpen() {
         let context = PerformanceContext(Performer("P", [Instrument("I", [Voice(0)])]))
         let scope = PerformanceContext.Scope()
         XCTAssert(scope.contains(context))
+        XCTAssert(context.isContained(by: scope))
     }
     
     func testContextIsInScopePerformerSpecified() {
         let context = PerformanceContext(Performer("P", [Instrument("I", [Voice(0)])]))
         let scope = PerformanceContext.Scope("P")
         XCTAssert(scope.contains(context))
+        XCTAssert(context.isContained(by: scope))
     }
     
     func testContextIsInScopePerformerSpecifiedFalse() {
         let context = PerformanceContext(Performer("P", [Instrument("I", [Voice(0)])]))
         let scope = PerformanceContext.Scope("Q")
         XCTAssertFalse(scope.contains(context))
+        XCTAssertFalse(context.isContained(by: scope))
     }
     
     func testContextIsInScopePerformerAndInstrumentSpecified() {
         let context = PerformanceContext(Performer("P", [Instrument("I", [Voice(0)])]))
         let scope = PerformanceContext.Scope("P", "I")
         XCTAssert(scope.contains(context))
+        XCTAssert(context.isContained(by: scope))
     }
     
     func testContextIsInScopePerformerAndInstrumentSpecifiedFalse() {
         let context = PerformanceContext(Performer("P", [Instrument("I", [Voice(0)])]))
         let scope = PerformanceContext.Scope("P", "J")
         XCTAssertFalse(scope.contains(context))
+        XCTAssertFalse(context.isContained(by: scope))
     }
     
     func testContextIsInScopePerformerInstrumentAndVoiceSpecified() {
         let context = PerformanceContext(Performer("P", [Instrument("I", [Voice(0)])]))
         let scope = PerformanceContext.Scope("P", "I", 0)
         XCTAssert(scope.contains(context))
+        XCTAssert(context.isContained(by: scope))
     }
     
     func testContextIsInScopePerformerInstrumentAndVoiceSpecifiedFalse() {
         let context = PerformanceContext(Performer("P", [Instrument("I", [Voice(0)])]))
         let scope = PerformanceContext.Scope("P", "J", 1)
         XCTAssertFalse(scope.contains(context))
+        XCTAssertFalse(context.isContained(by: scope))
     }
 }

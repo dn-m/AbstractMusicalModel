@@ -9,11 +9,16 @@
 /// Descriptor to whom (or what) a given `Entity` belongs.
 public struct PerformanceContext {
     
-    /// `Path` within a `PerformanceContext` hierarchy.
+    /// Path within a `PerformanceContext` hierarchy.
     public struct Path {
-        
+    
+        /// `Performer.Identifier`
         public let performer: Performer.Identifier
+        
+        /// `Instrument.Identifier`
         public let instrument: Instrument.Identifier
+        
+        /// `Voice.Identifier`
         public let voice: Voice.Identifier
         
         /// Create a `Path` with identifiers of a `performer`, `instrument`, and `voice`.
@@ -29,31 +34,38 @@ public struct PerformanceContext {
         }
     }
     
-    
+    /// Scope of specificity for determining
     public struct Scope {
         
-        public let performer: Performer.Identifier?
-        public let instrument: Instrument.Identifier?
-        public let voice: Voice.Identifier?
+        private let performer: Performer.Identifier?
+        private let instrument: Instrument.Identifier?
+        private let voice: Voice.Identifier?
         
+        /// Create a `Scope` that contains all `PerformanceContext` values.
         public init() {
             self.performer = nil
             self.instrument = nil
             self.voice = nil
         }
         
+        /// Create a `Scope` that contains all `PerformanceContext` values with the given
+        /// `Performer.Identifier` value.
         public init(_ performer: (Performer.Identifier)) {
             self.performer = performer
             self.instrument = nil
             self.voice = nil
         }
         
+        /// Create a `Scope` that contains all `PerformanceContext` values with the given
+        /// `Performer.Identifier` and `Instrument.Identifier` values.
         public init(_ performer: Performer.Identifier, _ instrument: Instrument.Identifier) {
             self.performer = performer
             self.instrument = instrument
             self.voice = nil
         }
         
+        /// Create a `Scope` that contains all `PerformanceContext` values with the given
+        /// `Performer.Identifier`, `Instrument.Identifier`, and `Voice.Identifier` values.
         public init(
             _ performer: Performer.Identifier,
             _ instrument: Instrument.Identifier,
@@ -65,6 +77,9 @@ public struct PerformanceContext {
             self.voice = voice
         }
         
+        /// - returns: `true` if no `performer`, `instrument`, or `voice` attributes are 
+        /// specified. Also `true` if the attributes specified here match with those of the
+        /// given `context`. Otherwise, `false`.
         public func contains(_ context: PerformanceContext) -> Bool {
             
             // If a `scope` does not specify anything, everything is contained
@@ -112,6 +127,7 @@ public struct PerformanceContext {
         return instrument.voices[path.voice] != nil
     }
 
+    /// - returns: `true` if `self` is contained by a given `scope`.
     public func isContained(by scope: Scope) -> Bool {
         return scope.contains(self)
     }
