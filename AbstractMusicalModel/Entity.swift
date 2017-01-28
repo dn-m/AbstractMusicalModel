@@ -52,14 +52,7 @@ public struct Entity {
     }
     
     private func isContained(in interval: MetricalDurationInterval) -> Bool {
-        
-        let allowed: Relationship = [
-            .equals,
-            .contains,
-            .startedBy,
-            .finishedBy,
-        ]
-
+        let allowed: Relationship = [.equals, .contains, .startedBy, .finishedBy]
         return allowed.contains(interval.relationship(with: self.interval))
     }
 }
