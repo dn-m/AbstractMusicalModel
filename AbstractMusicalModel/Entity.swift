@@ -37,38 +37,30 @@ public struct Entity {
         self.context = context
     }
     
+    /// - returns: `true` if an `Entity` is contained both within the given `interval` and 
+    /// the given `scope`. Otherwise, `false`.
     public func isContained(
-        by interval: MetricalDurationInterval,
+        in interval: MetricalDurationInterval,
         _ scope: PerformanceContext.Scope = PerformanceContext.Scope()
     ) -> Bool
     {
-        print("Entity: \(self)")
-        print("search interval: \(interval)")
-        print("scope: \(isContained(by: scope))")
-        print("interval: \(isContained(by: interval))")
-        
-        return isContained(by: scope) && isContained(by: interval)
+        return isContained(in: scope) && isContained(in: interval)
     }
     
-    private func isContained(by scope: PerformanceContext.Scope) -> Bool {
+    private func isContained(in scope: PerformanceContext.Scope) -> Bool {
         return context.isContained(by: scope)
     }
     
-    private func isContained(by interval: MetricalDurationInterval) -> Bool {
+    private func isContained(in interval: MetricalDurationInterval) -> Bool {
         
         let allowed: Relationship = [
             .equals,
             .contains,
-            .starts,
             .startedBy,
-            .finishes,
-            .finishedBy
+            .finishedBy,
         ]
         
         let relationship = interval.relationship(with: self.interval)
-        
-        print("relationship: \(relationship)")
-        
         return allowed.contains(relationship)
     }
 }

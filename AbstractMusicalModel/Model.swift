@@ -62,7 +62,7 @@ public final class Model {
     {
         return entities
             .lazy
-            .filter { _, entity in entity.isContained(by: interval, scope) }
+            .filter { _, entity in entity.isContained(in: interval, scope) }
             .map { $0.0 }
     }
     
