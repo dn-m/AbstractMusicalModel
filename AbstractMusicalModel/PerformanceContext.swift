@@ -67,26 +67,32 @@ public struct PerformanceContext {
         
         public func contains(_ context: PerformanceContext) -> Bool {
             
+            // If a `scope` does not specify anything, everything is contained
             guard let performerID = performer else {
                 return true
             }
 
+            // If the `performer` is specified, it must match
             guard context.performer.identifier == performerID else {
                 return false
             }
 
+            // If a `scope` does not specify an `instrument`, context is contained
             guard let instrumentID = instrument else {
                 return true
             }
 
+            // If the `instrument` is specified, it must match
             guard let instrument = context.performer.instrument(with: instrumentID) else {
                 return false
             }
 
+            // If a `scope` does not specify a `voice`, context is contained
             guard let voiceID = voice else {
                 return true
             }
 
+            // If the `voice` is specified, it must match
             return instrument.voice(with: voiceID) != nil
         }
     }
