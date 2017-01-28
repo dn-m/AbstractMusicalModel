@@ -48,7 +48,7 @@ public struct Entity {
     }
     
     private func isContained(in scope: PerformanceContext.Scope) -> Bool {
-        return context.isContained(by: scope)
+        return scope.contains(context)
     }
     
     private func isContained(in interval: MetricalDurationInterval) -> Bool {
@@ -59,9 +59,8 @@ public struct Entity {
             .startedBy,
             .finishedBy,
         ]
-        
-        let relationship = interval.relationship(with: self.interval)
-        return allowed.contains(relationship)
+
+        return allowed.contains(interval.relationship(with: self.interval))
     }
 }
 
