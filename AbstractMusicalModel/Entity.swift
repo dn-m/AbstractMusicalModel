@@ -26,7 +26,7 @@ public struct Entity {
     
     /// Interval in which this `Entity` occurs.
     ///
-    /// - note: Currently only `MetricalDurationInterval` values. Expand outward incrementally.
+    /// - note: Currently only `MetricalDurationInterval` values. Make more geneic.
     public let interval: MetricalDurationInterval
     
     // MARK: - Initializers
@@ -35,6 +35,25 @@ public struct Entity {
     public init(interval: MetricalDurationInterval, context: PerformanceContext) {
         self.interval = interval
         self.context = context
+    }
+    
+    /// - returns: `true` if an `Entity` is contained both within the given `interval` and 
+    /// the given `scope`. Otherwise, `false`.
+    public func isContained(
+        in interval: MetricalDurationInterval,
+        _ scope: PerformanceContext.Scope = PerformanceContext.Scope()
+    ) -> Bool
+    {
+        return isContained(in: scope) && isContained(in: interval)
+    }
+    
+    private func isContained(in scope: PerformanceContext.Scope) -> Bool {
+        return scope.contains(context)
+    }
+    
+    private func isContained(in interval: MetricalDurationInterval) -> Bool {
+        let allowed: Relationship = [.equals, .contains, .startedBy, .finishedBy]
+        return allowed.contains(interval.relationship(with: self.interval))
     }
 }
 

@@ -24,12 +24,15 @@ public final class Model {
 
     // MARK: - Initializers
     
+    /// Create an empty `Model`.
     public init() { }
     
     // MARK: - Instance Methods
     
-    /// Add an generic attribute, of a given `kind`, within a given `interval, with a given
+    /// Add a generic attribute, of a given `kind`, within a given `interval`, with a given
     /// `context`.
+    ///
+    /// - TODO: Improve naming for `attributeID`.
     public func addAttribute <Attribute> (
         _ attribute: Attribute,
         identifier attributeID: String,
@@ -42,24 +45,25 @@ public final class Model {
         try attributions.update(attribute, keyPath: [attributeID, entityID])
     }
     
-    public func entities(in interval: MetricalDurationInterval) -> [Entity.Identifier] {
-        
-        // TODO: Refactor
-        let allowed: Relationship = [.contains, .starts, .finishes]
-        return entities
-            .filter { id, entity
-                in allowed.contains(entity.interval.relationship(with: interval))
-            }.reduce([:]) { accum, idAndEntity in
-                var accum = accum
-                let (id, entity) = idAndEntity
-                accum[id] = entity
-                return accum
-            }.map { $0.0 }
-    }
-    
     /// - returns: The `Entity` with the given `identifier`, if it exists. Otherwise, `nil`.
+    /// 
+    /// - TODO: Make this a subscript?
     public func entity(identifier: Entity.Identifier) -> Entity? {
         return entities[identifier]
+    }
+
+    /// - returns: Identifiers of all `Entity` values held here that are contained within the
+    /// given `interval` and `scope` values.
+    public func entities(
+        in interval: MetricalDurationInterval,
+        _ scope: PerformanceContext.Scope = PerformanceContext.Scope()
+    )
+        -> [Entity.Identifier]
+    {
+        return entities
+            .lazy
+            .filter { _, entity in entity.isContained(in: interval, scope) }
+            .map { $0.0 }
     }
     
     private func makeEntityWithIdentifier(
@@ -75,6 +79,9 @@ public final class Model {
 
 extension Model: CustomStringConvertible {
     
+    // MARK: - CustomStringConvertible
+    
+    /// Printed description.
     public var description: String {
         return "\(attributions)"
     }
