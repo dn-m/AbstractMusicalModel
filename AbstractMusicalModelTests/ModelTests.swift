@@ -16,7 +16,7 @@ class ModelTests: XCTestCase {
 
     func add <T> (
         _ attribute: T,
-        id: String = "id",
+        kind: String = "id",
         to model: Model,
         interval: MetricalDurationInterval = MetricalDurationInterval(.zero, .zero),
         context: PerformanceContext = PerformanceContext()
@@ -24,7 +24,7 @@ class ModelTests: XCTestCase {
     {
         do {
             try model.addAttribute(attribute,
-                identifier: id,
+                kind: kind,
                 interval: interval,
                 context: context
             )
@@ -39,7 +39,7 @@ class ModelTests: XCTestCase {
     
     func testAddPitchAttribute() {
         let model = Model()
-        add(Pitch(60), id: "pitch", to: model)
+        add(Pitch(60), kind: "pitch", to: model)
         XCTAssertEqual(model.entities.count, 1)
         XCTAssertEqual(model.attributions.count, 1)
         XCTAssertNotNil(model.entities[0])
@@ -49,7 +49,7 @@ class ModelTests: XCTestCase {
     func testAddPitchArrayAttribute() {
         let model = Model()
         let pitches: PitchSet = [60, 61, 62]
-        add(pitches, id: "pitch", to: model)
+        add(pitches, kind: "pitch", to: model)
     }
     
     func testEntitySubscript() {
@@ -57,7 +57,7 @@ class ModelTests: XCTestCase {
         let pitch: Pitch = 60
         let interval = MetricalDurationInterval(.zero, .zero)
         let context = PerformanceContext(Performer("P", [Instrument("I", [Voice(0)])]))
-        add(pitch, id: "pitch", to: model, interval: interval, context: context)
+        add(pitch, kind: "pitch", to: model, interval: interval, context: context)
 
         let result = model.entity(identifier: 0)!
         let expected = Entity(interval: interval, context: context)
@@ -67,7 +67,7 @@ class ModelTests: XCTestCase {
     func testCustomStringConvertible() {
         let pitches: [Pitch] = [60,61,62,63,65,66,67,68,69,70,71,72]
         let model = Model()
-        pitches.forEach { add($0, id: "pitch", to: model) }
+        pitches.forEach { add($0, kind: "pitch", to: model) }
         print("model:\n\(model)")
     }
     
@@ -75,7 +75,7 @@ class ModelTests: XCTestCase {
         let model = Model()
         let pitch: Pitch = 60
         let interval = MetricalDurationInterval(MetricalDuration(1,8), MetricalDuration(2,8))
-        add(pitch, id: "pitch", to: model, interval: interval, context: PerformanceContext())
+        add(pitch, kind: "pitch", to: model, interval: interval, context: PerformanceContext())
         
         let searchInterval = MetricalDurationInterval(
             MetricalDuration(3,8),
@@ -89,7 +89,7 @@ class ModelTests: XCTestCase {
         let model = Model()
         let pitch: Pitch = 60
         let interval = MetricalDurationInterval(MetricalDuration(1,8), MetricalDuration(3,16))
-        add(pitch, id: "pitch", to: model, interval: interval, context: PerformanceContext())
+        add(pitch, kind: "pitch", to: model, interval: interval, context: PerformanceContext())
         
         let searchInterval = MetricalDurationInterval(
             MetricalDuration(1,8),
@@ -123,10 +123,16 @@ class ModelTests: XCTestCase {
         
         // Populate model
         let model = Model()
-        add(Pitch(60), id: "pitch", to: model, interval: intervalA, context: contextA)
-        add(Pitch(60), id: "pitch", to: model, interval: intervalB, context: contextB)
-        add(Pitch(60), id: "pitch", to: model, interval: intervalC, context: contextC)
+        add(Pitch(60), kind: "pitch", to: model, interval: intervalA, context: contextA)
+        add(Pitch(60), kind: "pitch", to: model, interval: intervalB, context: contextB)
+        add(Pitch(60), kind: "pitch", to: model, interval: intervalC, context: contextC)
         
         XCTAssertEqual(model.entities(in: searchInterval, scope).count, 1)
+    }
+    
+    func testEntitiesWithAttributeIdentifiers() {
+        
+        _ = Model()
+        
     }
 }

@@ -20,6 +20,8 @@ public final class Model {
     // `Entity` values stored by a unique identifier.
     /// - TODO: Make `private` / `fileprivate`
     internal var entities: [Entity.Identifier: Entity] = [:]
+    
+    /// [AttributeID: [EntityID: Attribute]]
     internal var attributions: AttributionCollection <Any> = [:]
 
     // MARK: - Initializers
@@ -35,14 +37,14 @@ public final class Model {
     /// - TODO: Improve naming for `attributeID`.
     public func addAttribute <Attribute> (
         _ attribute: Attribute,
-        identifier attributeID: String,
+        kind: String,
         interval: MetricalDurationInterval,
         context: PerformanceContext
     ) throws
     {
         let (entity, entityID) = makeEntityWithIdentifier(in: interval, with: context)
         entities[entityID] = entity
-        try attributions.update(attribute, keyPath: [attributeID, entityID])
+        try attributions.update(attribute, keyPath: [kind, entityID])
     }
     
     /// - returns: The `Entity` with the given `identifier`, if it exists. Otherwise, `nil`.
