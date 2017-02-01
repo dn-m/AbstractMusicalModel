@@ -58,6 +58,8 @@ public final class Model {
             self.interval = interval
         }
         
+        // MARK: - Instance Methods
+        
         /// - returns: `true` if an `Entity` is contained both within the given `interval` and
         /// the given `scope`. Otherwise, `false`.
         public func isContained(
@@ -120,8 +122,7 @@ public final class Model {
     ///   - context: `Context` for this attribute (who and when)
     ///
     /// - returns: `Entity` for the new attribute.
-    @discardableResult
-    public func put <Attribute> (
+    @discardableResult public func put <Attribute> (
         _ attribute: Attribute,
         kind: AttributeKind = "?",
         context: Context = Context()
