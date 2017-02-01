@@ -11,6 +11,10 @@ import IntervalTools
 import Rhythm
 
 /// Musical model.
+///
+///
+///
+///
 public final class Model {
     
     // MARK: - Associated Types
@@ -80,10 +84,10 @@ public final class Model {
     
     // `Entity` values stored by a unique identifier.
     /// - TODO: Make `private` / `fileprivate`
-    internal var contexts: [Entity: Context] = [:]
+    fileprivate var contexts: [Entity: Context] = [:]
     
     /// [AttributeID: [EntityID: Attribute]]
-    internal var attributions: AttributionCollection <Any> = [:]
+    fileprivate var attributions: AttributionCollection <Any> = [:]
 
     // MARK: - Initializers
     
@@ -116,9 +120,6 @@ public final class Model {
     ///   - context: `Context` for this attribute (who and when)
     ///
     /// - returns: `Entity` for the new attribute.
-    ///
-    /// - TODO: Instead of applying an `Entity` to a `PerformanceContext`, consider applying
-    /// it to a `Scope`.
     @discardableResult
     public func put <Attribute> (
         _ attribute: Attribute,
@@ -147,13 +148,14 @@ public final class Model {
         return entities(with: kinds) ∩ entities(in: interval, scope)
     }
     
-    /// - returns: The `Context` with the given `identifier`, if it exists. Otherwise, `nil`.
+    /// - returns: The `Context` with the given `entity`, if it exists. Otherwise, `nil`.
     ///
     /// - TODO: Make this a subscript
     public func context(entity: Entity) -> Context? {
         return contexts[entity]
     }
     
+    /// - returns: The attribute for the given `entity`, if it exists. Otherwise, `nil`.
     public func attribute(entity: Entity) -> Any? {
         
         return attributions.lazy

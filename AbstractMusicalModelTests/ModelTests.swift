@@ -14,15 +14,6 @@ import Pitch
 
 class ModelTests: XCTestCase {
     
-    func testAddPitchAttribute() {
-        let model = Model()
-        model.put(Pitch(60), kind: "pitch")
-        XCTAssertEqual(model.contexts.count, 1)
-        XCTAssertEqual(model.attributions.count, 1)
-        XCTAssertNotNil(model.contexts[0])
-        XCTAssertEqual(model.attributions["pitch"]![0]! as! Pitch, 60)
-    }
-    
     func testAddPitchArrayAttribute() {
         let model = Model()
         let pitches: PitchSet = [60, 61, 62]
@@ -183,6 +174,5 @@ class ModelTests: XCTestCase {
         XCTAssertEqual(entity, 0)
         XCTAssertEqual(model[0]!.0 as! Int, 1)
         XCTAssertEqual(model[0]!.1, Model.Context())
-        
     }
 }
