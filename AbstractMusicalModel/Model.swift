@@ -12,12 +12,22 @@ import Rhythm
 
 /// Musical model.
 ///
-/// Add a new attribute:
+/// **Creating an empty `Model`:**
 ///
 /// ```
-/// // Create a new `Pitch` value
-/// let pitch = Pitch(60)
+/// let model = Model()
+/// ```
 ///
+/// **Add a new attribute to the model:**
+///
+/// ```
+/// // Create a new `Pitch` value to add to the `model`
+/// let pitch = Pitch(60)
+/// ```
+///
+/// **Create the `PerformanceContext` that will enact this `Pitch` value**
+///
+/// ```
 /// // Create the `Instrument` that will be used to play this `pitch`.
 /// let instrument = Instrument("Violin")
 ///
@@ -26,14 +36,24 @@ import Rhythm
 ///
 /// // Create the `PerformanceContext` by which this attribute will be enacted
 /// let performanceContext = PerformanceContext(performer)
+/// ```
 ///
-/// // Create the `MetricalDurationInterval` in which this attribute is applied
+/// **Create the `MetricalDurationInterval` in which this `Pitch` is performed**
+///
+/// ```
+/// // Create the `MetricalDurationInterval`
 /// let interval = MetricalDurationInterval(MetricalDuration(1,8), MetricalDuration(2,8))
+/// ```
 ///
+/// **Put the `Performance.Context` and `MetricalDurationInterval`:**
 ///
+/// ```
 /// // Create a new `Model.Context` value
 /// let context = Model.Context(interval, performanceContext)
-/// let model = Model()
+/// ```
+///
+/// **Add the `Pitch` value, with the `context` created above**
+/// ```
 /// model.put(pitch, kind: "pitch", context: context)
 /// ```
 public final class Model {
@@ -43,14 +63,14 @@ public final class Model {
     /// Unique identifier for an `Attribute` and a `Context`.
     public typealias Entity = Int
     
-    /// Mapping of an identifier of an `Entity` to a generic `Attribute`.
-    public typealias Attribution <Attribute> = Dictionary<Entity, Attribute>
-    
     /// Type used to group classes of attributes ("pitch", "dynamics", "rhythm", etc.)
     public typealias AttributeKind = String
     
+    /// Mapping of an identifier of an `Entity` to a generic `Attribute`.
+    private typealias Attribution <Attribute> = Dictionary<Entity, Attribute>
+    
     /// Mapping of an identifier of an `Attribution` to an `Attribution`.
-    public typealias AttributionCollection <Attribute> = Dictionary<
+    private typealias AttributionCollection <Attribute> = Dictionary<
         AttributeKind, Attribution<Attribute>
     >
     
@@ -116,8 +136,8 @@ public final class Model {
     
     /// Create an empty `Model`.
     public init() { }
-    
-    // MARK: - Subscripts
+
+    // MARK: - Instance Methods
     
     /// - returns: The context attribute for a given `Entity`, if present. Otherwise, `nil`.
     public subscript (entity: Entity) -> (attribute: Any, context: Context)? {
@@ -132,8 +152,6 @@ public final class Model {
         
         return (attribute, context)
     }
-    
-    // MARK: - Instance Methods
     
     /// Add a generic `attribute`, of a given `kind`, within a given `context`.
     ///
