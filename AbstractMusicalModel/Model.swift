@@ -52,10 +52,10 @@ public final class Model {
     public typealias AttributeKind = String
     
     /// Mapping of an identifier of an `Entity` to a generic `Attribute`.
-    private typealias Attribution <Attribute> = Dictionary<Entity, Attribute>
+    fileprivate typealias Attribution <Attribute> = Dictionary<Entity, Attribute>
     
     /// Mapping of an identifier of an `Attribution` to an `Attribution`.
-    private typealias AttributionCollection <Attribute> = Dictionary<
+    fileprivate typealias AttributionCollection <Attribute> = Dictionary<
         AttributeKind, Attribution<Attribute>
     >
     
