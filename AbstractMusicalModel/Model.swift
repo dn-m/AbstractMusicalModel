@@ -10,7 +10,7 @@ import Collections
 import IntervalTools
 import Rhythm
 
-/// Musical model.
+/// The database of musical information contained in a single musical _work_.
 ///
 /// **Creating an empty `Model`:**
 ///
@@ -18,41 +18,26 @@ import Rhythm
 /// let model = Model()
 /// ```
 ///
-/// **Add a new attribute to the model:**
+/// ## Adding a new attribute to the model
+///
+/// ### Create a `Pitch` attribute
 ///
 /// ```
-/// // Create a new `Pitch` value to add to the `model`
 /// let pitch = Pitch(60)
 /// ```
 ///
-/// **Create the `PerformanceContext` that will enact this `Pitch` value**
+/// ### Create the `Context` that will enact this `Pitch` value
 ///
 /// ```
-/// // Create the `Instrument` that will be used to play this `pitch`.
 /// let instrument = Instrument("Violin")
-///
-/// // Create the `Performer` who will play this `pitch`, with the `instrument` created above
 /// let performer = Performer("Pat", [instrument])
-///
-/// // Create the `PerformanceContext` by which this attribute will be enacted
 /// let performanceContext = PerformanceContext(performer)
-/// ```
-///
-/// **Create the `MetricalDurationInterval` in which this `Pitch` is performed**
-///
-/// ```
-/// // Create the `MetricalDurationInterval`
 /// let interval = MetricalDurationInterval(MetricalDuration(1,8), MetricalDuration(2,8))
-/// ```
-///
-/// **Put the `Performance.Context` and `MetricalDurationInterval`:**
-///
-/// ```
-/// // Create a new `Model.Context` value
 /// let context = Model.Context(interval, performanceContext)
 /// ```
 ///
-/// **Add the `Pitch` value, with the `context` created above**
+/// ### Add the `Pitch` value, with the `context` created above
+///
 /// ```
 /// model.put(pitch, kind: "pitch", context: context)
 /// ```
