@@ -6,5 +6,5 @@
 //
 //
 
-/// - TODO: Consider using `Int`
-public typealias AttributionIdentifier = String
+///// - TODO: Consider using `Int`
+//public typealias AttributionIdentifier = String

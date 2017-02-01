@@ -21,9 +21,11 @@ public final class Model {
     /// Mapping of an identifier of an `Entity` to a generic `Attribute`.
     public typealias Attribution <Attribute> = Dictionary<Entity, Attribute>
     
+    public typealias AttributionKind = String
+    
     /// Mapping of an identifier of an `Attribution` to an `Attribution`.
     public typealias AttributionCollection <Attribute> = Dictionary<
-        AttributionIdentifier, Attribution<Attribute>
+        AttributionKind, Attribution<Attribute>
     >
     
     // MARK: - Nested Types
@@ -100,7 +102,7 @@ public final class Model {
     /// it to a `Scope`.
     public func put <Attribute> (
         _ attribute: Attribute,
-        kind: AttributionIdentifier = "?",
+        kind: AttributionKind = "?",
         context: Context = Context()
     )
     {
@@ -124,7 +126,7 @@ public final class Model {
     public func entities(
         in interval: MetricalDurationInterval,
         performedBy scope: PerformanceContext.Scope = PerformanceContext.Scope(),
-        including kinds: [AttributionIdentifier]? = nil
+        including kinds: [AttributionKind]? = nil
     ) -> [Entity]
     {
         
@@ -140,7 +142,7 @@ public final class Model {
             .map { $0.0 }
     }
     
-    private func entities(of kinds: [AttributionIdentifier]) -> AttributionCollection<Any> {
+    private func entities(of kinds: [AttributionKind]) -> AttributionCollection<Any> {
         return Dictionary(attributions.filter { kind, _ in kinds.contains(kind) })
     }
     
