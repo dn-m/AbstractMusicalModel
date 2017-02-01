@@ -12,9 +12,30 @@ import Rhythm
 
 /// Musical model.
 ///
+/// Add a new attribute:
+///
+/// ```
+/// // Create a new `Pitch` value
+/// let pitch = Pitch(60)
+///
+/// // Create the `Instrument` that will be used to play this `pitch`.
+/// let instrument = Instrument("Violin")
+///
+/// // Create the `Performer` who will play this `pitch`, with the `instrument` created above
+/// let performer = Performer("Pat", [instrument])
+///
+/// // Create the `PerformanceContext` by which this attribute will be enacted
+/// let performanceContext = PerformanceContext(performer)
+///
+/// // Create the `MetricalDurationInterval` in which this attribute is applied
+/// let interval = MetricalDurationInterval(MetricalDuration(1,8), MetricalDuration(2,8))
 ///
 ///
-///
+/// // Create a new `Model.Context` value
+/// let context = Model.Context(interval, performanceContext)
+/// let model = Model()
+/// model.put(pitch, kind: "pitch", context: context)
+/// ```
 public final class Model {
     
     // MARK: - Associated Types

@@ -27,7 +27,7 @@ public struct Instrument {
     // MARK: - Initializers
     
     /// Create an `Instrument` with an `identifier` and an array of `Voice` values.
-    public init(_ identifier: Identifier, _ voices: [Voice]) {
+    public init(_ identifier: Identifier, _ voices: [Voice] = [Voice(0)]) {
         self.identifier = identifier
         self.voices = Dictionary(voices.map { ($0.identifier, $0) })
     }
