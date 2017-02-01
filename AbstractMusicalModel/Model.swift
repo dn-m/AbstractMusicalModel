@@ -10,7 +10,7 @@ import Collections
 import IntervalTools
 import Rhythm
 
-/// - TODO: Conform to `DictionaryWrapping`.
+/// Musical model.
 public final class Model {
     
     // MARK: - Associated Types
