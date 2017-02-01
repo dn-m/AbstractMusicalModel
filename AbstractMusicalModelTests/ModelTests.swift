@@ -13,17 +13,6 @@ import Pitch
 @testable import AbstractMusicalModel
 
 class ModelTests: XCTestCase {
-
-//    func add <T> (
-//        _ attribute: T,
-//        kind: String = "id",
-//        to model: Model,
-//        interval: MetricalDurationInterval = MetricalDurationInterval(.zero, .zero),
-//        context: PerformanceContext = PerformanceContext()
-//    )
-//    {
-//        model.addAttribute(attribute, kind: kind, interval: interval, context: context)
-//    }
     
     func testAddPitchAttribute() {
         let model = Model()
