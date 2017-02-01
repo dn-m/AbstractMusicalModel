@@ -21,6 +21,7 @@ public final class Model {
     /// Mapping of an identifier of an `Entity` to a generic `Attribute`.
     public typealias Attribution <Attribute> = Dictionary<Entity, Attribute>
     
+    /// Type used to group classes of attributes ("pitch", "dynamics", "rhythm", etc.)
     public typealias AttributeKind = String
     
     /// Mapping of an identifier of an `Attribution` to an `Attribution`.
