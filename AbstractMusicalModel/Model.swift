@@ -59,7 +59,7 @@ public final class Model {
     /// Durational and performative context for musical attributes.
     public struct Context {
         
-        // MARK: - Associated Types
+        // MARK: - Instance Properties
         
         /// `Performer` / `Instrument` / `Voice` context.
         public let performanceContext: PerformanceContext
