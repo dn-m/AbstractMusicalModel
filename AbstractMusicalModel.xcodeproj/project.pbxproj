@@ -11,8 +11,6 @@
 		0729F1171E1FEFC2004D2067 /* AttributionIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0729F1151E1FEFC2004D2067 /* AttributionIdentifier.swift */; };
 		0729F1191E1FEFD9004D2067 /* AttributionCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0729F1181E1FEFD9004D2067 /* AttributionCollection.swift */; };
 		0729F11A1E1FEFD9004D2067 /* AttributionCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0729F1181E1FEFD9004D2067 /* AttributionCollection.swift */; };
-		0749BED91E1EE7460024E0F1 /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0749BED81E1EE7460024E0F1 /* Entity.swift */; };
-		0749BEDA1E1EE7460024E0F1 /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0749BED81E1EE7460024E0F1 /* Entity.swift */; };
 		0749BEDC1E1EE7AE0024E0F1 /* PerformanceContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0749BEDB1E1EE7AE0024E0F1 /* PerformanceContext.swift */; };
 		0749BEDD1E1EE7AE0024E0F1 /* PerformanceContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0749BEDB1E1EE7AE0024E0F1 /* PerformanceContext.swift */; };
 		0749BEDF1E1EE92A0024E0F1 /* Performer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0749BEDE1E1EE92A0024E0F1 /* Performer.swift */; };
@@ -57,7 +55,6 @@
 /* Begin PBXFileReference section */
 		0729F1151E1FEFC2004D2067 /* AttributionIdentifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AttributionIdentifier.swift; path = AbstractMusicalModel/AttributionIdentifier.swift; sourceTree = "<group>"; };
 		0729F1181E1FEFD9004D2067 /* AttributionCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AttributionCollection.swift; path = AbstractMusicalModel/AttributionCollection.swift; sourceTree = "<group>"; };
-		0749BED81E1EE7460024E0F1 /* Entity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Entity.swift; path = AbstractMusicalModel/Entity.swift; sourceTree = "<group>"; };
 		0749BEDB1E1EE7AE0024E0F1 /* PerformanceContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PerformanceContext.swift; path = AbstractMusicalModel/PerformanceContext.swift; sourceTree = "<group>"; };
 		0749BEDE1E1EE92A0024E0F1 /* Performer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Performer.swift; path = AbstractMusicalModel/Performer.swift; sourceTree = "<group>"; };
 		0749BEE11E1EE94C0024E0F1 /* Instrument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Instrument.swift; path = AbstractMusicalModel/Instrument.swift; sourceTree = "<group>"; };
@@ -211,7 +208,6 @@
 			isa = PBXGroup;
 			children = (
 				45B1A349ADA08AB9C03F07C4 /* Supporting Files */,
-				0749BED81E1EE7460024E0F1 /* Entity.swift */,
 				0749BEE81E1EF0940024E0F1 /* Model.swift */,
 				0749BEE71E1EE9810024E0F1 /* PerformanceContext */,
 				0729F1111E1FEF7D004D2067 /* Attribution */,
@@ -412,7 +408,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0749BEEA1E1EF0940024E0F1 /* Model.swift in Sources */,
-				0749BEDA1E1EE7460024E0F1 /* Entity.swift in Sources */,
 				0729F11A1E1FEFD9004D2067 /* AttributionCollection.swift in Sources */,
 				0749BEDD1E1EE7AE0024E0F1 /* PerformanceContext.swift in Sources */,
 				075458AA1E1EBA0D00E55F41 /* Attribution.swift in Sources */,
@@ -437,7 +432,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0749BEE91E1EF0940024E0F1 /* Model.swift in Sources */,
-				0749BED91E1EE7460024E0F1 /* Entity.swift in Sources */,
 				0729F1191E1FEFD9004D2067 /* AttributionCollection.swift in Sources */,
 				0749BEDC1E1EE7AE0024E0F1 /* PerformanceContext.swift in Sources */,
 				075458A91E1EBA0D00E55F41 /* Attribution.swift in Sources */,
