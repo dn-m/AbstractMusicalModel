@@ -37,7 +37,6 @@ public struct PerformanceContext {
         }
     }
     
-    /// Scope of specificity for determining
     public struct Scope {
         
         private let performer: Performer.Identifier?

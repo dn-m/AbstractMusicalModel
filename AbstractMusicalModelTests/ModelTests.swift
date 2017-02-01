@@ -14,32 +14,20 @@ import Pitch
 
 class ModelTests: XCTestCase {
 
-    func add <T> (
-        _ attribute: T,
-        kind: String = "id",
-        to model: Model,
-        interval: MetricalDurationInterval = MetricalDurationInterval(.zero, .zero),
-        context: PerformanceContext = PerformanceContext()
-    )
-    {
-        do {
-            try model.addAttribute(attribute,
-                kind: kind,
-                interval: interval,
-                context: context
-            )
-        } catch {
-            XCTFail()
-        }
-    }
-    
-    func testAddAttributeWithoutThrowingError() {
-        add(1, to: Model())
-    }
+//    func add <T> (
+//        _ attribute: T,
+//        kind: String = "id",
+//        to model: Model,
+//        interval: MetricalDurationInterval = MetricalDurationInterval(.zero, .zero),
+//        context: PerformanceContext = PerformanceContext()
+//    )
+//    {
+//        model.addAttribute(attribute, kind: kind, interval: interval, context: context)
+//    }
     
     func testAddPitchAttribute() {
         let model = Model()
-        add(Pitch(60), kind: "pitch", to: model)
+        model.addAttribute(Pitch(60), kind: "pitch")
         XCTAssertEqual(model.entities.count, 1)
         XCTAssertEqual(model.attributions.count, 1)
         XCTAssertNotNil(model.entities[0])
@@ -49,7 +37,7 @@ class ModelTests: XCTestCase {
     func testAddPitchArrayAttribute() {
         let model = Model()
         let pitches: PitchSet = [60, 61, 62]
-        add(pitches, kind: "pitch", to: model)
+        model.addAttribute(pitches, kind: "pitch")
     }
     
     func testEntitySubscript() {
@@ -57,7 +45,7 @@ class ModelTests: XCTestCase {
         let pitch: Pitch = 60
         let interval = MetricalDurationInterval(.zero, .zero)
         let context = PerformanceContext(Performer("P", [Instrument("I", [Voice(0)])]))
-        add(pitch, kind: "pitch", to: model, interval: interval, context: context)
+        model.addAttribute(pitch, kind: "pitch", interval: interval, context: context)
 
         let result = model.entity(identifier: 0)!
         let expected = Entity(interval: interval, context: context)
@@ -67,7 +55,7 @@ class ModelTests: XCTestCase {
     func testCustomStringConvertible() {
         let pitches: [Pitch] = [60,61,62,63,65,66,67,68,69,70,71,72]
         let model = Model()
-        pitches.forEach { add($0, kind: "pitch", to: model) }
+        pitches.forEach { model.addAttribute($0, kind: "pitch") }
         print("model:\n\(model)")
     }
     
@@ -75,7 +63,7 @@ class ModelTests: XCTestCase {
         let model = Model()
         let pitch: Pitch = 60
         let interval = MetricalDurationInterval(MetricalDuration(1,8), MetricalDuration(2,8))
-        add(pitch, kind: "pitch", to: model, interval: interval, context: PerformanceContext())
+        model.addAttribute(pitch, kind: "pitch", interval: interval)
         
         let searchInterval = MetricalDurationInterval(
             MetricalDuration(3,8),
@@ -89,7 +77,7 @@ class ModelTests: XCTestCase {
         let model = Model()
         let pitch: Pitch = 60
         let interval = MetricalDurationInterval(MetricalDuration(1,8), MetricalDuration(3,16))
-        add(pitch, kind: "pitch", to: model, interval: interval, context: PerformanceContext())
+        model.addAttribute(pitch, kind: "pitch", interval: interval)
         
         let searchInterval = MetricalDurationInterval(
             MetricalDuration(1,8),
@@ -101,12 +89,13 @@ class ModelTests: XCTestCase {
     
     func testMultipleEntitiesContainedWithinScopeAndInterval() {
         
-        // Prepare boundaries of search
+        // Prepare search interval
         let searchInterval = MetricalDurationInterval(
             MetricalDuration(4,8),
             MetricalDuration(8,8)
         )
         
+        // Prepare search scopre
         let scope = PerformanceContext.Scope("P", "I")
         
         // Prepare entity outside of scope, inside interval (1)
@@ -123,16 +112,71 @@ class ModelTests: XCTestCase {
         
         // Populate model
         let model = Model()
-        add(Pitch(60), kind: "pitch", to: model, interval: intervalA, context: contextA)
-        add(Pitch(60), kind: "pitch", to: model, interval: intervalB, context: contextB)
-        add(Pitch(60), kind: "pitch", to: model, interval: intervalC, context: contextC)
+        model.addAttribute(1, kind: "pitch", interval: intervalA, context: contextA)
+        model.addAttribute(1, kind: "pitch", interval: intervalB, context: contextB)
+        model.addAttribute(1, kind: "pitch", interval: intervalC, context: contextC)
+
+        XCTAssertEqual(model.entities(in: searchInterval, performedBy: scope).count, 1)
+    }
+    
+    func testEntitiesOfKinds() {
+
+        let model = Model()
         
-        XCTAssertEqual(model.entities(in: searchInterval, scope).count, 1)
+        // add 1 pitch
+        model.addAttribute(1, kind: "pitch")
+        
+        // add 1 dynamic
+        model.addAttribute("fff", kind: "dynamics")
+        
+        // add 1 articulation
+        model.addAttribute(".", kind: "articulation")
+        
+        // Expect only to retrieve pitch / dynamics kinds
+        let kinds = ["pitch", "dynamics"]
+        XCTAssertEqual(model.entities(of: kinds).count, 2)
+        
     }
     
     func testEntitiesWithAttributeIdentifiers() {
         
-        _ = Model()
+        // Prepare search interval
+        let searchInterval = MetricalDurationInterval(
+            MetricalDuration(4,8),
+            MetricalDuration(8,8)
+        )
         
+        // Prepare search scope
+        let scope = PerformanceContext.Scope("P", "I")
+        
+        // Prepare search kinds
+        let kinds = ["pitch", "articulations"]
+        
+        // Prepare entity outside of scope, inside interval (1)
+        let intervalA = MetricalDurationInterval(MetricalDuration(4,8), MetricalDuration(5,8))
+        let contextA = PerformanceContext(Performer("P", [Instrument("J", [Voice(0)])]))
+        
+        // Prepare entity inside scope, outside of interval (1)
+        let intervalB = MetricalDurationInterval(MetricalDuration(1,8), MetricalDuration(2,8))
+        let contextB = PerformanceContext(Performer("P", [Instrument("I", [Voice(0)])]))
+        
+        // Prepare entity inside scope and interval (1)
+        let intervalC = MetricalDurationInterval(MetricalDuration(4,8), MetricalDuration(5,8))
+        let contextC = PerformanceContext(Performer("P", [Instrument("I", [Voice(0)])]))
+        
+        // Populate model
+        let model = Model()
+        model.addAttribute(1, kind: "pitch", interval: intervalA, context: contextA)
+        model.addAttribute(1, kind: "articulations", interval: intervalB, context: contextB)
+        
+        // matches scope, interval, and kind
+        model.addAttribute(1, kind: "dynamics", interval: intervalC, context: contextC)
+        
+        // matches scope, interval, and kind
+        model.addAttribute(1, kind: "pitch", interval: intervalC, context: contextC)
+        
+        XCTAssertEqual(
+            model.entities(in: searchInterval, performedBy: scope, including: kinds).count, 2
+        )
     }
 }
