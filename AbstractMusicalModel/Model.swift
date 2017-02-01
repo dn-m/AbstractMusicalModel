@@ -120,31 +120,41 @@ public final class Model {
 
     /// - returns: Identifiers of all `Entity` values held here that are contained within the
     /// given `interval` and `scope` values.
-    ///
-    /// - TODO: Attributes
     /// - TODO: Refine `scope` to `scopes`
     public func entities(
         in interval: MetricalDurationInterval,
         performedBy scope: PerformanceContext.Scope = PerformanceContext.Scope(),
         including kinds: [AttributionKind]? = nil
-    ) -> [Entity]
+    ) -> Set<Entity>
     {
-        
-        // TODO: Inject kinds
+        // If no `kinds` are specified, all possible are included
         let kinds = kinds ?? Array(attributions.keys)
-        let filtered = attributions.filter { kind, attribution in
-            kinds.contains(kind)
-        }
-
-        return contexts
-            .lazy
-            .filter { identifier, entity in entity.isContained(in: interval, scope) }
-            .map { $0.0 }
+        return entities(with: kinds) ∩ entities(in: interval, scope)
     }
     
-    private func entities(of kinds: [AttributionKind]) -> AttributionCollection<Any> {
-        return Dictionary(attributions.filter { kind, _ in kinds.contains(kind) })
+    private func entities(
+        in interval: MetricalDurationInterval,
+        _ scope: PerformanceContext.Scope = PerformanceContext.Scope()
+    ) -> Set<Entity>
+    {
+        return Set(
+            contexts
+                .filter { entity, context in context.isContained(in: interval, scope) }
+                .map { $0.0 }
+        )
     }
+    
+    private func entities(with kinds: [AttributionKind]) -> Set<Entity> {
+        return Set(
+            attributions
+                .filter { kind, _ in kinds.contains(kind) }
+                .flatMap { _, attribution in attribution.keys }
+        )
+    }
+
+//    private func entities(of kinds: [AttributionKind]) -> AttributionCollection<Any> {
+//        return Dictionary(attributions.filter { kind, _ in kinds.contains(kind) })
+//    }
     
     private func makeEntity() -> Entity {
         
@@ -173,4 +183,11 @@ extension Model.Context: Equatable {
     public static func == (lhs: Model.Context, rhs: Model.Context) -> Bool {
         return lhs.performanceContext == rhs.performanceContext && lhs.interval == rhs.interval
     }
+}
+
+
+// TODO: Move down to `Collections`
+infix operator ∩: AdditionPrecedence
+func ∩ <T> (a: Set<T>, b: Set<T>) -> Set<T> {
+    return a.intersection(b)
 }
