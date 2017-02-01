@@ -89,26 +89,44 @@ public final class Model {
     /// Create an empty `Model`.
     public init() { }
     
+    /// - returns: The context attribute for a given `Entity`, if present. Otherwise, `nil`.
+    public subscript (entity: Entity) -> (Context, Any)? {
+        
+        guard let context = contexts[entity] else {
+            return nil
+        }
+        
+        guard let attribute = attribute(entity: entity) else {
+            return nil
+        }
+        
+        return (context, attribute)
+    }
+    
     // MARK: - Instance Methods
     
     /// Add a generic `attribute`, of a given `kind`, within a given `context`.
     ///
-    /// - Parameters:
+    /// - parameters:
     ///   - attribute: Any type of attribute (`Pitch`, `Dynamic`, `Int`, etc)
     ///   - kind: Label for the `kind` of attribute ("pitch", "dynamic", "fingering", etc.)
     ///   - context: `Context` for this attribute (who and when)
     ///
+    /// - returns: `Entity` for the new attribute.
+    ///
     /// - TODO: Instead of applying an `Entity` to a `PerformanceContext`, consider applying
     /// it to a `Scope`.
+    @discardableResult
     public func put <Attribute> (
         _ attribute: Attribute,
         kind: AttributeKind = "?",
         context: Context = Context()
-    )
+    ) -> Entity
     {
         let entity = makeEntity()
         contexts[entity] = context
         try! attributions.update(attribute, keyPath: [kind, entity])
+        return entity
     }
     
     /// - returns: Identifiers of all `Entity` values held here that are contained within the
@@ -128,8 +146,25 @@ public final class Model {
     /// - returns: The `Context` with the given `identifier`, if it exists. Otherwise, `nil`.
     ///
     /// - TODO: Make this a subscript
-    public func context(identifier: Entity) -> Context? {
-        return contexts[identifier]
+    public func context(entity: Entity) -> Context? {
+        return contexts[entity]
+    }
+    
+    public func attribute(entity: Entity) -> Any? {
+        
+        return attributions.lazy
+            
+            // disregard `kind`
+            .flatMap { $0.1 }
+            
+            // pairs that match `entity`
+            .filter { e, _ in e == entity }
+            
+            // extract only the `attribute`
+            .map { $0.1 }
+            
+            // can only be one or zero results
+            .first
     }
     
     private func entities(

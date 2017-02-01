@@ -41,7 +41,7 @@ class ModelTests: XCTestCase {
         
         model.put(pitch, kind: "pitch", context: context)
 
-        let result = model.context(identifier: 0)!
+        let result = model.context(entity: 0)!
         let expected = context
         XCTAssertEqual(result, expected)
     }
