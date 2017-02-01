@@ -14,15 +14,6 @@ import Pitch
 
 class ModelTests: XCTestCase {
     
-    func testAddPitchAttribute() {
-        let model = Model()
-        model.put(Pitch(60), kind: "pitch")
-        XCTAssertEqual(model.contexts.count, 1)
-        XCTAssertEqual(model.attributions.count, 1)
-        XCTAssertNotNil(model.contexts[0])
-        XCTAssertEqual(model.attributions["pitch"]![0]! as! Pitch, 60)
-    }
-    
     func testAddPitchArrayAttribute() {
         let model = Model()
         let pitches: PitchSet = [60, 61, 62]
@@ -41,7 +32,7 @@ class ModelTests: XCTestCase {
         
         model.put(pitch, kind: "pitch", context: context)
 
-        let result = model.context(identifier: 0)!
+        let result = model.context(entity: 0)!
         let expected = context
         XCTAssertEqual(result, expected)
     }
@@ -127,19 +118,7 @@ class ModelTests: XCTestCase {
     
     func testEntitiesWithAttributeIdentifiers() {
         
-        // Prepare search interval
-        let searchInterval = MetricalDurationInterval(
-            MetricalDuration(4,8),
-            MetricalDuration(8,8)
-        )
-        
-        // Prepare search scope
-        let scope = PerformanceContext.Scope("P", "I")
-        
-        // Prepare search kinds
-        let kinds = ["pitch", "articulations"]
-        
-        // Prepare entity outside of scope, inside interval (1)
+        // Prepare context outside of scope, inside interval (1)
         let contextA = Model.Context(
             MetricalDurationInterval(MetricalDuration(4,8), MetricalDuration(5,8)),
             PerformanceContext(Performer("P", [Instrument("J", [Voice(0)])]))
@@ -159,22 +138,41 @@ class ModelTests: XCTestCase {
         
         // Populate model
         let model = Model()
+        
+        // matches kind but not context
         model.put(1, kind: "pitch", context: contextA)
+        
+        // matches kind but not context
         model.put(1, kind: "articulations", context: contextB)
         
-        // matches scope, interval, and kind
+        // matches all
         model.put(1, kind: "dynamics", context: contextC)
         
-        // matches scope, interval, and kind
+        // matches all
         model.put(1, kind: "pitch", context: contextC)
+        
+        // Prepare search interval
+        let searchInterval = MetricalDurationInterval(
+            MetricalDuration(4,8),
+            MetricalDuration(8,8)
+        )
+        
+        // Prepare search scope
+        let scope = PerformanceContext.Scope("P", "I")
+        
+        // Prepare search kinds
+        let kinds = ["pitch", "dynamics"]
         
         XCTAssertEqual(
             model.entities(in: searchInterval, performedBy: scope, including: kinds).count, 2
         )
     }
     
-    func testModelAddingPatchAndArticulation() {
+    func testSubscript() {
         let model = Model()
-        model.put(Pitch(60), kind: "pitch")
+        let entity = model.put(1, kind: "pitch")
+        XCTAssertEqual(entity, 0)
+        XCTAssertEqual(model[0]!.0 as! Int, 1)
+        XCTAssertEqual(model[0]!.1, Model.Context())
     }
 }
