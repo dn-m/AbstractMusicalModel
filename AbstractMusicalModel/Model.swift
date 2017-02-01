@@ -21,11 +21,11 @@ public final class Model {
     /// Mapping of an identifier of an `Entity` to a generic `Attribute`.
     public typealias Attribution <Attribute> = Dictionary<Entity, Attribute>
     
-    public typealias AttributionKind = String
+    public typealias AttributeKind = String
     
     /// Mapping of an identifier of an `Attribution` to an `Attribution`.
     public typealias AttributionCollection <Attribute> = Dictionary<
-        AttributionKind, Attribution<Attribute>
+        AttributeKind, Attribution<Attribute>
     >
     
     // MARK: - Nested Types
@@ -102,7 +102,7 @@ public final class Model {
     /// it to a `Scope`.
     public func put <Attribute> (
         _ attribute: Attribute,
-        kind: AttributionKind = "?",
+        kind: AttributeKind = "?",
         context: Context = Context()
     )
     {
@@ -111,25 +111,25 @@ public final class Model {
         try! attributions.update(attribute, keyPath: [kind, entity])
     }
     
-    /// - returns: The `Context` with the given `identifier`, if it exists. Otherwise, `nil`.
-    /// 
-    /// - TODO: Make this a subscript
-    public func context(identifier: Entity) -> Context? {
-        return contexts[identifier]
-    }
-
     /// - returns: Identifiers of all `Entity` values held here that are contained within the
     /// given `interval` and `scope` values.
     /// - TODO: Refine `scope` to `scopes`
     public func entities(
         in interval: MetricalDurationInterval,
         performedBy scope: PerformanceContext.Scope = PerformanceContext.Scope(),
-        including kinds: [AttributionKind]? = nil
+        including kinds: [AttributeKind]? = nil
     ) -> Set<Entity>
     {
         // If no `kinds` are specified, all possible are included
         let kinds = kinds ?? Array(attributions.keys)
         return entities(with: kinds) ∩ entities(in: interval, scope)
+    }
+    
+    /// - returns: The `Context` with the given `identifier`, if it exists. Otherwise, `nil`.
+    ///
+    /// - TODO: Make this a subscript
+    public func context(identifier: Entity) -> Context? {
+        return contexts[identifier]
     }
     
     private func entities(
@@ -144,17 +144,13 @@ public final class Model {
         )
     }
     
-    private func entities(with kinds: [AttributionKind]) -> Set<Entity> {
+    private func entities(with kinds: [AttributeKind]) -> Set<Entity> {
         return Set(
             attributions
                 .filter { kind, _ in kinds.contains(kind) }
                 .flatMap { _, attribution in attribution.keys }
         )
     }
-
-//    private func entities(of kinds: [AttributionKind]) -> AttributionCollection<Any> {
-//        return Dictionary(attributions.filter { kind, _ in kinds.contains(kind) })
-//    }
     
     private func makeEntity() -> Entity {
         
