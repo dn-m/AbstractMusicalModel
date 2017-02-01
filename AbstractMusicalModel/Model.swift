@@ -139,7 +139,7 @@ public final class Model {
     {
         return Set(
             contexts
-                .filter { entity, context in context.isContained(in: interval, scope) }
+                .filter { _, context in context.isContained(in: interval, scope) }
                 .map { $0.0 }
         )
     }
