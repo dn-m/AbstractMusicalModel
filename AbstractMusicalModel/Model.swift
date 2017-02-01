@@ -89,18 +89,20 @@ public final class Model {
     /// Create an empty `Model`.
     public init() { }
     
+    // MARK: - Subscripts
+    
     /// - returns: The context attribute for a given `Entity`, if present. Otherwise, `nil`.
-    public subscript (entity: Entity) -> (Context, Any)? {
-        
-        guard let context = contexts[entity] else {
-            return nil
-        }
+    public subscript (entity: Entity) -> (attribute: Any, context: Context)? {
         
         guard let attribute = attribute(entity: entity) else {
             return nil
         }
         
-        return (context, attribute)
+        guard let context = contexts[entity] else {
+            return nil
+        }
+        
+        return (attribute, context)
     }
     
     // MARK: - Instance Methods
@@ -131,6 +133,7 @@ public final class Model {
     
     /// - returns: Identifiers of all `Entity` values held here that are contained within the
     /// given `interval` and `scope` values.
+    ///
     /// - TODO: Refine `scope` to `scopes`
     public func entities(
         in interval: MetricalDurationInterval,

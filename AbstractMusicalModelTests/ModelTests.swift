@@ -176,4 +176,13 @@ class ModelTests: XCTestCase {
             model.entities(in: searchInterval, performedBy: scope, including: kinds).count, 2
         )
     }
+    
+    func testSubscript() {
+        let model = Model()
+        let entity = model.put(1, kind: "pitch")
+        XCTAssertEqual(entity, 0)
+        XCTAssertEqual(model[0]!.0 as! Int, 1)
+        XCTAssertEqual(model[0]!.1, Model.Context())
+        
+    }
 }
