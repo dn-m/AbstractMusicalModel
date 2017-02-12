@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		070CDF821E4BD06700562DD3 /* RhythmTreeExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070CDF811E4BD06700562DD3 /* RhythmTreeExtensions.swift */; };
+		070CDF831E4BD06700562DD3 /* RhythmTreeExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070CDF811E4BD06700562DD3 /* RhythmTreeExtensions.swift */; };
 		0749BEDC1E1EE7AE0024E0F1 /* PerformanceContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0749BEDB1E1EE7AE0024E0F1 /* PerformanceContext.swift */; };
 		0749BEDD1E1EE7AE0024E0F1 /* PerformanceContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0749BEDB1E1EE7AE0024E0F1 /* PerformanceContext.swift */; };
 		0749BEDF1E1EE92A0024E0F1 /* Performer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0749BEDE1E1EE92A0024E0F1 /* Performer.swift */; };
@@ -47,6 +49,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		070CDF811E4BD06700562DD3 /* RhythmTreeExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RhythmTreeExtensions.swift; path = AbstractMusicalModel/RhythmTreeExtensions.swift; sourceTree = "<group>"; };
 		0749BEDB1E1EE7AE0024E0F1 /* PerformanceContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PerformanceContext.swift; path = AbstractMusicalModel/PerformanceContext.swift; sourceTree = "<group>"; };
 		0749BEDE1E1EE92A0024E0F1 /* Performer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Performer.swift; path = AbstractMusicalModel/Performer.swift; sourceTree = "<group>"; };
 		0749BEE11E1EE94C0024E0F1 /* Instrument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Instrument.swift; path = AbstractMusicalModel/Instrument.swift; sourceTree = "<group>"; };
@@ -190,6 +193,7 @@
 			children = (
 				45B1A349ADA08AB9C03F07C4 /* Supporting Files */,
 				0749BEE81E1EF0940024E0F1 /* Model.swift */,
+				070CDF811E4BD06700562DD3 /* RhythmTreeExtensions.swift */,
 				0749BEE71E1EE9810024E0F1 /* PerformanceContext */,
 			);
 			name = AbstractMusicalModel;
@@ -341,7 +345,6 @@
 				"$(SRCROOT)/Carthage/Build/iOS/Articulations.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Collections.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Dynamics.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/IntervalTools.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Pitch.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Rhythm.framework",
 			);
@@ -361,7 +364,6 @@
 				"$(SRCROOT)/Carthage/Build/Mac/Articulations.framework",
 				"$(SRCROOT)/Carthage/Build/Mac/Collections.framework",
 				"$(SRCROOT)/Carthage/Build/Mac/Dynamics.framework",
-				"$(SRCROOT)/Carthage/Build/Mac/IntervalTools.framework",
 				"$(SRCROOT)/Carthage/Build/Mac/Pitch.framework",
 				"$(SRCROOT)/Carthage/Build/Mac/Rhythm.framework",
 			);
@@ -390,6 +392,7 @@
 				0749BEEA1E1EF0940024E0F1 /* Model.swift in Sources */,
 				0749BEDD1E1EE7AE0024E0F1 /* PerformanceContext.swift in Sources */,
 				0749BEE61E1EE96A0024E0F1 /* Voice.swift in Sources */,
+				070CDF831E4BD06700562DD3 /* RhythmTreeExtensions.swift in Sources */,
 				0749BEE31E1EE94C0024E0F1 /* Instrument.swift in Sources */,
 				0749BEE01E1EE92A0024E0F1 /* Performer.swift in Sources */,
 			);
@@ -411,6 +414,7 @@
 				0749BEE91E1EF0940024E0F1 /* Model.swift in Sources */,
 				0749BEDC1E1EE7AE0024E0F1 /* PerformanceContext.swift in Sources */,
 				0749BEE51E1EE96A0024E0F1 /* Voice.swift in Sources */,
+				070CDF821E4BD06700562DD3 /* RhythmTreeExtensions.swift in Sources */,
 				0749BEE21E1EE94C0024E0F1 /* Instrument.swift in Sources */,
 				0749BEDF1E1EE92A0024E0F1 /* Performer.swift in Sources */,
 			);
