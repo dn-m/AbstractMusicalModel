@@ -7,10 +7,10 @@
 //
 
 import XCTest
-import IntervalTools
+import ArithmeticTools
 import Rhythm
 import Pitch
-@testable import AbstractMusicalModel
+import AbstractMusicalModel
 
 class ModelTests: XCTestCase {
     
@@ -26,7 +26,7 @@ class ModelTests: XCTestCase {
         let pitch: Pitch = 60
         
         let context = Model.Context(
-            MetricalDurationInterval(.zero, .zero),
+            .zero ... .zero,
             PerformanceContext(Performer("P", [Instrument("I", [Voice(0)])]))
         )
         
@@ -49,16 +49,11 @@ class ModelTests: XCTestCase {
         let model = Model()
         let pitch: Pitch = 60
         
-        let context = Model.Context(
-            MetricalDurationInterval(MetricalDuration(1,8), MetricalDuration(2,8))
-        )
+        let context = Model.Context(1/>8 ... 2/>8)
 
         model.put(pitch, kind: "pitch", context: context)
         
-        let searchInterval = MetricalDurationInterval(
-            MetricalDuration(3,8),
-            MetricalDuration(4,8)
-        )
+        let searchInterval = 3/>8 ... 4/>8
         
         XCTAssertEqual(model.entities(in: searchInterval).count, 0)
     }
@@ -66,14 +61,11 @@ class ModelTests: XCTestCase {
     func testSingleEntityEqualToInterval() {
         let model = Model()
         let pitch: Pitch = 60
-        let interval = MetricalDurationInterval(MetricalDuration(1,8), MetricalDuration(3,16))
+        let interval = 1/>8 ... 3/>16
         let context = Model.Context(interval)
         model.put(pitch, kind: "pitch", context: context)
         
-        let searchInterval = MetricalDurationInterval(
-            MetricalDuration(1,8),
-            MetricalDuration(3,16)
-        )
+        let searchInterval = 1/>8 ... 3/>16
         
         XCTAssertEqual(model.entities(in: searchInterval).count, 1)
     }
@@ -81,29 +73,26 @@ class ModelTests: XCTestCase {
     func testMultipleEntitiesContainedWithinScopeAndInterval() {
         
         // Prepare search interval
-        let searchInterval = MetricalDurationInterval(
-            MetricalDuration(4,8),
-            MetricalDuration(8,8)
-        )
+        let searchInterval = 4/>8 ... 8/>8
         
         // Prepare search scopre
         let scope = PerformanceContext.Scope("P", "I")
         
         // Prepare entity outside of scope, inside interval (1)
         let contextA = Model.Context(
-            MetricalDurationInterval(MetricalDuration(4,8), MetricalDuration(5,8)),
+            4/>8 ... 5/>8,
             PerformanceContext(Performer("P", [Instrument("J", [Voice(0)])]))
         )
         
         // Prepare entity inside scope, outside of interval (1)
         let contextB = Model.Context(
-            MetricalDurationInterval(MetricalDuration(1,8), MetricalDuration(2,8)),
+            1/>8 ... 2/>8,
             PerformanceContext(Performer("P", [Instrument("I", [Voice(0)])]))
         )
         
         // Prepare entity inside of scope and interval (1)
         let contextC = Model.Context (
-            MetricalDurationInterval(MetricalDuration(4,8), MetricalDuration(5,8)),
+            4/>8 ... 5/>8,
             PerformanceContext(Performer("P", [Instrument("I", [Voice(0)])]))
         )
         
@@ -120,19 +109,19 @@ class ModelTests: XCTestCase {
         
         // Prepare context outside of scope, inside interval (1)
         let contextA = Model.Context(
-            MetricalDurationInterval(MetricalDuration(4,8), MetricalDuration(5,8)),
+            4/>8 ... 5/>8,
             PerformanceContext(Performer("P", [Instrument("J", [Voice(0)])]))
         )
         
         // Prepare entity inside scope, outside of interval (1)
         let contextB = Model.Context(
-            MetricalDurationInterval(MetricalDuration(1,8), MetricalDuration(2,8)),
+            1/>8 ... 2/>8,
             PerformanceContext(Performer("P", [Instrument("I", [Voice(0)])]))
         )
         
         // Prepare entity inside of scope and interval (1)
         let contextC = Model.Context (
-            MetricalDurationInterval(MetricalDuration(4,8), MetricalDuration(5,8)),
+            4/>8 ... 5/>8,
             PerformanceContext(Performer("P", [Instrument("I", [Voice(0)])]))
         )
         
@@ -152,10 +141,7 @@ class ModelTests: XCTestCase {
         model.put(1, kind: "pitch", context: contextC)
         
         // Prepare search interval
-        let searchInterval = MetricalDurationInterval(
-            MetricalDuration(4,8),
-            MetricalDuration(8,8)
-        )
+        let searchInterval = 4/>8 ... 8/>8
         
         // Prepare search scope
         let scope = PerformanceContext.Scope("P", "I")
@@ -174,5 +160,27 @@ class ModelTests: XCTestCase {
         XCTAssertEqual(entity, 0)
         XCTAssertEqual(model[0]!.0 as! Int, 1)
         XCTAssertEqual(model[0]!.1, Model.Context())
+    }
+    
+    func testAddRhythm() {
+        
+        let model = Model()
+        
+        let events: [[(String, Any)]] = [
+            [("pitch", 60)],
+            [("pitch", 61)],
+            [("pitch", 62)],
+            [("pitch", 63)]
+        ]
+        
+        let rt = RhythmTree<Int>(
+            3/>16 * [1,2,3,1],
+            [
+                .instance(.event(0)),
+                .instance(.event(0)),
+                .instance(.event(0)),
+                .instance(.event(0))
+            ]
+        )
     }
 }

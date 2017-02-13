@@ -1,4 +1,4 @@
-github "dn-m/Pitch"
+github "dn-m/Pitch" >= 0.8
 github "dn-m/Rhythm"
 github "dn-m/Dynamics"
 github "dn-m/Articulations"

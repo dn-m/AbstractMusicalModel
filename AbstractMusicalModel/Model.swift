@@ -7,7 +7,7 @@
 //
 
 import Collections
-import IntervalTools
+import ArithmeticTools
 import Rhythm
 
 /// The database of musical information contained in a single musical _work_.
@@ -32,7 +32,7 @@ import Rhythm
 /// let instrument = Instrument("Violin")
 /// let performer = Performer("Pat", [instrument])
 /// let performanceContext = PerformanceContext(performer)
-/// let interval = MetricalDurationInterval(MetricalDuration(1,8), MetricalDuration(2,8))
+/// let interval = ClosedRange<MetricalDuration>(MetricalDuration(1,8), MetricalDuration(2,8))
 /// let context = Model.Context(interval, performanceContext)
 /// ```
 ///
@@ -50,6 +50,8 @@ public final class Model {
     
     /// Type used to group classes of attributes ("pitch", "dynamics", "rhythm", etc.)
     public typealias AttributeKind = String
+    
+    public typealias Event = [Entity]
     
     /// Mapping of an identifier of an `Entity` to a generic `Attribute`.
     fileprivate typealias Attribution <Attribute> = Dictionary<Entity, Attribute>
@@ -70,13 +72,13 @@ public final class Model {
         public let performanceContext: PerformanceContext
         
         /// Durational context.
-        public let interval: MetricalDurationInterval
+        public let interval: ClosedRange<MetricalDuration>
         
         // MARK: - Initializers
         
         /// Create a `Context` with a `performanceContext` and `interval`.
         public init(
-            _ interval: MetricalDurationInterval = MetricalDurationInterval(.zero, .zero),
+            _ interval: ClosedRange<MetricalDuration> = .zero ... .zero,
             _ performanceContext: PerformanceContext = PerformanceContext()
         )
         {
@@ -89,7 +91,7 @@ public final class Model {
         /// - returns: `true` if an `Entity` is contained both within the given `interval` and
         /// the given `scope`. Otherwise, `false`.
         public func isContained(
-            in interval: MetricalDurationInterval,
+            in interval: ClosedRange<MetricalDuration>,
             _ scope: PerformanceContext.Scope = PerformanceContext.Scope()
         ) -> Bool
         {
@@ -100,9 +102,9 @@ public final class Model {
             return scope.contains(performanceContext)
         }
         
-        private func isContained(in interval: MetricalDurationInterval) -> Bool {
-            let allowed: Relationship = [.equals, .contains, .startedBy, .finishedBy]
-            return allowed.contains(interval.relationship(with: self.interval))
+        private func isContained(in interval: ClosedRange<MetricalDuration>) -> Bool {
+            let allowed: IntervalRelation = [.equals, .contains, .startedBy, .finishedBy]
+            return allowed.contains(interval.relation(with: self.interval))
         }
     }
     
@@ -114,9 +116,12 @@ public final class Model {
     /// - TODO: Make `private` / `fileprivate`
     fileprivate var contexts: [Entity: Context] = [:]
     
-    /// [AttributeID: [EntityID: Attribute]]
+    /// `[AttributeKind: [Entity: Attribute]]`
     fileprivate var attributions: AttributionCollection <Any> = [:]
-
+    
+    /// `[Entity: [Entity]]`
+    fileprivate var events: [Entity: Event] = [:]
+    
     // MARK: - Initializers
     
     /// Create an empty `Model`.
@@ -136,6 +141,16 @@ public final class Model {
         }
         
         return (attribute, context)
+    }
+
+    /// - TODO:
+    ///
+    /// - Make entity for rhythm
+    /// - Make entity for each event
+    /// - Make entity for each element in each event
+    ///
+    public func put(values: [[(String, Any)]], rhythmTree: RhythmTree<Int>) {
+        fatalError()
     }
     
     /// Add a generic `attribute`, of a given `kind`, within a given `context`.
@@ -163,7 +178,7 @@ public final class Model {
     ///
     /// - TODO: Refine `scope` to `scopes`
     public func entities(
-        in interval: MetricalDurationInterval,
+        in interval: ClosedRange<MetricalDuration>,
         performedBy scope: PerformanceContext.Scope = PerformanceContext.Scope(),
         including kinds: [AttributeKind]? = nil
     ) -> Set<Entity>
@@ -199,7 +214,7 @@ public final class Model {
     }
     
     private func entities(
-        in interval: MetricalDurationInterval,
+        in interval: ClosedRange<MetricalDuration>,
         _ scope: PerformanceContext.Scope = PerformanceContext.Scope()
     ) -> Set<Entity>
     {

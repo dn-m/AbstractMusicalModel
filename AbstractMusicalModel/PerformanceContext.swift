@@ -18,7 +18,7 @@ public struct PerformanceContext {
         /// `Performer.Identifier`
         public let performer: Performer.Identifier
         
-        /// `Instrument.Identifier`
+        /// `Instrugiment.Identifier`
         public let instrument: Instrument.Identifier
         
         /// `Voice.Identifier`
