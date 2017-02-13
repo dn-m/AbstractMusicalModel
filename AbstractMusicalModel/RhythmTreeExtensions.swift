@@ -11,9 +11,6 @@ import Rhythm
 extension RhythmTree {
     
     public func attaching(_ events: [Model.Event]) throws -> RhythmTree {
-        
-        // 
-        
-        return self
+        fatalError()
     }
 }

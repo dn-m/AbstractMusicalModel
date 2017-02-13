@@ -142,19 +142,15 @@ public final class Model {
         
         return (attribute, context)
     }
-    
+
+    /// - TODO:
+    ///
+    /// - Make entity for rhythm
+    /// - Make entity for each event
+    /// - Make entity for each element in each event
+    ///
     public func put(values: [[(String, Any)]], rhythmTree: RhythmTree<Int>) {
-        
-        // make entity for rhythm
-        // make entity for each event
-        // make entity for each element in each event
-        
-        
-        //var events: [Int: [(String, Any)]] = [:]
-        let ids = values.map { _ in makeEntity() }
-        let events = Dictionary(values.map { _ in makeEntity() }, values)
-        
-        print(events)
+        fatalError()
     }
     
     /// Add a generic `attribute`, of a given `kind`, within a given `context`.
