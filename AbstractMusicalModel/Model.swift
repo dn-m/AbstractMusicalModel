@@ -122,9 +122,6 @@ public final class Model {
     /// `[Entity: [Entity]]`
     fileprivate var events: [Entity: Event] = [:]
     
-    
-    //fileprivate var rhythms: [RhythmTree] = []
-
     // MARK: - Initializers
     
     /// Create an empty `Model`.
@@ -144,6 +141,20 @@ public final class Model {
         }
         
         return (attribute, context)
+    }
+    
+    public func put(values: [[(String, Any)]], rhythmTree: RhythmTree<Int>) {
+        
+        // make entity for rhythm
+        // make entity for each event
+        // make entity for each element in each event
+        
+        
+        //var events: [Int: [(String, Any)]] = [:]
+        let ids = values.map { _ in makeEntity() }
+        let events = Dictionary(values.map { _ in makeEntity() }, values)
+        
+        print(events)
     }
     
     /// Add a generic `attribute`, of a given `kind`, within a given `context`.

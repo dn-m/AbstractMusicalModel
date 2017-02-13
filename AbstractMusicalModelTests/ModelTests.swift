@@ -166,6 +166,37 @@ class ModelTests: XCTestCase {
         
         let model = Model()
         
+        typealias Event = [(String, Any)]
         
+        // first, generate ids
+        // then, map them to the leaves in a rhythm tree
+        
+        // rhythm tree metrical contexts (events(T)) only hold reference to entities that
+        // define the end point ?
+        
+        let events: [[(String, Any)]] = [
+            [("pitch", 60)],
+            [("pitch", 61)],
+            [("pitch", 62)],
+            [("pitch", 63)]
+        ]
+        
+        let rt = RhythmTree<Int>(
+            3/>16 * [1,2,3,1],
+            [
+                .instance(.event(0)),
+                .instance(.event(0)),
+                .instance(.event(0)),
+                .instance(.event(0))
+            ]
+        )
+        
+        model.put(values: events, rhythmTree: rt)
+        
+        // model.put(events: [])
+        
+        // [(Entity, ClosedRange<MetricalDuration>)]
+        
+        print(rt)
     }
 }

@@ -171,8 +171,8 @@
 			isa = PBXGroup;
 			children = (
 				0749BEF11E1EF40C0024E0F1 /* ModelTests.swift */,
-				60EEAFA063AD3DF51715FA33 /* Supporting Files */,
 				07C5A9581E3BD57300167870 /* PerformanceContextTests.swift */,
+				60EEAFA063AD3DF51715FA33 /* Supporting Files */,
 			);
 			name = AbstractMusicalModelTests;
 			sourceTree = "<group>";
