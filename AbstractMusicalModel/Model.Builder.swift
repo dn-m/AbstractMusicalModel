@@ -13,6 +13,34 @@ import Pitch
 
 extension Model {
     
+    /// ## Creating a `Model` with a `Model.Builder`.
+    ///
+    /// The `AbstractMusicalModel` is a static database, containing the musical information of 
+    /// a single _work_. In order to create an `AbstractMusicalModel`, we can use a `Builder`,
+    /// which decouples the construction process of the model from the completed structure.
+    ///
+    /// First, create a `Builder`:
+    ///
+    ///     let builder = Model.Builder()
+    ///
+    /// Then, we can put things in it:
+    ///
+    ///     // Create a middle-c, to be played by "Pat" on the "Violin", starting on the
+    ///     // second quarter-note of the piece, and will last for a single quarter-note.
+    ///     let pitch = Pitch(60) // middle c
+    ///     let instrument = Instrument("Violin")
+    ///     let performer = Performer("Pat", [instrument])
+    ///     let performanceContext = PerformanceContext(performer)
+    ///     let interval = 1/>4...2/>4
+    ///     let context = Model.Context(interval, performanceContext)
+    ///
+    ///     // Now, we can ask the `Builder` to add it:
+    ///     builder.add(pitch, kind: "pitch", in: context)
+    ///
+    /// Lastly, we can ask for the `AbstractMusicModel` in completed form:
+    ///
+    ///     let model = builder.build()
+    ///
     public class Builder {
         
         internal private(set) var entity: Entity = 0

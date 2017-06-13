@@ -11,36 +11,6 @@ import ArithmeticTools
 import Rhythm
 
 /// The database of musical information contained in a single musical _work_.
-///
-/// **Creating an empty `Model`:**
-///
-/// ```
-/// let model = Model()
-/// ```
-///
-/// ## Adding a new attribute to the model
-///
-/// ### Create a `Pitch` attribute
-///
-/// ```
-/// let pitch = Pitch(60)
-/// ```
-///
-/// ### Create the `Context` that will enact this `Pitch` value
-///
-/// ```
-/// let instrument = Instrument("Violin")
-/// let performer = Performer("Pat", [instrument])
-/// let performanceContext = PerformanceContext(performer)
-/// let interval = ClosedRange<MetricalDuration>(MetricalDuration(1,8), MetricalDuration(2,8))
-/// let context = Model.Context(interval, performanceContext)
-/// ```
-///
-/// ### Add the `Pitch` value, with the `context` created above
-///
-/// ```
-/// model.put(pitch, kind: "pitch", context: context)
-/// ```
 public final class Model {
     
     // MARK: - Associated Types
