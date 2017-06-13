@@ -54,12 +54,11 @@ public final class Model {
     public typealias Event = [Entity]
     
     /// Mapping of an identifier of an `Entity` to a generic `Attribute`.
-    fileprivate typealias Attribution <Attribute> = Dictionary<Entity, Attribute>
+    public typealias Attribution <Attribute> = Dictionary<Entity, Attribute>
     
     /// Mapping of an identifier of an `Attribution` to an `Attribution`.
-    fileprivate typealias AttributionCollection <Attribute> = Dictionary<
-        AttributeKind, Attribution<Attribute>
-    >
+    public typealias AttributionCollection <Attribute> =
+        Dictionary<AttributeKind, Attribution<Attribute>>
     
     // MARK: - Nested Types
     
@@ -111,24 +110,42 @@ public final class Model {
     // MARK: - Instance Properties
     
     internal private(set) var entity: Entity = 0
+
+    /// `[AttributeKind: [Entity: Attribute]]`
+    fileprivate let attributions: AttributionCollection<Any>
+    
+    /// `[Entity: [Entity]]`
+    fileprivate let events: [Entity: Event]
     
     // `Entity` values stored by a unique identifier.
     /// - TODO: Make `private` / `fileprivate`
-    fileprivate var contexts: [Entity: Context] = [:]
+    fileprivate let contexts: [Entity: Context]
     
-    /// `[AttributeKind: [Entity: Attribute]]`
-    fileprivate var attributions: AttributionCollection <Any> = [:]
-    
-    /// `[Entity: [Entity]]`
-    fileprivate var events: [Entity: Event] = [:]
+    /// `Meter.Structure` overlay.
+    ///
+    /// - TODO: Implement `TemporalStructure` enum (`Meter.Structure` / `Seconds` / etc.)
+    /// - TODO: Refactor this into `temporalStructures: [TemporalStructure]`
+    fileprivate var meterStructure: Meter.Structure?
     
     // MARK: - Initializers
     
-    /// Create an empty `Model`.
-    public init() { }
+    /// Creates a `Model` with the given `attributesion` and `meterStructure`, if there is one.
+    public init(
+        attributions: AttributionCollection<Any>,
+        events: [Entity: Event],
+        contexts: [Entity: Context],
+        meterStructure: Meter.Structure? = nil
+    )
+    {
+        self.attributions = attributions
+        self.events = events
+        self.contexts = contexts
+        self.meterStructure = meterStructure
+    }
 
     // MARK: - Instance Methods
     
+    // Query
     /// - returns: The context attribute for a given `Entity`, if present. Otherwise, `nil`.
     public subscript (entity: Entity) -> (attribute: Any, context: Context)? {
         
@@ -142,37 +159,8 @@ public final class Model {
         
         return (attribute, context)
     }
-
-    /// - TODO:
-    ///
-    /// - Make entity for rhythm
-    /// - Make entity for each event
-    /// - Make entity for each element in each event
-    ///
-    public func put(values: [[(String, Any)]], rhythmTree: RhythmTree<Int>) {
-        fatalError()
-    }
     
-    /// Add a generic `attribute`, of a given `kind`, within a given `context`.
-    ///
-    /// - parameters:
-    ///   - attribute: Any type of attribute (`Pitch`, `Dynamic`, `Int`, etc)
-    ///   - kind: Label for the `kind` of attribute ("pitch", "dynamic", "fingering", etc.)
-    ///   - context: `Context` for this attribute (who and when)
-    ///
-    /// - returns: `Entity` for the new attribute.
-    @discardableResult public func put <Attribute> (
-        _ attribute: Attribute,
-        kind: AttributeKind = "?",
-        context: Context = Context()
-    ) -> Entity
-    {
-        let entity = makeEntity()
-        contexts[entity] = context
-        try! attributions.update(attribute, keyPath: [kind, entity])
-        return entity
-    }
-    
+    // Query
     /// - returns: Identifiers of all `Entity` values held here that are contained within the
     /// given `interval` and `scope` values.
     ///
@@ -188,6 +176,7 @@ public final class Model {
         return entities(with: kinds) ∩ entities(in: interval, scope)
     }
     
+    // Query
     /// - returns: The `Context` with the given `entity`, if it exists. Otherwise, `nil`.
     ///
     /// - TODO: Make this a subscript
@@ -195,6 +184,7 @@ public final class Model {
         return contexts[entity]
     }
     
+    // Query
     /// - returns: The attribute for the given `entity`, if it exists. Otherwise, `nil`.
     public func attribute(entity: Entity) -> Any? {
         
@@ -213,6 +203,7 @@ public final class Model {
             .first
     }
     
+    // Query
     private func entities(
         in interval: ClosedRange<MetricalDuration>,
         _ scope: PerformanceContext.Scope = PerformanceContext.Scope()
@@ -225,21 +216,13 @@ public final class Model {
         )
     }
     
+    // Query
     private func entities(with kinds: [AttributeKind]) -> Set<Entity> {
         return Set(
             attributions
                 .filter { kind, _ in kinds.contains(kind) }
                 .flatMap { _, attribution in attribution.keys }
         )
-    }
-    
-    private func makeEntity() -> Entity {
-        
-        defer {
-            entity += 1
-        }
-        
-        return entity
     }
 }
 
@@ -249,7 +232,7 @@ extension Model: CustomStringConvertible {
     
     /// Printed description.
     public var description: String {
-        return "\(attributions)"
+        return "\(meterStructure)\n\(attributions)"
     }
 }
 
@@ -261,7 +244,6 @@ extension Model.Context: Equatable {
         return lhs.performanceContext == rhs.performanceContext && lhs.interval == rhs.interval
     }
 }
-
 
 // TODO: Move down to `Collections`
 infix operator ∩: AdditionPrecedence

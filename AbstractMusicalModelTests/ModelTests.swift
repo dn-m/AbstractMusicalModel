@@ -15,14 +15,15 @@ import AbstractMusicalModel
 class ModelTests: XCTestCase {
     
     func testAddPitchArrayAttribute() {
-        let model = Model()
+        let builder = Model.Builder()
         let pitches: PitchSet = [60, 61, 62]
-        model.put(pitches, kind: "pitch")
+        builder.add(pitches, kind: "pitch")
+        let model = builder.build()
     }
     
     func testEntitySubscript() {
         
-        let model = Model()
+        let builder = Model.Builder()
         let pitch: Pitch = 60
         
         let context = Model.Context(
@@ -30,7 +31,9 @@ class ModelTests: XCTestCase {
             PerformanceContext(Performer("P", [Instrument("I", [Voice(0)])]))
         )
         
-        model.put(pitch, kind: "pitch", context: context)
+        builder.add(pitch, kind: "pitch", in: context)
+        let model = builder.build()
+        //model.put(pitch, kind: "pitch", context: context)
 
         let result = model.context(entity: 0)!
         let expected = context
@@ -39,34 +42,34 @@ class ModelTests: XCTestCase {
     
     func testCustomStringConvertible() {
         let pitches: [Pitch] = [60,61,62,63,65,66,67,68,69,70,71,72]
-        let model = Model()
-        pitches.forEach { model.put($0, kind: "pitch") }
+        let builder = Model.Builder()
+        pitches.forEach { builder.add($0, kind: "pitch") }
+        let model = builder.build()
         print("model:\n\(model)")
     }
     
     func testSingleEntityNotInInterval() {
         
-        let model = Model()
+        let builder = Model.Builder()
         let pitch: Pitch = 60
-        
         let context = Model.Context(1/>8 ... 2/>8)
-
-        model.put(pitch, kind: "pitch", context: context)
+        builder.add(pitch, kind: "pitch", in: context)
+        let model = builder.build()
         
         let searchInterval = 3/>8 ... 4/>8
-        
         XCTAssertEqual(model.entities(in: searchInterval).count, 0)
     }
     
     func testSingleEntityEqualToInterval() {
-        let model = Model()
+        
+        let builder = Model.Builder()
         let pitch: Pitch = 60
         let interval = 1/>8 ... 3/>16
         let context = Model.Context(interval)
-        model.put(pitch, kind: "pitch", context: context)
+        builder.add(pitch, kind: "pitch", in: context)
+        let model = builder.build()
         
         let searchInterval = 1/>8 ... 3/>16
-        
         XCTAssertEqual(model.entities(in: searchInterval).count, 1)
     }
     
@@ -97,10 +100,11 @@ class ModelTests: XCTestCase {
         )
         
         // Populate model
-        let model = Model()
-        model.put(1, kind: "pitch", context: contextA)
-        model.put(1, kind: "pitch", context: contextB)
-        model.put(1, kind: "pitch", context: contextC)
+        let builder = Model.Builder()
+        builder.add(1, kind: "pitch", in: contextA)
+        builder.add(1, kind: "pitch", in: contextB)
+        builder.add(1, kind: "pitch", in: contextC)
+        let model = builder.build()
 
         XCTAssertEqual(model.entities(in: searchInterval, performedBy: scope).count, 1)
     }
@@ -126,19 +130,21 @@ class ModelTests: XCTestCase {
         )
         
         // Populate model
-        let model = Model()
+        let builder = Model.Builder()
         
         // matches kind but not context
-        model.put(1, kind: "pitch", context: contextA)
+        builder.add(1, kind: "pitch", in: contextA)
         
         // matches kind but not context
-        model.put(1, kind: "articulations", context: contextB)
+        builder.add(1, kind: "articulations", in: contextB)
         
         // matches all
-        model.put(1, kind: "dynamics", context: contextC)
+        builder.add(1, kind: "dynamics", in: contextC)
         
         // matches all
-        model.put(1, kind: "pitch", context: contextC)
+        builder.add(1, kind: "pitch", in: contextC)
+        
+        let model = builder.build()
         
         // Prepare search interval
         let searchInterval = 4/>8 ... 8/>8
@@ -155,17 +161,18 @@ class ModelTests: XCTestCase {
     }
     
     func testSubscript() {
-        let model = Model()
-        let entity = model.put(1, kind: "pitch")
+        
+        let builder = Model.Builder()
+        let entity = builder.add(1, kind: "pitch")
+        let model = builder.build()
+        
         XCTAssertEqual(entity, 0)
         XCTAssertEqual(model[0]!.0 as! Int, 1)
         XCTAssertEqual(model[0]!.1, Model.Context())
     }
     
     func testAddRhythm() {
-        
-        let model = Model()
-        
+
         let events: [[(String, Any)]] = [
             [("pitch", 60)],
             [("pitch", 61)],
@@ -182,5 +189,24 @@ class ModelTests: XCTestCase {
                 .instance(.event(0))
             ]
         )
+        
+        // TODO: Assert something!
+    }
+    
+    func testAddMeterStructure() {
+
+        let builder = Model.Builder()
+        
+        for meter in [Meter(4,4), Meter(3,8), Meter(5,16), Meter(29,64), Meter(3,2)] {
+            builder.add(meter)
+        }
+
+        builder.add(Tempo(90), at: 0/>4)
+        builder.add(Tempo(60), at: 4/>4, interpolating: true)
+        builder.add(Tempo(120), at: 24/>4, interpolating: false)
+        
+        let model = builder.build()
+        
+        // TODO: Assert something!
     }
 }
