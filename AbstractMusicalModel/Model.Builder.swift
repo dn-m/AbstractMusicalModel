@@ -133,7 +133,7 @@ extension Model {
                 
                 for eventEntity in rhythm.events {
                     
-                    guard let attribute = attributes.first else {
+                    guard !attributes.isEmpty else {
                         fatalError("Not enough attributes")
                     }
                     
