@@ -1,3 +1,4 @@
+github "dn-m/Collections"
 github "dn-m/Pitch" >= 0.8
 github "dn-m/Rhythm"
 github "dn-m/Dynamics"

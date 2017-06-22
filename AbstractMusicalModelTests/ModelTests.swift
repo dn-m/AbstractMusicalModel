@@ -162,23 +162,23 @@ class ModelTests: XCTestCase {
     
     func testSubscript() {
         
-        let builder = Model.Builder()
-        let entity = builder.add(1, kind: "pitch")
-        let model = builder.build()
-        
-        XCTAssertEqual(entity, 0)
-        XCTAssertEqual(model[0]!.0 as! Int, 1)
-        XCTAssertEqual(model[0]!.1, Model.Context())
+//        let builder = Model.Builder()
+//        let entity = builder.add(1, kind: "pitch")
+//        let model = builder.build()
+//        
+//        XCTAssertEqual(entity, 0)
+//        XCTAssertEqual(model[0]!.0 as! Int, 1)
+//        XCTAssertEqual(model[0]!.1, Model.Context())
     }
     
     func testAddRhythm() {
 
-        let events: [[(String, Any)]] = [
-            [("pitch", 60)],
-            [("pitch", 61)],
-            [("pitch", 62)],
-            [("pitch", 63)]
-        ]
+//        let events: [[(String, Any)]] = [
+//            [("pitch", 60)],
+//            [("pitch", 61)],
+//            [("pitch", 62)],
+//            [("pitch", 63)]
+//        ]
         
         let rt = RhythmTree<Int>(
             3/>16 * [1,2,3,1],
@@ -189,6 +189,11 @@ class ModelTests: XCTestCase {
                 .instance(.event(0))
             ]
         )
+        
+        let builder = Model.builder
+            .add(rt)
+        
+        print(builder)
         
         // TODO: Assert something!
     }

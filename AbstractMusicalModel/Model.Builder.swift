@@ -50,14 +50,14 @@ extension Model {
         private var contexts: [Entity: Context] = [:]
         
         /// `[AttributeKind: [Entity: Attribute]]`
-        private var attributions: AttributionCollection <Any> = [:]
+        internal var attributions: AttributionCollection <Any> = [:]
         
         /// `[Entity: [Entity]]`
-        private var events: [Entity: Event] = [:]
+        internal var events: [Entity: Event] = [:]
         
-        private let tempoStratumBuilder = Tempo.Stratum.Builder()
+        internal let tempoStratumBuilder = Tempo.Stratum.Builder()
         
-        private var meters: [Meter] = []
+        internal var meters: [Meter] = []
         
         public init() { }
         
@@ -67,13 +67,30 @@ extension Model {
             _ tempo: Tempo,
             at offset: MetricalDuration,
             interpolating: Bool = false
-        )
+        ) -> Builder
         {
             tempoStratumBuilder.add(tempo, at: offset, interpolating: interpolating)
+            return self
         }
         
-        public func add(_ meter: Meter) {
+        public func add(_ rhythmTree: RhythmTree<Int>) -> Builder {
+            
+            // 1. Make entity for whole rhythm
+            let rhythmEntity = makeEntity()
+            
+            // 2. Make entities for each leaf
+            rhythmTree.tree.leaves.map { _ in makeEntity() }
+            
+            
+            
+            
+            try! attributions.update(rhythmTree, keyPath: ["rhythm", rhythmEntity])
+            return self
+        }
+        
+        public func add(_ meter: Meter) -> Builder {
             meters.append(meter)
+            return self
         }
         
         /// Add a generic `attribute`, of a given `kind`, within a given `context`.
@@ -88,12 +105,12 @@ extension Model {
             _ attribute: Attribute,
             kind: AttributeKind = "?",
             in context: Context = Context()
-        ) -> Entity
+        ) -> Builder
         {
             let entity = makeEntity()
             contexts[entity] = context
             try! attributions.update(attribute, keyPath: [kind, entity])
-            return entity
+            return self
         }
         
         public func build() -> Model {
@@ -117,5 +134,16 @@ extension Model {
             
             return entity
         }
+    }
+    
+    public static var builder: Builder {
+        return Builder()
+    }
+}
+
+extension Model.Builder: CustomStringConvertible {
+    
+    public var description: String {
+        return "\(attributions)"
     }
 }
