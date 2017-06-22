@@ -115,7 +115,6 @@ public final class Model {
 
     // MARK: - Instance Methods
     
-    // Query
     /// - returns: The context attribute for a given `Entity`, if present. Otherwise, `nil`.
     public subscript (entity: Entity) -> (attribute: Any, context: Context)? {
         
@@ -130,7 +129,6 @@ public final class Model {
         return (attribute, context)
     }
     
-    // Query
     /// - returns: Identifiers of all `Entity` values held here that are contained within the
     /// given `interval` and `scope` values.
     ///
@@ -146,7 +144,6 @@ public final class Model {
         return entities(with: kinds) ∩ entities(in: interval, scope)
     }
     
-    // Query
     /// - returns: The `Context` with the given `entity`, if it exists. Otherwise, `nil`.
     ///
     /// - TODO: Make this a subscript
@@ -154,7 +151,6 @@ public final class Model {
         return contexts[entity]
     }
     
-    // Query
     /// - returns: The attribute for the given `entity`, if it exists. Otherwise, `nil`.
     public func attribute(entity: Entity) -> Any? {
         
@@ -173,7 +169,6 @@ public final class Model {
             .first
     }
     
-    // Query
     private func entities(
         in interval: ClosedRange<MetricalDuration>,
         _ scope: PerformanceContext.Scope = PerformanceContext.Scope()
@@ -186,7 +181,6 @@ public final class Model {
         )
     }
     
-    // Query
     private func entities(with kinds: [AttributeKind]) -> Set<Entity> {
         return Set(
             attributions

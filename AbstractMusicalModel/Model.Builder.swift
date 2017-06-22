@@ -76,7 +76,6 @@ extension Model {
             meters.append(meter)
         }
         
-        // Creation
         /// Add a generic `attribute`, of a given `kind`, within a given `context`.
         ///
         /// - parameters:
@@ -110,7 +109,6 @@ extension Model {
             )
         }
         
-        // Creation
         private func makeEntity() -> Entity {
             
             defer {
