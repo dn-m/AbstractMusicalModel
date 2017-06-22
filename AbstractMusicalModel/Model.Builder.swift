@@ -11,6 +11,17 @@ import ArithmeticTools
 import Rhythm
 import Pitch
 
+public struct NamedAttribute {
+    
+    let name: String
+    let attribute: Any
+    
+    public init(_ attribute: Any, name: String) {
+        self.attribute = attribute
+        self.name = name
+    }
+}
+
 extension Model {
     
     /// ## Creating a `Model` with a `Model.Builder`.
@@ -59,11 +70,18 @@ extension Model {
         
         internal var meters: [Meter] = []
         
+        private var performanceContext: PerformanceContext?
+        
         public init() { }
+        
+        public func set(_ performanceContext: PerformanceContext) -> Builder {
+            self.performanceContext = performanceContext
+            return self
+        }
         
         /// Add the given `tempo` at the given `offset`, and whether or not it shall be
         /// prepared to interpolate to the next given tempo.
-        public func add(
+        @discardableResult public func add(
             _ tempo: Tempo,
             at offset: MetricalDuration,
             interpolating: Bool = false
@@ -73,22 +91,67 @@ extension Model {
             return self
         }
         
-        public func add(_ rhythmTree: RhythmTree<Int>) -> Builder {
+        /// Initializes `Event` values for each `.event` leaf in the given `rhythm`.
+        public func add(_ rhythm: Rhythm<Int>) -> Builder {
             
-            // 1. Make entity for whole rhythm
-            let rhythmEntity = makeEntity()
+            // Map the rhythm so that each `.event` (i.e., non-rest / non-tie) leaf has a 
+            // unique identifier for storage.
+            let rhythm = rhythm.map { [unowned self] _ in self.makeEntity() }
             
-            // 2. Make entities for each leaf
-            rhythmTree.tree.leaves.map { _ in makeEntity() }
-            
-            
-            
-            
-            try! attributions.update(rhythmTree, keyPath: ["rhythm", rhythmEntity])
+            // Store the rhythm, and each of its `.event` leaves.
+            store(rhythm)
+
             return self
         }
         
-        public func add(_ meter: Meter) -> Builder {
+        private func store(_ rhythm: Rhythm<Int>) {
+            try! attributions.update(rhythm, keyPath: ["rhythm", makeEntity()])
+            storeEvents(for: rhythm)
+        }
+        
+        private func storeEvents(for rhythm: Rhythm<Int>) {
+            rhythm.events.forEach { entity in events[entity] = [] }
+        }
+        
+        public func add(_ attribute: Any, name: String) -> Entity {
+            let entity = makeEntity()
+            try! attributions.update(attribute, keyPath: [name, entity])
+            return entity
+        }
+        
+        public func add(_ rhythms: [Rhythm<Int>]) -> Builder {
+            rhythms.forEach { rhythm in add(rhythm) }
+            return self
+        }
+        
+        // FIXME: Refactor
+        public func zip(_ attributes: [NamedAttribute?]) -> Builder {
+            
+            var attributes = attributes
+            
+            for (_, rhythm) in attributions["rhythm"]! as! [Entity: Rhythm<Int>] {
+                
+                for eventEntity in rhythm.events {
+                    
+                    guard let attribute = attributes.first else {
+                        fatalError("Not enough attributes")
+                    }
+                    
+                    let maybeAttr = attributes.remove(at: 0)
+                    
+                    guard let attr = maybeAttr else {
+                        continue
+                    }
+                    
+                    let attributeEntity = add(attr.attribute, name: attr.name)
+                    events.safelyAppend(attributeEntity, toArrayWith: eventEntity)
+                }
+            }
+            
+            return self
+        }
+        
+        @discardableResult public func add(_ meter: Meter) -> Builder {
             meters.append(meter)
             return self
         }
@@ -127,7 +190,7 @@ extension Model {
         }
         
         private func makeEntity() -> Entity {
-            
+
             defer {
                 entity += 1
             }
@@ -145,5 +208,23 @@ extension Model.Builder: CustomStringConvertible {
     
     public var description: String {
         return "\(attributions)"
+    }
+}
+
+extension Rhythm {
+    var events: [T] {
+        return leaves.flatMap { leaf in
+            switch leaf.context {
+            case .instance(let absenceOrEvent):
+                switch absenceOrEvent {
+                case .event(let value):
+                    return value
+                default:
+                    return nil
+                }
+            default:
+                return nil
+            }
+        }
     }
 }

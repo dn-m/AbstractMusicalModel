@@ -7,9 +7,11 @@
 //
 
 import XCTest
+import Collections
 import ArithmeticTools
 import Rhythm
 import Pitch
+import Articulations
 import AbstractMusicalModel
 
 class ModelTests: XCTestCase {
@@ -173,14 +175,9 @@ class ModelTests: XCTestCase {
     
     func testAddRhythm() {
 
-//        let events: [[(String, Any)]] = [
-//            [("pitch", 60)],
-//            [("pitch", 61)],
-//            [("pitch", 62)],
-//            [("pitch", 63)]
-//        ]
+        let performanceContext = PerformanceContext(Performer("P"))
         
-        let rt = RhythmTree<Int>(
+        let rhythm = Rhythm<Int>(
             3/>16 * [1,2,3,1],
             [
                 .instance(.event(0)),
@@ -190,12 +187,77 @@ class ModelTests: XCTestCase {
             ]
         )
         
+        let pitches = (0..<4)
+            .map { _ in Pitch.middleC }
+            .map { NamedAttribute($0, name: "pitch") }
+        
         let builder = Model.builder
-            .add(rt)
+            .set(performanceContext)
+
         
         print(builder)
+    }
+    
+    func testAddPhrase() {
         
-        // TODO: Assert something!
+        let durations: [MetricalDurationTree] = [
+            1/>4 * [1],
+            1/>4 * [1],
+            1/>4 * [1,1],
+            1/>4 * [1,1],
+            1/>4 * [1,1]
+        ]
+        
+        let contexts: [[MetricalContext<Int>]] = [
+            [
+                .instance(.event(0)),
+            ],
+            [
+                .instance(.absence)
+            ],
+            [
+                .instance(.event(0)),
+                .instance(.event(0))
+            ],
+            [
+                .instance(.absence),
+                .instance(.event(0))
+            ],
+            [
+                .instance(.event(0)),
+                .instance(.event(0))
+            ],
+            [
+                .continuation,
+                .instance(.event(0))
+            ]
+        ]
+        
+        let rhythms = zip(durations,contexts).map(Rhythm.init)
+        let pitches: [Pitch] = [69,71,72,72,74,72,69]
+        
+        let articulations: [Articulation] = [
+            .staccato, .accent, .tenuto, .staccato, .accent, .tenuto, .staccatissimo
+        ]
+        
+        let builder = Model.builder
+            .set(PerformanceContext())
+            .add(rhythms)
+            .zip(pitches.map { pitch in NamedAttribute(pitch, name: "pitch") })
+            .zip(articulations.map { NamedAttribute($0, name: "articulation") })
+        
+        let model = builder.build()
+        
+        for (name, attribution) in model.attributions {
+            print("name: \(name): \(attribution)")
+        }
+        
+        for (entity, event) in model.events {
+            print("EVENT: \(entity): \(event.map { model.attribute(entity: $0) })")
+            print("entity: \(entity): event: \(event)")
+        }
+        
+        print("model: \(model)")
     }
     
     func testAddMeterStructure() {

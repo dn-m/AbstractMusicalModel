@@ -23,6 +23,8 @@
 		0749BEEA1E1EF0940024E0F1 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0749BEE81E1EF0940024E0F1 /* Model.swift */; };
 		0749BEF21E1EF40C0024E0F1 /* ModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0749BEF11E1EF40C0024E0F1 /* ModelTests.swift */; };
 		0749BEF31E1EF40C0024E0F1 /* ModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0749BEF11E1EF40C0024E0F1 /* ModelTests.swift */; };
+		078862041EFC1010009D29CD /* Model.Context.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078862031EFC1010009D29CD /* Model.Context.swift */; };
+		078862051EFC1010009D29CD /* Model.Context.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078862031EFC1010009D29CD /* Model.Context.swift */; };
 		07C5A9591E3BD57300167870 /* PerformanceContextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07C5A9581E3BD57300167870 /* PerformanceContextTests.swift */; };
 		07C5A95A1E3BD57300167870 /* PerformanceContextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07C5A9581E3BD57300167870 /* PerformanceContextTests.swift */; };
 		4F7B3BABEFDC1BCCC4CEA415 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E639F950750760A09916195 /* Cocoa.framework */; };
@@ -59,6 +61,7 @@
 		0749BEE41E1EE96A0024E0F1 /* Voice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Voice.swift; path = AbstractMusicalModel/Voice.swift; sourceTree = "<group>"; };
 		0749BEE81E1EF0940024E0F1 /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Model.swift; path = AbstractMusicalModel/Model.swift; sourceTree = "<group>"; };
 		0749BEF11E1EF40C0024E0F1 /* ModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ModelTests.swift; path = AbstractMusicalModelTests/ModelTests.swift; sourceTree = "<group>"; };
+		078862031EFC1010009D29CD /* Model.Context.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Model.Context.swift; path = AbstractMusicalModel/Model.Context.swift; sourceTree = "<group>"; };
 		07C5A9581E3BD57300167870 /* PerformanceContextTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PerformanceContextTests.swift; path = AbstractMusicalModelTests/PerformanceContextTests.swift; sourceTree = "<group>"; };
 		0F00F43B61629E6D4F01447F /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; name = Info.plist; path = AbstractMusicalModelTests/Info.plist; sourceTree = "<group>"; };
 		1750BA9A002148FB24D3445D /* AbstractMusicalModel iOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "AbstractMusicalModel iOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -196,6 +199,7 @@
 			children = (
 				45B1A349ADA08AB9C03F07C4 /* Supporting Files */,
 				0749BEE81E1EF0940024E0F1 /* Model.swift */,
+				078862031EFC1010009D29CD /* Model.Context.swift */,
 				0744B4BA1EF005BA003F9B3A /* Model.Builder.swift */,
 				070CDF811E4BD06700562DD3 /* RhythmTreeExtensions.swift */,
 				0749BEE71E1EE9810024E0F1 /* PerformanceContext */,
@@ -395,6 +399,7 @@
 			files = (
 				0749BEEA1E1EF0940024E0F1 /* Model.swift in Sources */,
 				0749BEDD1E1EE7AE0024E0F1 /* PerformanceContext.swift in Sources */,
+				078862051EFC1010009D29CD /* Model.Context.swift in Sources */,
 				0749BEE61E1EE96A0024E0F1 /* Voice.swift in Sources */,
 				070CDF831E4BD06700562DD3 /* RhythmTreeExtensions.swift in Sources */,
 				0749BEE31E1EE94C0024E0F1 /* Instrument.swift in Sources */,
@@ -418,6 +423,7 @@
 			files = (
 				0749BEE91E1EF0940024E0F1 /* Model.swift in Sources */,
 				0749BEDC1E1EE7AE0024E0F1 /* PerformanceContext.swift in Sources */,
+				078862041EFC1010009D29CD /* Model.Context.swift in Sources */,
 				0749BEE51E1EE96A0024E0F1 /* Voice.swift in Sources */,
 				070CDF821E4BD06700562DD3 /* RhythmTreeExtensions.swift in Sources */,
 				0749BEE21E1EE94C0024E0F1 /* Instrument.swift in Sources */,
