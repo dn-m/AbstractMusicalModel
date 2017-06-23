@@ -218,8 +218,26 @@ extension Model {
         
         public func build() -> Model {
             
-            // TODO: Wrap up!
-            // complete rhythms
+            let meterStructure = makeMeterStructure()
+            storeRhythmicEvents()
+            
+            return Model(
+                values: values,
+                performanceContexts: performanceContexts,
+                intervals: intervals,
+                events: events,
+                byLabel: byLabel,
+                meterStructure: meterStructure
+            )
+        }
+        
+        private func makeMeterStructure() -> Meter.Structure {
+            let tempi = tempoStratumBuilder.build()
+            return Meter.Structure(meters: meters, tempi: tempi)
+        }
+        
+        /// TODO: Needs testing!
+        private func storeRhythmicEvents() {
             for (rhythmID, offset) in rhythmOffsets {
                 let rhythm = values[rhythmID] as! Rhythm<UUID>
                 let eventIntervals = rhythm.eventIntervals.map { interval in
@@ -233,21 +251,10 @@ extension Model {
                     }
                 }
             }
-            
-            let tempi = tempoStratumBuilder.build()
-            let meterStructure = Meter.Structure(meters: meters, tempi: tempi)
-            
-            return Model(
-                values: values,
-                performanceContexts: performanceContexts,
-                intervals: intervals,
-                events: events,
-                byLabel: byLabel,
-                meterStructure: meterStructure
-            )
         }
     }
     
+    /// `Builder` ready to construct `Model`.
     public static var builder: Builder {
         return Builder()
     }
