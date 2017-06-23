@@ -44,10 +44,9 @@ extension Model {
     ///     let performer = Performer("Pat", [instrument])
     ///     let performanceContext = PerformanceContext(performer)
     ///     let interval = 1/>4...2/>4
-    ///     let context = Model.Context(interval, performanceContext)
     ///
     ///     // Now, we can ask the `Builder` to add it:
-    ///     builder.add(pitch, kind: "pitch", in: context)
+    ///     builder.add(pitch, label: "pitch", with: performanceContext, in: interval)
     ///
     /// Lastly, we can ask for the `AbstractMusicModel` in completed form:
     ///
@@ -79,11 +78,68 @@ extension Model {
         internal let tempoStratumBuilder = Tempo.Stratum.Builder()
         internal var meters: [Meter] = []
         
-        //private var performanceContext: PerformanceContext?
+        // MARK: - Private State
+        private var performanceContext: PerformanceContext?
         
         public init() { }
         
+        @discardableResult public func add(
+            _ event: [NamedAttribute],
+            with performanceContext: PerformanceContext.Path,
+            in interval: ClosedRange<Fraction>
+        ) -> Builder
+        {
+            let entities = event.map { namedAttribute in
+                createEntity(for: namedAttribute, with: performanceContext, in: interval)
+            }   
+            createEvent(for: entities)
+            return self
+        }
         
+        private func createEvent(for entities: [UUID]) {
+            let eventID = UUID()
+            events[eventID] = entities
+        }
+        
+        @discardableResult public func add(
+            _ value: Any,
+            label: String,
+            with performanceContext: PerformanceContext.Path,
+            in interval: ClosedRange<Fraction>
+        ) -> Builder
+        {
+            createEntity(for: value, label: label, with: performanceContext, in: interval)
+            return self
+        }
+        
+        @discardableResult private func createEntity(
+            for value: NamedAttribute,
+            with performanceContext: PerformanceContext.Path,
+            in interval: ClosedRange<Fraction>
+        ) -> UUID
+        {
+            return createEntity(
+                for: value.attribute,
+                label: value.name,
+                with: performanceContext,
+                in: interval
+            )
+        }
+        
+        @discardableResult private func createEntity(
+            for value: Any,
+            label: String,
+            with performanceContext: PerformanceContext.Path,
+            in interval: ClosedRange<Fraction>
+        ) -> UUID
+        {
+            let id = UUID()
+            values[id] = value
+            byLabel.safelyAppend(id, toArrayWith: label)
+            performanceContexts[id] = performanceContext
+            intervals[id] = interval
+            return id
+        }
         
 //        public func set(_ performanceContext: PerformanceContext) -> Builder {
 //            self.performanceContext = performanceContext
