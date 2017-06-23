@@ -78,7 +78,7 @@ extension Model {
         
         // MARK: - Tempo Stratum
         
-        // TODO: Expaned to multiple strata
+        // TODO: Expand to multiple strata
         internal let tempoStratumBuilder = Tempo.Stratum.Builder()
         internal var meters: [Meter] = []
         
