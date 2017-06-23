@@ -14,12 +14,6 @@ import Rhythm
 /// The database of musical information contained in a single musical _work_.
 public final class Model {
     
-    public struct Filter {
-        let interval: ClosedRange<Fraction>?
-        let scope: PerformanceContext.Scope?
-        let label: String?
-    }
-    
     /// Concrete values associated with a given unique identifier.
     public let values: [UUID: Any]
     
@@ -72,12 +66,12 @@ public final class Model {
 
     // MARK: - Instance Methods
     
-    public func values(filter: Filter) -> [Any] {
+    public func filtered(by filter: Filter) -> Set<UUID> {
         var ids = Set(self.values.keys)
         if let interval = filter.interval { ids.formIntersection(entities(in: interval)) }
         if let scope = filter.scope { ids.formIntersection(entities(in: scope)) }
         if let label = filter.label { ids.formIntersection(entities(with: label)) }
-        return ids.flatMap { values[$0] }
+        return ids
     }
     
     private func entities(in targetInterval: ClosedRange<Fraction>) -> Set<UUID> {

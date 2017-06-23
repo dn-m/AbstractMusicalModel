@@ -245,6 +245,8 @@ class ModelTests: XCTestCase {
             ]
         )
         
+        let context1 = PerformanceContext.Path("P", "I", 0)
+        let context2 = PerformanceContext.Path("P", "II", 3)
         let pitches: [Pitch] = [60,61,62,63]
         let namedPitches = pitches.map { NamedAttribute($0, name: "pitch") }
         let articulations: [Articulation] = [.staccato, .accent, .tenuto, .accent]
@@ -252,90 +254,49 @@ class ModelTests: XCTestCase {
         let events = zip(namedPitches, namedArticulations).map { [$0.0,$0.1] }
         
         let builder = Model.builder
-        (0..<100).forEach { offsetBeats in
-            builder.add(rhythm, at: Fraction(offsetBeats,4), with: events)
+        
+        // Add a bunch of rhythms
+        (0..<1000).forEach { offsetBeats in
+            builder.add(rhythm, at: Fraction(offsetBeats,4), with: events, and: context1)
+            builder.add(rhythm, at: Fraction(offsetBeats,4), with: events, and: context2)
         }
         
+        // Construct the model
         let model = builder.build()
+
+        // Create a filter
+        let filter = Model.Filter(
+            interval: Fraction(4,4)...Fraction(5/>4),
+            scope: PerformanceContext.Scope("P","I"),
+            label: "articulation"
+        )
         
+        // Get the ids of all of the attributes within the given filter
+        let filteredIDs = model.filtered(by: filter)
+        
+        filteredIDs.forEach { id in
+            let value = model.values[id]!
+            let interval = model.intervals[id]!
+            let context = model.performanceContexts[id]!
+            print("\(value); interval: \(interval); contexts: \(context)")
+        }
     }
-//
-//    func testAddPhrase() {
-//        
-//        let durations: [MetricalDurationTree] = [
-//            1/>4 * [1],
-//            1/>4 * [1],
-//            1/>4 * [1,1],
-//            1/>4 * [1,1],
-//            1/>4 * [1,1]
-//        ]
-//        
-//        let contexts: [[MetricalContext<Int>]] = [
-//            [
-//                .instance(.event(0)),
-//            ],
-//            [
-//                .instance(.absence)
-//            ],
-//            [
-//                .instance(.event(0)),
-//                .instance(.event(0))
-//            ],
-//            [
-//                .instance(.absence),
-//                .instance(.event(0))
-//            ],
-//            [
-//                .instance(.event(0)),
-//                .instance(.event(0))
-//            ],
-//            [
-//                .continuation,
-//                .instance(.event(0))
-//            ]
-//        ]
-//        
-//        let rhythms = zip(durations,contexts).map(Rhythm.init)
-//        let pitches: [Pitch] = [69,71,72,72,74,72,69]
-//        
-//        let articulations: [Articulation] = [
-//            .staccato, .accent, .tenuto, .staccato, .accent, .tenuto, .staccatissimo
-//        ]
-//        
-//        let builder = Model.builder
-//            .set(PerformanceContext())
-//            .add(rhythms)
-//            .zip(pitches.map { pitch in NamedAttribute(pitch, name: "pitch") })
-//            .zip(articulations.map { NamedAttribute($0, name: "articulation") })
-//        
-//        let model = builder.build()
-//        
-//        for (name, attribution) in model.attributions {
-//            print("name: \(name): \(attribution)")
-//        }
-//        
-//        for (entity, event) in model.events {
-//            print("EVENT: \(entity): \(event.map { model.attribute(entity: $0) })")
-//            print("entity: \(entity): event: \(event)")
-//        }
-//        
-//        print("model: \(model)")
-//    }
-//    
-//    func testAddMeterStructure() {
-//
-//        let builder = Model.Builder()
-//        
-//        for meter in [Meter(4,4), Meter(3,8), Meter(5,16), Meter(29,64), Meter(3,2)] {
-//            builder.add(meter)
-//        }
-//
-//        builder.add(Tempo(90), at: 0/>4)
-//        builder.add(Tempo(60), at: 4/>4, interpolating: true)
-//        builder.add(Tempo(120), at: 24/>4, interpolating: false)
-//        
-//        let model = builder.build()
-//        
-//        // TODO: Assert something!
-//    }
+
+    
+    func testAddMeterStructure() {
+
+        let builder = Model.Builder()
+        
+        for meter in [Meter(4,4), Meter(3,8), Meter(5,16), Meter(29,64), Meter(3,2)] {
+            builder.add(meter)
+        }
+
+        builder.add(Tempo(90), at: 0/>4)
+        builder.add(Tempo(60), at: 4/>4, interpolating: true)
+        builder.add(Tempo(120), at: 24/>4, interpolating: false)
+        
+        let model = builder.build()
+        print(model)
+        // TODO: Assert something!
+    }
 }

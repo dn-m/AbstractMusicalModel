@@ -73,10 +73,12 @@ extension Model {
         /// Entities stored by their label (e.g., "rhythm", "pitch", "articulation", etc.)
         internal var byLabel: [String: [UUID]] = [:]
         
+        // FIXME: Find better way of doing this.
         internal var rhythmOffsets: [UUID: Fraction] = [:]
         
-        // MARK: - Tempo Strata
+        // MARK: - Tempo Stratum
         
+        // TODO: Expaned to multiple strata
         internal let tempoStratumBuilder = Tempo.Stratum.Builder()
         internal var meters: [Meter] = []
         
@@ -89,6 +91,7 @@ extension Model {
         /// the given `performanceContext`.
         ///
         /// - TODO: Interrogate `Rhythm<Int> type`
+        /// - TODO: Refactor (need to wrap up clusters of concern)
         ///
         @discardableResult public func add(
             _ rhythm: Rhythm<Int>,
@@ -112,10 +115,6 @@ extension Model {
             var events = events
             for eventEntity in rhythm.events {
                 
-                guard !events.isEmpty else {
-                    fatalError("Incompatible events for rhythm")
-                }
-                
                 // Create event
                 self.events[eventEntity] = createEntities(for: events.remove(at: 0))
             }
@@ -123,6 +122,8 @@ extension Model {
             return self
         }
         
+        /// Add the named attribute values for a given `event`, performed with the
+        /// given `performanceContext`, in the given `interval`.
         @discardableResult public func add(
             _ event: [NamedAttribute],
             with performanceContext: PerformanceContext.Path = PerformanceContext.Path(),
@@ -136,6 +137,8 @@ extension Model {
             return self
         }
         
+        /// Add the given `value` with the given `label`, performed with the given 
+        /// `performanceContext`, in the given `interval`.
         @discardableResult public func add(
             _ value: Any,
             label: String,
@@ -147,6 +150,26 @@ extension Model {
             return self
         }
         
+        // MARK: - Tempo & Meter
+        
+        /// Add the given `tempo` at the given `offset`, and whether or not it shall be
+        /// prepared to interpolate to the next given tempo.
+        @discardableResult public func add(
+            _ tempo: Tempo,
+            at offset: MetricalDuration,
+            interpolating: Bool = false
+        ) -> Builder
+        {
+            tempoStratumBuilder.add(tempo, at: offset, interpolating: interpolating)
+            return self
+        }
+        
+        /// Add the given `meter`.
+        @discardableResult public func add(_ meter: Meter) -> Builder {
+            meters.append(meter)
+            return self
+        }
+    
         // MARK: - Private
         
         @discardableResult private func createEntity(
@@ -193,90 +216,22 @@ extension Model {
             events[eventID] = entities
         }
         
-//        /// Add the given `tempo` at the given `offset`, and whether or not it shall be
-//        /// prepared to interpolate to the next given tempo.
-//        @discardableResult public func add(
-//            _ tempo: Tempo,
-//            at offset: MetricalDuration,
-//            interpolating: Bool = false
-//        ) -> Builder
-//        {
-//            tempoStratumBuilder.add(tempo, at: offset, interpolating: interpolating)
-//            return self
-//        }
-//        
-//        /// Initializes `Event` values for each `.event` leaf in the given `rhythm`.
-//        public func add(_ rhythm: Rhythm<Int>) -> Builder {
-//            
-//            // Map the rhythm so that each `.event` (i.e., non-rest / non-tie) leaf has a 
-//            // unique identifier for storage.
-//            let rhythm = rhythm.map { _ in UUID() }
-//            
-//            // Store the rhythm, and each of its `.event` leaves.
-//            store(rhythm)
-//
-//            return self
-//        }
-//        
-//        private func store(_ rhythm: Rhythm<UUID>) {
-//            let entity = UUID()
-//            values[entity] = rhythm
-//            byLabel.safelyAppend(entity, toArrayWith: "rhythm")
-//            //try! attributions.update(rhythm, keyPath: ["rhythm", UUID()])
-//            storeEvents(for: rhythm)
-//        }
-//        
-//        private func storeEvents(for rhythm: Rhythm<UUID>) {
-//            rhythm.events.forEach { entity in values[entity] = [] }
-//            rhythm.events.forEach { entity in events[entity] = [] }
-//        }
-        
-//        public func add(_ attribute: Any, name: String) -> UUID {
-//            let entity = UUID()
-//            try! attributions.update(attribute, keyPath: [name, entity])
-//            return entity
-//        }
-        
-//        public func add(_ rhythms: [Rhythm<Int>]) -> Builder {
-//            rhythms.forEach { rhythm in add(rhythm) }
-//            return self
-//        }
-        
-//        // FIXME: Refactor
-//        public func zip(_ attributes: [NamedAttribute?]) -> Builder {
-//            
-//            var attributes = attributes
-//            
-//            for (_, rhythm) in attributions["rhythm"]! as! [Entity: Rhythm<Entity>] {
-//                
-//                for eventEntity in rhythm.events {
-//                    
-//                    guard !attributes.isEmpty else {
-//                        fatalError("Not enough attributes")
-//                    }
-//                    
-//                    let maybeAttr = attributes.remove(at: 0)
-//                    
-//                    guard let attr = maybeAttr else {
-//                        continue
-//                    }
-//                    
-//                    let attributeEntity = add(attr.attribute, name: attr.name)
-//                    events.safelyAppend(attributeEntity, toArrayWith: eventEntity)
-//                }
-//            }
-//            
-//            return self
-//        }
-        
         public func build() -> Model {
             
+            // TODO: Wrap up!
             // complete rhythms
             for (rhythmID, offset) in rhythmOffsets {
-                print("\(rhythmID): offset: \(offset)")
                 let rhythm = values[rhythmID] as! Rhythm<UUID>
-                let eventIntervals = rhythm.eventIntervals
-                print(eventIntervals)
+                let eventIntervals = rhythm.eventIntervals.map { interval in
+                    return (Fraction(interval.lowerBound) + offset)...(Fraction(interval.upperBound) + offset)
+                }
+                
+                for (event,interval) in zip(rhythm.events, eventIntervals) {
+                    intervals[event] = interval
+                    for attribute in events[event]! {
+                        intervals[attribute] = interval
+                    }
+                }
             }
             
             let tempi = tempoStratumBuilder.build()
@@ -314,12 +269,12 @@ extension Rhythm {
         }
     }
     
-    
+    // TODO: Refactor!!
     var eventIntervals: [ClosedRange<MetricalDuration>] {
         
         var result: [ClosedRange<MetricalDuration>] = []
-        var start: MetricalDuration = .zero
-        var current: MetricalDuration = .zero
+        var start: MetricalDuration = 0/>4
+        var current: MetricalDuration = 0/>4
         for (l,leaf) in leaves.enumerated() {
 
             switch leaf.context {
