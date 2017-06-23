@@ -26,9 +26,9 @@ public struct PerformanceContext {
         
         /// Create a `Path` with identifiers of a `performer`, `instrument`, and `voice`.
         public init(
-            _ performer: Performer.Identifier,
-            _ instrument: Instrument.Identifier,
-            _ voice: Voice.Identifier
+            _ performer: Performer.Identifier = "P",
+            _ instrument: Instrument.Identifier = "I",
+            _ voice: Voice.Identifier = 0
         )
         {
             self.performer = performer

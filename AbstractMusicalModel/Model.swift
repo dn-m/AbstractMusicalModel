@@ -40,6 +40,11 @@ public final class Model {
     /// Entities stored by their label (e.g., "rhythm", "pitch", "articulation", etc.)
     public let byLabel: [String: [UUID]]
     
+    /// Rhythm events
+    internal var rhythms: [Rhythm<UUID>] {
+        return byLabel["rhythm"]!.map { values[$0] as! Rhythm<UUID> }
+    }
+    
     /// `Meter.Structure` overlay.
     ///
     /// - TODO: Implement `TemporalStructure` enum (`Meter.Structure` / `Seconds` / etc.)
@@ -104,7 +109,15 @@ extension Model: CustomStringConvertible {
     
     /// Printed description.
     public var description: String {
-        return "\(meterStructure)\n\(values)"
+        var result = "MODEL:\n"
+        result += "- meter: \(meterStructure)\n"
+        for (label,entities) in byLabel {
+            result += "\(label): \(entities.map { values[$0] })\n"
+        }
+        for (id, event) in events {
+            result += "\(id): \(event.map { values[$0] })\n"
+        }
+        return result
     }
 }
 
