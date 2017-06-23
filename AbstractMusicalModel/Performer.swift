@@ -73,3 +73,10 @@ extension Performer: Equatable {
         return lhs.instruments == rhs.instruments
     }
 }
+
+extension Performer: Hashable {
+    
+    public var hashValue: Int {
+        return identifier.hashValue
+    }
+}

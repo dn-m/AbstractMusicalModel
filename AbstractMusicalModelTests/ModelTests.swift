@@ -23,25 +23,6 @@ class ModelTests: XCTestCase {
         let model = builder.build()
     }
     
-    func testEntitySubscript() {
-        
-        let builder = Model.Builder()
-        let pitch: Pitch = 60
-        
-        let context = Model.Context(
-            .zero ... .zero,
-            PerformanceContext(Performer("P", [Instrument("I", [Voice(0)])]))
-        )
-        
-        builder.add(pitch, kind: "pitch", in: context)
-        let model = builder.build()
-        //model.put(pitch, kind: "pitch", context: context)
-
-        let result = model.context(entity: 0)!
-        let expected = context
-        XCTAssertEqual(result, expected)
-    }
-    
     func testCustomStringConvertible() {
         let pitches: [Pitch] = [60,61,62,63,65,66,67,68,69,70,71,72]
         let builder = Model.Builder()
@@ -160,17 +141,6 @@ class ModelTests: XCTestCase {
         XCTAssertEqual(
             model.entities(in: searchInterval, performedBy: scope, including: kinds).count, 2
         )
-    }
-    
-    func testSubscript() {
-        
-//        let builder = Model.Builder()
-//        let entity = builder.add(1, kind: "pitch")
-//        let model = builder.build()
-//        
-//        XCTAssertEqual(entity, 0)
-//        XCTAssertEqual(model[0]!.0 as! Int, 1)
-//        XCTAssertEqual(model[0]!.1, Model.Context())
     }
     
     func testAddRhythm() {

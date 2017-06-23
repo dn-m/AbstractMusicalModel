@@ -6,6 +6,7 @@
 //
 //
 
+import Foundation
 import Collections
 import ArithmeticTools
 import Rhythm
@@ -54,127 +55,141 @@ extension Model {
     ///
     public class Builder {
         
-        internal private(set) var entity: Entity = 0
+        /// Concrete values associated with a given unique identifier.
+        public var values: [UUID: Any] = [:]
         
-        // `Entity` values stored by a unique identifier.
-        /// - TODO: Make `private` / `fileprivate`
-        private var contexts: [Entity: Context] = [:]
+        /// `PerformanceContext.Path` for each entity.
+        public var performanceContexts: [UUID: PerformanceContext.Path] = [:]
         
-        /// `[AttributeKind: [Entity: Attribute]]`
-        internal var attributions: AttributionCollection <Any> = [:]
+        /// Interval of each entity.
+        ///
+        /// - TODO: Keep sorted by interval.lowerBound
+        /// - TODO: Create a richer offset type (incorporating metrical and non-metrical sections)
+        public var intervals: [UUID: ClosedRange<Fraction>] = [:]
         
-        /// `[Entity: [Entity]]`
-        internal var events: [Entity: Event] = [:]
+        /// Collection of entities for a single event (all containing same
+        /// `PerformanceContext.Path` and `interval`).
+        public var events: [UUID: [UUID]] = [:]
+        
+        /// Entities stored by their label (e.g., "rhythm", "pitch", "articulation", etc.)
+        public var byLabel: [String: [UUID]] = [:]
+        
+        // MARK: - Tempo Strata
         
         internal let tempoStratumBuilder = Tempo.Stratum.Builder()
-        
         internal var meters: [Meter] = []
         
-        private var performanceContext: PerformanceContext?
+        //private var performanceContext: PerformanceContext?
         
         public init() { }
         
-        public func set(_ performanceContext: PerformanceContext) -> Builder {
-            self.performanceContext = performanceContext
-            return self
-        }
         
-        /// Add the given `tempo` at the given `offset`, and whether or not it shall be
-        /// prepared to interpolate to the next given tempo.
-        @discardableResult public func add(
-            _ tempo: Tempo,
-            at offset: MetricalDuration,
-            interpolating: Bool = false
-        ) -> Builder
-        {
-            tempoStratumBuilder.add(tempo, at: offset, interpolating: interpolating)
-            return self
-        }
         
-        /// Initializes `Event` values for each `.event` leaf in the given `rhythm`.
-        public func add(_ rhythm: Rhythm<Int>) -> Builder {
-            
-            // Map the rhythm so that each `.event` (i.e., non-rest / non-tie) leaf has a 
-            // unique identifier for storage.
-            let rhythm = rhythm.map { [unowned self] _ in self.makeEntity() }
-            
-            // Store the rhythm, and each of its `.event` leaves.
-            store(rhythm)
-
-            return self
-        }
+//        public func set(_ performanceContext: PerformanceContext) -> Builder {
+//            self.performanceContext = performanceContext
+//            return self
+//        }
         
-        private func store(_ rhythm: Rhythm<Int>) {
-            try! attributions.update(rhythm, keyPath: ["rhythm", makeEntity()])
-            storeEvents(for: rhythm)
-        }
+//        /// Add the given `tempo` at the given `offset`, and whether or not it shall be
+//        /// prepared to interpolate to the next given tempo.
+//        @discardableResult public func add(
+//            _ tempo: Tempo,
+//            at offset: MetricalDuration,
+//            interpolating: Bool = false
+//        ) -> Builder
+//        {
+//            tempoStratumBuilder.add(tempo, at: offset, interpolating: interpolating)
+//            return self
+//        }
+//        
+//        /// Initializes `Event` values for each `.event` leaf in the given `rhythm`.
+//        public func add(_ rhythm: Rhythm<Int>) -> Builder {
+//            
+//            // Map the rhythm so that each `.event` (i.e., non-rest / non-tie) leaf has a 
+//            // unique identifier for storage.
+//            let rhythm = rhythm.map { _ in UUID() }
+//            
+//            // Store the rhythm, and each of its `.event` leaves.
+//            store(rhythm)
+//
+//            return self
+//        }
+//        
+//        private func store(_ rhythm: Rhythm<UUID>) {
+//            let entity = UUID()
+//            values[entity] = rhythm
+//            byLabel.safelyAppend(entity, toArrayWith: "rhythm")
+//            //try! attributions.update(rhythm, keyPath: ["rhythm", UUID()])
+//            storeEvents(for: rhythm)
+//        }
+//        
+//        private func storeEvents(for rhythm: Rhythm<UUID>) {
+//            rhythm.events.forEach { entity in values[entity] = [] }
+//            rhythm.events.forEach { entity in events[entity] = [] }
+//        }
         
-        private func storeEvents(for rhythm: Rhythm<Int>) {
-            rhythm.events.forEach { entity in events[entity] = [] }
-        }
+//        public func add(_ attribute: Any, name: String) -> UUID {
+//            let entity = UUID()
+//            try! attributions.update(attribute, keyPath: [name, entity])
+//            return entity
+//        }
         
-        public func add(_ attribute: Any, name: String) -> Entity {
-            let entity = makeEntity()
-            try! attributions.update(attribute, keyPath: [name, entity])
-            return entity
-        }
+//        public func add(_ rhythms: [Rhythm<Int>]) -> Builder {
+//            rhythms.forEach { rhythm in add(rhythm) }
+//            return self
+//        }
         
-        public func add(_ rhythms: [Rhythm<Int>]) -> Builder {
-            rhythms.forEach { rhythm in add(rhythm) }
-            return self
-        }
+//        // FIXME: Refactor
+//        public func zip(_ attributes: [NamedAttribute?]) -> Builder {
+//            
+//            var attributes = attributes
+//            
+//            for (_, rhythm) in attributions["rhythm"]! as! [Entity: Rhythm<Entity>] {
+//                
+//                for eventEntity in rhythm.events {
+//                    
+//                    guard !attributes.isEmpty else {
+//                        fatalError("Not enough attributes")
+//                    }
+//                    
+//                    let maybeAttr = attributes.remove(at: 0)
+//                    
+//                    guard let attr = maybeAttr else {
+//                        continue
+//                    }
+//                    
+//                    let attributeEntity = add(attr.attribute, name: attr.name)
+//                    events.safelyAppend(attributeEntity, toArrayWith: eventEntity)
+//                }
+//            }
+//            
+//            return self
+//        }
         
-        // FIXME: Refactor
-        public func zip(_ attributes: [NamedAttribute?]) -> Builder {
-            
-            var attributes = attributes
-            
-            for (_, rhythm) in attributions["rhythm"]! as! [Entity: Rhythm<Int>] {
-                
-                for eventEntity in rhythm.events {
-                    
-                    guard !attributes.isEmpty else {
-                        fatalError("Not enough attributes")
-                    }
-                    
-                    let maybeAttr = attributes.remove(at: 0)
-                    
-                    guard let attr = maybeAttr else {
-                        continue
-                    }
-                    
-                    let attributeEntity = add(attr.attribute, name: attr.name)
-                    events.safelyAppend(attributeEntity, toArrayWith: eventEntity)
-                }
-            }
-            
-            return self
-        }
+//        @discardableResult public func add(_ meter: Meter) -> Builder {
+//            meters.append(meter)
+//            return self
+//        }
         
-        @discardableResult public func add(_ meter: Meter) -> Builder {
-            meters.append(meter)
-            return self
-        }
-        
-        /// Add a generic `attribute`, of a given `kind`, within a given `context`.
-        ///
-        /// - parameters:
-        ///   - attribute: Any type of attribute (`Pitch`, `Dynamic`, `Int`, etc)
-        ///   - kind: Label for the `kind` of attribute ("pitch", "dynamic", "fingering", etc.)
-        ///   - context: `Context` for this attribute (who and when)
-        ///
-        /// - returns: `Entity` for the new attribute.
-        @discardableResult public func add <Attribute> (
-            _ attribute: Attribute,
-            kind: AttributeKind = "?",
-            in context: Context = Context()
-        ) -> Builder
-        {
-            let entity = makeEntity()
-            contexts[entity] = context
-            try! attributions.update(attribute, keyPath: [kind, entity])
-            return self
-        }
+//        /// Add a generic `attribute`, of a given `kind`, within a given `context`.
+//        ///
+//        /// - parameters:
+//        ///   - attribute: Any type of attribute (`Pitch`, `Dynamic`, `Int`, etc)
+//        ///   - kind: Label for the `kind` of attribute ("pitch", "dynamic", "fingering", etc.)
+//        ///   - context: `Context` for this attribute (who and when)
+//        ///
+//        /// - returns: `Entity` for the new attribute.
+//        @discardableResult public func add <Attribute> (
+//            _ attribute: Attribute,
+//            kind: AttributeKind = "?",
+//            in context: Context = Context()
+//        ) -> Builder
+//        {
+//            let entity = UUID()
+//            contexts[entity] = context
+//            try! attributions.update(attribute, keyPath: [kind, entity])
+//            return self
+//        }
         
         public func build() -> Model {
             
@@ -182,20 +197,13 @@ extension Model {
             let meterStructure = Meter.Structure(meters: meters, tempi: tempi)
             
             return Model(
-                attributions: attributions,
+                values: values,
+                performanceContexts: performanceContexts,
+                intervals: intervals,
                 events: events,
-                contexts: contexts,
+                byLabel: byLabel,
                 meterStructure: meterStructure
             )
-        }
-        
-        private func makeEntity() -> Entity {
-
-            defer {
-                entity += 1
-            }
-            
-            return entity
         }
     }
     
@@ -207,7 +215,7 @@ extension Model {
 extension Model.Builder: CustomStringConvertible {
     
     public var description: String {
-        return "\(attributions)"
+        return "\(values)"
     }
 }
 

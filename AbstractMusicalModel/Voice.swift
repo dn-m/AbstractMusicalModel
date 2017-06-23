@@ -30,3 +30,10 @@ extension Voice: Equatable {
         return lhs.identifier == rhs.identifier
     }
 }
+
+extension Voice: Hashable {
+    
+    public var hashValue: Int {
+        return identifier.hashValue
+    }
+}
