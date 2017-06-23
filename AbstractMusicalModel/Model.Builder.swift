@@ -262,6 +262,7 @@ extension Model.Builder: CustomStringConvertible {
 
 /// - TODO: Move to `dn-m/Rhythm`.
 extension Rhythm {
+    
     var events: [T] {
         return leaves.flatMap { leaf in
             guard case let .instance(.event(value)) = leaf.context else { return nil }
@@ -273,6 +274,7 @@ extension Rhythm {
     var eventIntervals: [ClosedRange<MetricalDuration>] {
         
         var result: [ClosedRange<MetricalDuration>] = []
+        
         var start: MetricalDuration = 0/>4
         var current: MetricalDuration = 0/>4
         for (l,leaf) in leaves.enumerated() {
