@@ -271,6 +271,14 @@ extension Model {
         
         public func build() -> Model {
             
+            // complete rhythms
+            for (rhythmID, offset) in rhythmOffsets {
+                print("\(rhythmID): offset: \(offset)")
+                let rhythm = values[rhythmID] as! Rhythm<UUID>
+                let eventIntervals = rhythm.eventIntervals
+                print(eventIntervals)
+            }
+            
             let tempi = tempoStratumBuilder.build()
             let meterStructure = Meter.Structure(meters: meters, tempi: tempi)
             
@@ -297,12 +305,53 @@ extension Model.Builder: CustomStringConvertible {
     }
 }
 
+/// - TODO: Move to `dn-m/Rhythm`.
 extension Rhythm {
     var events: [T] {
         return leaves.flatMap { leaf in
-            guard case let .instance(absenceOrEvent) = leaf.context else { return nil }
-            guard case let .event(value) = absenceOrEvent else { return nil }
+            guard case let .instance(.event(value)) = leaf.context else { return nil }
             return value
         }
+    }
+    
+    
+    var eventIntervals: [ClosedRange<MetricalDuration>] {
+        
+        var result: [ClosedRange<MetricalDuration>] = []
+        var start: MetricalDuration = .zero
+        var current: MetricalDuration = .zero
+        for (l,leaf) in leaves.enumerated() {
+
+            switch leaf.context {
+            case .continuation:
+                break
+            case .instance(let absenceOrEvent):
+                switch absenceOrEvent {
+                case .absence:
+                    if current > .zero {
+                        result.append(start ... current)
+                    }
+                    start = current + leaf.metricalDuration
+                case .event:
+                    
+                    if let previous = leaves[safe: l-1] {
+                        
+                        if previous.context != .instance(.absence) {
+                            result.append(start ... current)
+                        }
+                    }
+                    
+                    start = current
+                }
+            }
+            
+            current += leaf.metricalDuration
+        }
+        
+        if leaves.last!.context != .instance(.absence) {
+            result.append(start ... current)
+        }
+        
+        return result
     }
 }

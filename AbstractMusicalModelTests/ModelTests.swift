@@ -16,6 +16,22 @@ import Articulations
 
 class ModelTests: XCTestCase {
     
+    func testRhythmEventIntervals() {
+        
+        let rhythm = Rhythm<Int>(
+            4/>8 * [1,1,1,1],
+            [
+                .instance(.absence),
+                .instance(.event(0)),
+                .continuation,
+                .instance(.absence)
+            ]
+        )
+        
+        let intervals = rhythm.eventIntervals
+        print(intervals)
+    }
+    
     func testAddPitchArrayAttribute() {
         let pitches: PitchSet = [60,61,62]
         let interval = Fraction(4,8)...Fraction(5,8)
@@ -188,6 +204,60 @@ class ModelTests: XCTestCase {
                 print(attributeIDs.map { model.values[$0] })
             }
         }
+    }
+    
+    func testAddManyRhythms() {
+
+        let rhythm = Rhythm<Int>(
+            1/>4 * [1,2,3,1],
+            [
+                .instance(.event(0)),
+                .instance(.event(0)),
+                .instance(.event(0)),
+                .instance(.event(0))
+            ]
+        )
+
+        let pitches: [Pitch] = [60,61,62,63]
+        let namedPitches = pitches.map { NamedAttribute($0, name: "pitch") }
+        let articulations: [Articulation] = [.staccato, .accent, .tenuto, .accent]
+        let namedArticulations = articulations.map { NamedAttribute($0, name: "articulation") }
+        let events = zip(namedPitches, namedArticulations).map { [$0.0,$0.1] }
+        
+        let builder = Model.builder
+        (0..<100).forEach { offsetBeats in
+            builder.add(rhythm, at: Fraction(offsetBeats,4), with: events)
+        }
+    
+        let model = builder.build()
+        print(model)
+    }
+    
+    func testFilter() {
+        
+        let rhythm = Rhythm<Int>(
+            1/>4 * [1,1,1,1],
+            [
+                .instance(.event(0)),
+                .instance(.event(0)),
+                .instance(.event(0)),
+                .instance(.event(0))
+            ]
+        )
+        
+        let pitches: [Pitch] = [60,61,62,63]
+        let namedPitches = pitches.map { NamedAttribute($0, name: "pitch") }
+        let articulations: [Articulation] = [.staccato, .accent, .tenuto, .accent]
+        let namedArticulations = articulations.map { NamedAttribute($0, name: "articulation") }
+        let events = zip(namedPitches, namedArticulations).map { [$0.0,$0.1] }
+        
+        let builder = Model.builder
+        (0..<100).forEach { offsetBeats in
+            builder.add(rhythm, at: Fraction(offsetBeats,4), with: events)
+        }
+        
+        let model = builder.build()
+        
     }
 //
 //    func testAddPhrase() {
