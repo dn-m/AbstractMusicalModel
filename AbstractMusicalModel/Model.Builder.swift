@@ -12,8 +12,6 @@ import ArithmeticTools
 import Rhythm
 import Pitch
 
-
-
 extension Model {
     
     /// ## Creating a `Model` with a `Model.Builder`.
