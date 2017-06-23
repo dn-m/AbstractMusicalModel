@@ -12,16 +12,7 @@ import ArithmeticTools
 import Rhythm
 import Pitch
 
-public struct NamedAttribute {
-    
-    let name: String
-    let attribute: Any
-    
-    public init(_ attribute: Any, name: String) {
-        self.attribute = attribute
-        self.name = name
-    }
-}
+
 
 extension Model {
     
