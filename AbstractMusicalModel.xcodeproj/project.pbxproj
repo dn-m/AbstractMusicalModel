@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		070CDF821E4BD06700562DD3 /* RhythmTreeExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070CDF811E4BD06700562DD3 /* RhythmTreeExtensions.swift */; };
 		070CDF831E4BD06700562DD3 /* RhythmTreeExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070CDF811E4BD06700562DD3 /* RhythmTreeExtensions.swift */; };
+		072173551EFD77DB002A19E5 /* Model.Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072173541EFD77DB002A19E5 /* Model.Filter.swift */; };
+		072173561EFD77DB002A19E5 /* Model.Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072173541EFD77DB002A19E5 /* Model.Filter.swift */; };
+		0721735B1EFD7F95002A19E5 /* NamedAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0721735A1EFD7F95002A19E5 /* NamedAttribute.swift */; };
+		0721735C1EFD7F95002A19E5 /* NamedAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0721735A1EFD7F95002A19E5 /* NamedAttribute.swift */; };
 		0744B4BB1EF005BA003F9B3A /* Model.Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744B4BA1EF005BA003F9B3A /* Model.Builder.swift */; };
 		0744B4BC1EF005BA003F9B3A /* Model.Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744B4BA1EF005BA003F9B3A /* Model.Builder.swift */; };
 		0749BEDC1E1EE7AE0024E0F1 /* PerformanceContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0749BEDB1E1EE7AE0024E0F1 /* PerformanceContext.swift */; };
@@ -52,6 +56,8 @@
 
 /* Begin PBXFileReference section */
 		070CDF811E4BD06700562DD3 /* RhythmTreeExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RhythmTreeExtensions.swift; path = AbstractMusicalModel/RhythmTreeExtensions.swift; sourceTree = "<group>"; };
+		072173541EFD77DB002A19E5 /* Model.Filter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Model.Filter.swift; path = AbstractMusicalModel/Model.Filter.swift; sourceTree = "<group>"; };
+		0721735A1EFD7F95002A19E5 /* NamedAttribute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NamedAttribute.swift; path = AbstractMusicalModel/NamedAttribute.swift; sourceTree = "<group>"; };
 		0744B4BA1EF005BA003F9B3A /* Model.Builder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Model.Builder.swift; path = AbstractMusicalModel/Model.Builder.swift; sourceTree = "<group>"; };
 		0749BEDB1E1EE7AE0024E0F1 /* PerformanceContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PerformanceContext.swift; path = AbstractMusicalModel/PerformanceContext.swift; sourceTree = "<group>"; };
 		0749BEDE1E1EE92A0024E0F1 /* Performer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Performer.swift; path = AbstractMusicalModel/Performer.swift; sourceTree = "<group>"; };
@@ -196,6 +202,8 @@
 			children = (
 				45B1A349ADA08AB9C03F07C4 /* Supporting Files */,
 				0749BEE81E1EF0940024E0F1 /* Model.swift */,
+				0721735A1EFD7F95002A19E5 /* NamedAttribute.swift */,
+				072173541EFD77DB002A19E5 /* Model.Filter.swift */,
 				0744B4BA1EF005BA003F9B3A /* Model.Builder.swift */,
 				070CDF811E4BD06700562DD3 /* RhythmTreeExtensions.swift */,
 				0749BEE71E1EE9810024E0F1 /* PerformanceContext */,
@@ -395,11 +403,13 @@
 			files = (
 				0749BEEA1E1EF0940024E0F1 /* Model.swift in Sources */,
 				0749BEDD1E1EE7AE0024E0F1 /* PerformanceContext.swift in Sources */,
+				072173561EFD77DB002A19E5 /* Model.Filter.swift in Sources */,
 				0749BEE61E1EE96A0024E0F1 /* Voice.swift in Sources */,
 				070CDF831E4BD06700562DD3 /* RhythmTreeExtensions.swift in Sources */,
 				0749BEE31E1EE94C0024E0F1 /* Instrument.swift in Sources */,
 				0744B4BC1EF005BA003F9B3A /* Model.Builder.swift in Sources */,
 				0749BEE01E1EE92A0024E0F1 /* Performer.swift in Sources */,
+				0721735C1EFD7F95002A19E5 /* NamedAttribute.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -418,11 +428,13 @@
 			files = (
 				0749BEE91E1EF0940024E0F1 /* Model.swift in Sources */,
 				0749BEDC1E1EE7AE0024E0F1 /* PerformanceContext.swift in Sources */,
+				072173551EFD77DB002A19E5 /* Model.Filter.swift in Sources */,
 				0749BEE51E1EE96A0024E0F1 /* Voice.swift in Sources */,
 				070CDF821E4BD06700562DD3 /* RhythmTreeExtensions.swift in Sources */,
 				0749BEE21E1EE94C0024E0F1 /* Instrument.swift in Sources */,
 				0744B4BB1EF005BA003F9B3A /* Model.Builder.swift in Sources */,
 				0749BEDF1E1EE92A0024E0F1 /* Performer.swift in Sources */,
+				0721735B1EFD7F95002A19E5 /* NamedAttribute.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

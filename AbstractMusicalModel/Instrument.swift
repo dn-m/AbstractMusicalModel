@@ -61,3 +61,10 @@ extension Instrument: Equatable {
         return lhs.voices == rhs.voices
     }
 }
+
+extension Instrument: Hashable {
+    
+    public var hashValue: Int {
+        return identifier.hashValue
+    }
+}

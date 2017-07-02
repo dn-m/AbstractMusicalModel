@@ -26,9 +26,9 @@ public struct PerformanceContext {
         
         /// Create a `Path` with identifiers of a `performer`, `instrument`, and `voice`.
         public init(
-            _ performer: Performer.Identifier,
-            _ instrument: Instrument.Identifier,
-            _ voice: Voice.Identifier
+            _ performer: Performer.Identifier = "P",
+            _ instrument: Instrument.Identifier = "I",
+            _ voice: Voice.Identifier = 0
         )
         {
             self.performer = performer
@@ -82,35 +82,13 @@ public struct PerformanceContext {
         /// - returns: `true` if no `performer`, `instrument`, or `voice` attributes are 
         /// specified. Also `true` if the attributes specified here match with those of the
         /// given `context`. Otherwise, `false`.
-        public func contains(_ context: PerformanceContext) -> Bool {
-            
-            // If a `scope` does not specify anything, everything is contained
-            guard let performerID = performer else {
-                return true
-            }
-
-            // If the `performer` is specified, it must match
-            guard context.performer.identifier == performerID else {
-                return false
-            }
-
-            // If a `scope` does not specify an `instrument`, context is contained
-            guard let instrumentID = instrument else {
-                return true
-            }
-
-            // If the `instrument` is specified, it must match
-            guard let instrument = context.performer.instrument(id: instrumentID) else {
-                return false
-            }
-
-            // If a `scope` does not specify a `voice`, context is contained
-            guard let voiceID = voice else {
-                return true
-            }
-
-            // If the `voice` is specified, it must match
-            return instrument.voice(id: voiceID) != nil
+        public func contains(_ context: PerformanceContext.Path) -> Bool {
+            guard let performer = performer else { return true }
+            guard performer == context.performer else { return false }
+            guard let instrument = instrument else { return true }
+            guard instrument == context.instrument else { return false }
+            guard let voice = voice else { return true }
+            return voice == context.voice
         }
     }
     
@@ -129,10 +107,10 @@ public struct PerformanceContext {
         return instrument.voices[path.voice] != nil
     }
 
-    /// - returns: `true` if `self` is contained by a given `scope`.
-    public func isContained(by scope: Scope) -> Bool {
-        return scope.contains(self)
-    }
+//    /// - returns: `true` if `self` is contained by a given `scope`.
+//    public func isContained(by scope: Scope) -> Bool {
+//        return scope.contains(self)
+//    }
 }
 
 extension PerformanceContext: Equatable {
@@ -141,5 +119,25 @@ extension PerformanceContext: Equatable {
     /// equivalent.
     public static func == (lhs: PerformanceContext, rhs: PerformanceContext) -> Bool {
         return lhs.performer == rhs.performer
+    }
+}
+
+extension PerformanceContext.Path: Equatable {
+    
+    public static func == (lhs: PerformanceContext.Path, rhs: PerformanceContext.Path)
+        -> Bool
+    {
+        return (
+            lhs.performer == rhs.performer &&
+            lhs.instrument == rhs.instrument &&
+            lhs.voice == rhs.voice
+        )
+    }
+}
+
+extension PerformanceContext.Path: Hashable {
+    
+    public var hashValue: Int {
+        return performer.hashValue ^ instrument.hashValue ^ voice.hashValue
     }
 }

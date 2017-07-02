@@ -6,6 +6,7 @@
 //
 //
 
+import Foundation
 import Collections
 import ArithmeticTools
 import Rhythm
@@ -32,10 +33,9 @@ extension Model {
     ///     let performer = Performer("Pat", [instrument])
     ///     let performanceContext = PerformanceContext(performer)
     ///     let interval = 1/>4...2/>4
-    ///     let context = Model.Context(interval, performanceContext)
     ///
     ///     // Now, we can ask the `Builder` to add it:
-    ///     builder.add(pitch, kind: "pitch", in: context)
+    ///     builder.add(pitch, label: "pitch", with: performanceContext, in: interval)
     ///
     /// Lastly, we can ask for the `AbstractMusicModel` in completed form:
     ///
@@ -43,81 +43,268 @@ extension Model {
     ///
     public class Builder {
         
-        internal private(set) var entity: Entity = 0
+        /// Concrete values associated with a given unique identifier.
+        internal var values: [UUID: Any] = [:]
         
-        // `Entity` values stored by a unique identifier.
-        /// - TODO: Make `private` / `fileprivate`
-        private var contexts: [Entity: Context] = [:]
+        /// `PerformanceContext.Path` for each entity.
+        internal var performanceContexts: [UUID: PerformanceContext.Path] = [:]
         
-        /// `[AttributeKind: [Entity: Attribute]]`
-        private var attributions: AttributionCollection <Any> = [:]
+        /// Interval of each entity.
+        ///
+        /// - TODO: Keep sorted by interval.lowerBound
+        /// - TODO: Create a richer offset type (incorporating metrical and non-metrical sections)
+        internal var intervals: [UUID: ClosedRange<Fraction>] = [:]
         
-        /// `[Entity: [Entity]]`
-        private var events: [Entity: Event] = [:]
+        /// Collection of entities for a single event (all containing same
+        /// `PerformanceContext.Path` and `interval`).
+        internal var events: [UUID: [UUID]] = [:]
         
-        private let tempoStratumBuilder = Tempo.Stratum.Builder()
+        /// Entities stored by their label (e.g., "rhythm", "pitch", "articulation", etc.)
+        internal var byLabel: [String: [UUID]] = [:]
         
-        private var meters: [Meter] = []
+        // FIXME: Find better way of doing this.
+        internal var rhythmOffsets: [UUID: Fraction] = [:]
         
+        // MARK: - Tempo Stratum
+        
+        // TODO: Expand to multiple strata
+        internal let tempoStratumBuilder = Tempo.Stratum.Builder()
+        internal var meters: [Meter] = []
+        
+        // MARK: - Initializers
+        
+        /// Creates `Builder` prepared to construct a `Model`.
         public init() { }
+        
+        /// Add the given `rhythm` at the given `offset`, zipping the given `events`, with
+        /// the given `performanceContext`.
+        ///
+        /// - TODO: Interrogate `Rhythm<Int> type`
+        /// - TODO: Refactor (need to wrap up clusters of concern)
+        ///
+        @discardableResult public func add(
+            _ rhythm: Rhythm<Int>,
+            at offset: Fraction,
+            with events: [[NamedAttribute]],
+            and performanceContext: PerformanceContext.Path = PerformanceContext.Path()
+        ) -> Builder
+        {
+            guard events.count == rhythm.events.count else {
+                fatalError("Incompatible rhythm and events!")
+            }
+            
+            // Create UUIDs for each event in the given `rhythm`.
+            let rhythm = rhythm.map { _ in UUID() }
+            
+            // Store rhythm
+            let rhythmID = createEntity(for: rhythm, label: "rhythm")
+            rhythmOffsets[rhythmID] = offset
+            
+            // Store each event
+            var events = events
+            for eventEntity in rhythm.events {
+                
+                // Create event
+                self.events[eventEntity] = createEntities(for: events.remove(at: 0))
+            }
+            
+            return self
+        }
+        
+        /// Add the named attribute values for a given `event`, performed with the
+        /// given `performanceContext`, in the given `interval`.
+        @discardableResult public func add(
+            _ event: [NamedAttribute],
+            with performanceContext: PerformanceContext.Path = PerformanceContext.Path(),
+            in interval: ClosedRange<Fraction>? = nil
+        ) -> Builder
+        {
+            let entities = event.map { namedAttribute in
+                createEntity(for: namedAttribute, with: performanceContext, in: interval)
+            }
+            createEvent(for: entities)
+            return self
+        }
+        
+        /// Add the given `value` with the given `label`, performed with the given 
+        /// `performanceContext`, in the given `interval`.
+        @discardableResult public func add(
+            _ value: Any,
+            label: String,
+            with performanceContext: PerformanceContext.Path = PerformanceContext.Path(),
+            in interval: ClosedRange<Fraction>? = nil
+        ) -> Builder
+        {
+            createEntity(for: value, label: label, with: performanceContext, in: interval)
+            return self
+        }
+        
+        // MARK: - Tempo & Meter
         
         /// Add the given `tempo` at the given `offset`, and whether or not it shall be
         /// prepared to interpolate to the next given tempo.
-        public func add(
+        @discardableResult public func add(
             _ tempo: Tempo,
             at offset: MetricalDuration,
             interpolating: Bool = false
-        )
+        ) -> Builder
         {
             tempoStratumBuilder.add(tempo, at: offset, interpolating: interpolating)
+            return self
         }
         
-        public func add(_ meter: Meter) {
+        /// Add the given `meter`.
+        @discardableResult public func add(_ meter: Meter) -> Builder {
             meters.append(meter)
+            return self
+        }
+    
+        // MARK: - Private
+        
+        @discardableResult private func createEntity(
+            for value: NamedAttribute,
+            with performanceContext: PerformanceContext.Path = PerformanceContext.Path(),
+            in interval: ClosedRange<Fraction>? = nil
+        ) -> UUID
+        {
+            return createEntity(
+                for: value.attribute,
+                label: value.name,
+                with: performanceContext,
+                in: interval
+            )
         }
         
-        // Creation
-        /// Add a generic `attribute`, of a given `kind`, within a given `context`.
-        ///
-        /// - parameters:
-        ///   - attribute: Any type of attribute (`Pitch`, `Dynamic`, `Int`, etc)
-        ///   - kind: Label for the `kind` of attribute ("pitch", "dynamic", "fingering", etc.)
-        ///   - context: `Context` for this attribute (who and when)
-        ///
-        /// - returns: `Entity` for the new attribute.
-        @discardableResult public func add <Attribute> (
-            _ attribute: Attribute,
-            kind: AttributeKind = "?",
-            in context: Context = Context()
-        ) -> Entity
+        @discardableResult private func createEntity(
+            for value: Any,
+            label: String,
+            with performanceContext: PerformanceContext.Path = PerformanceContext.Path(),
+            in interval: ClosedRange<Fraction>? = nil
+        ) -> UUID
         {
-            let entity = makeEntity()
-            contexts[entity] = context
-            try! attributions.update(attribute, keyPath: [kind, entity])
-            return entity
+            let id = UUID()
+            values[id] = value
+            byLabel.safelyAppend(id, toArrayWith: label)
+            performanceContexts[id] = performanceContext
+            intervals[id] = interval
+            return id
+        }
+        
+        @discardableResult private func createEntities(
+            for namedAttributes: [NamedAttribute],
+            with performanceContext: PerformanceContext.Path = PerformanceContext.Path()
+        ) -> [UUID]
+        {
+            return namedAttributes.map { namedAttribute in
+                createEntity(for: namedAttribute, with: performanceContext)
+            }
+        }
+        
+        private func createEvent(for entities: [UUID]) {
+            let eventID = UUID()
+            events[eventID] = entities
         }
         
         public func build() -> Model {
             
-            let tempi = tempoStratumBuilder.build()
-            let meterStructure = Meter.Structure(meters: meters, tempi: tempi)
+            let meterStructure = makeMeterStructure()
+            storeRhythmicEvents()
             
             return Model(
-                attributions: attributions,
+                values: values,
+                performanceContexts: performanceContexts,
+                intervals: intervals,
                 events: events,
-                contexts: contexts,
+                byLabel: byLabel,
                 meterStructure: meterStructure
             )
         }
         
-        // Creation
-        private func makeEntity() -> Entity {
-            
-            defer {
-                entity += 1
+        private func makeMeterStructure() -> Meter.Structure {
+            let tempi = tempoStratumBuilder.build()
+            return Meter.Structure(meters: meters, tempi: tempi)
+        }
+        
+        /// TODO: Needs testing!
+        private func storeRhythmicEvents() {
+            for (rhythmID, offset) in rhythmOffsets {
+                let rhythm = values[rhythmID] as! Rhythm<UUID>
+                let eventIntervals = rhythm.eventIntervals.map { interval in
+                    return (Fraction(interval.lowerBound) + offset)...(Fraction(interval.upperBound) + offset)
+                }
+                
+                for (event,interval) in zip(rhythm.events, eventIntervals) {
+                    intervals[event] = interval
+                    for attribute in events[event]! {
+                        intervals[attribute] = interval
+                    }
+                }
+            }
+        }
+    }
+    
+    /// `Builder` ready to construct `Model`.
+    public static var builder: Builder {
+        return Builder()
+    }
+}
+
+extension Model.Builder: CustomStringConvertible {
+    
+    public var description: String {
+        return "\(values)"
+    }
+}
+
+/// - TODO: Move to `dn-m/Rhythm`.
+extension Rhythm {
+    
+    var events: [T] {
+        return leaves.flatMap { leaf in
+            guard case let .instance(.event(value)) = leaf.context else { return nil }
+            return value
+        }
+    }
+    
+    // TODO: Refactor!!
+    var eventIntervals: [ClosedRange<MetricalDuration>] {
+        
+        var result: [ClosedRange<MetricalDuration>] = []
+        
+        var start: MetricalDuration = 0/>4
+        var current: MetricalDuration = 0/>4
+        for (l,leaf) in leaves.enumerated() {
+
+            switch leaf.context {
+            case .continuation:
+                break
+            case .instance(let absenceOrEvent):
+                switch absenceOrEvent {
+                case .absence:
+                    if current > .zero {
+                        result.append(start ... current)
+                    }
+                    start = current + leaf.metricalDuration
+                case .event:
+                    
+                    if let previous = leaves[safe: l-1] {
+                        
+                        if previous.context != .instance(.absence) {
+                            result.append(start ... current)
+                        }
+                    }
+                    
+                    start = current
+                }
             }
             
-            return entity
+            current += leaf.metricalDuration
         }
+        
+        if leaves.last!.context != .instance(.absence) {
+            result.append(start ... current)
+        }
+        
+        return result
     }
 }

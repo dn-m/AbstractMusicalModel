@@ -8,9 +8,9 @@
 
 import Rhythm
 
-extension RhythmTree {
-    
-    public func attaching(_ events: [Model.Event]) throws -> RhythmTree {
-        fatalError()
-    }
-}
+//extension RhythmTree {
+//    
+//    public func attaching(_ events: [Model.Event]) throws -> RhythmTree {
+//        fatalError()
+//    }
+//}
