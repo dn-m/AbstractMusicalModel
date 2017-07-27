@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Algebra
 import Collections
 import ArithmeticTools
 import Rhythm
@@ -64,12 +65,9 @@ extension Model {
         
         // FIXME: Find better way of doing this.
         internal var rhythmOffsets: [UUID: Fraction] = [:]
-        
-        // MARK: - Tempo Stratum
-        
-        // TODO: Expand to multiple strata
-        internal let tempoStratumBuilder = Tempo.Stratum.Builder()
-        internal var meters: [Meter] = []
+
+        internal let tempoInterpolationCollectionBuilder = Tempo.Interpolation.Collection.Builder()
+        internal let meterCollectionBuilder = Meter.Collection.Builder()
         
         // MARK: - Initializers
         
@@ -89,17 +87,17 @@ extension Model {
             and performanceContext: PerformanceContext.Path = PerformanceContext.Path()
         ) -> Builder
         {
-            guard events.count == rhythm.events.count else {
+            guard events.count == rhythm.leaves.count else {
                 fatalError("Incompatible rhythm and events!")
             }
-            
+
             // Create UUIDs for each event in the given `rhythm`.
             let rhythm = rhythm.map { _ in UUID() }
-            
+
             // Store rhythm
             let rhythmID = createEntity(for: rhythm, label: "rhythm")
             rhythmOffsets[rhythmID] = offset
-            
+
             // Store each event
             var events = events
             for eventEntity in rhythm.events {
@@ -107,10 +105,10 @@ extension Model {
                 // Create event
                 self.events[eventEntity] = createEntities(for: events.remove(at: 0))
             }
-            
+
             return self
         }
-        
+
         /// Add the named attribute values for a given `event`, performed with the
         /// given `performanceContext`, in the given `interval`.
         @discardableResult public func add(
@@ -125,7 +123,7 @@ extension Model {
             createEvent(for: entities)
             return self
         }
-        
+
         /// Add the given `value` with the given `label`, performed with the given 
         /// `performanceContext`, in the given `interval`.
         @discardableResult public func add(
@@ -138,27 +136,27 @@ extension Model {
             createEntity(for: value, label: label, with: performanceContext, in: interval)
             return self
         }
-        
+
         // MARK: - Tempo & Meter
-        
+
         /// Add the given `tempo` at the given `offset`, and whether or not it shall be
         /// prepared to interpolate to the next given tempo.
         @discardableResult public func add(
             _ tempo: Tempo,
-            at offset: MetricalDuration,
+            at offset: Fraction,
             interpolating: Bool = false
         ) -> Builder
         {
-            tempoStratumBuilder.add(tempo, at: offset, interpolating: interpolating)
+            tempoInterpolationCollectionBuilder.add(tempo, at: offset, interpolating: interpolating)
             return self
         }
-        
+
         /// Add the given `meter`.
         @discardableResult public func add(_ meter: Meter) -> Builder {
-            meters.append(meter)
+            meterCollectionBuilder.add(.init(meter))
             return self
         }
-    
+
         // MARK: - Private
         
         @discardableResult private func createEntity(
@@ -174,7 +172,7 @@ extension Model {
                 in: interval
             )
         }
-        
+
         @discardableResult private func createEntity(
             for value: Any,
             label: String,
@@ -189,7 +187,7 @@ extension Model {
             intervals[id] = interval
             return id
         }
-        
+
         @discardableResult private func createEntities(
             for namedAttributes: [NamedAttribute],
             with performanceContext: PerformanceContext.Path = PerformanceContext.Path()
@@ -199,32 +197,33 @@ extension Model {
                 createEntity(for: namedAttribute, with: performanceContext)
             }
         }
-        
+
         private func createEvent(for entities: [UUID]) {
             let eventID = UUID()
             events[eventID] = entities
         }
-        
+
         public func build() -> Model {
-            
-            let meterStructure = makeMeterStructure()
             storeRhythmicEvents()
-            
             return Model(
                 values: values,
                 performanceContexts: performanceContexts,
                 intervals: intervals,
                 events: events,
                 byLabel: byLabel,
-                meterStructure: meterStructure
+                meters: makeMeters(),
+                tempi: makeTempi()
             )
         }
-        
-        private func makeMeterStructure() -> Meter.Structure {
-            let tempi = tempoStratumBuilder.build()
-            return Meter.Structure(meters: meters, tempi: tempi)
+
+        private func makeTempi() -> Tempo.Interpolation.Collection {
+            return tempoInterpolationCollectionBuilder.build()
         }
-        
+
+        private func makeMeters() -> Meter.Collection {
+            return meterCollectionBuilder.build()
+        }
+
         /// TODO: Needs testing!
         private func storeRhythmicEvents() {
             for (rhythmID, offset) in rhythmOffsets {
@@ -242,19 +241,20 @@ extension Model {
             }
         }
     }
-    
+
     /// `Builder` ready to construct `Model`.
     public static var builder: Builder {
         return Builder()
     }
 }
 
-extension Model.Builder: CustomStringConvertible {
-    
-    public var description: String {
-        return "\(values)"
-    }
-}
+//extension Model.Builder: CustomStringConvertible {
+//    
+//    public var description: String {
+//        return "\(values)"
+//    }
+//}
+
 
 /// - TODO: Move to `dn-m/Rhythm`.
 extension Rhythm {

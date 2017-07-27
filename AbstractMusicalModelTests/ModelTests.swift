@@ -16,26 +16,26 @@ import Articulations
 
 class ModelTests: XCTestCase {
     
-    func testRhythmEventIntervals() {
-        
-        let rhythm = Rhythm<Int>(
-            4/>8 * [1,1,1,1],
-            [
-                .instance(.absence),
-                .instance(.event(0)),
-                .continuation,
-                .instance(.absence)
-            ]
-        )
-        
-        let intervals = rhythm.eventIntervals
-        print(intervals)
-    }
+//    func testRhythmEventIntervals() {
+//        
+//        let rhythm = Rhythm<Int>(
+//            4/>8 * [1,1,1,1],
+//            [
+//                .instance(.absence),
+//                .instance(.event(0)),
+//                .continuation,
+//                .instance(.absence)
+//            ]
+//        )
+//        
+//        let intervals = rhythm.eventIntervals
+//        print(intervals)
+//    }
     
     func testAddPitchArrayAttribute() {
-        let pitches: PitchSet = [60,61,62]
+        let pitches: Set<Pitch> = [60,61,62]
         let interval = Fraction(4,8)...Fraction(5,8)
-        let model = Model.builder
+        let model = Model.Builder()
             .add(pitches, label: "pitch", with: PerformanceContext.Path(), in: interval)
             .build()
         print(model)
@@ -48,7 +48,7 @@ class ModelTests: XCTestCase {
         let articulations: [Articulation] = [.staccato, .accent, .tenuto]
         let namedArticulations = articulations.map { NamedAttribute($0, name: "articulation") }
         let events = zip(namedPitches, namedArticulations).map { [$0.0,$0.1] }
-        let builder = Model.builder
+        let builder = Model.Builder()
         zip(events, intervals).forEach { event, interval in builder.add(event, in: interval) }
         let model = builder.build()
         print(model)
@@ -72,7 +72,7 @@ class ModelTests: XCTestCase {
         let namedArticulations = articulations.map { NamedAttribute($0, name: "articulation") }
         let events = zip(namedPitches, namedArticulations).map { [$0.0,$0.1] }
         
-        let model = Model.builder
+        let model = Model.Builder()
             .add(rhythm, at: 0, with: events)
             .build()
         print(model)
@@ -104,7 +104,7 @@ class ModelTests: XCTestCase {
         let namedArticulations = articulations.map { NamedAttribute($0, name: "articulation") }
         let events = zip(namedPitches, namedArticulations).map { [$0.0,$0.1] }
         
-        let builder = Model.builder
+        let builder = Model.Builder()
         (0..<100).forEach { offsetBeats in
             builder.add(rhythm, at: Fraction(offsetBeats,4), with: events)
         }
@@ -133,7 +133,7 @@ class ModelTests: XCTestCase {
         let namedArticulations = articulations.map { NamedAttribute($0, name: "articulation") }
         let events = zip(namedPitches, namedArticulations).map { [$0.0,$0.1] }
         
-        let builder = Model.builder
+        let builder = Model.Builder()
         
         // Add a bunch of rhythms
         (0..<1000).forEach { offsetBeats in
@@ -171,9 +171,9 @@ class ModelTests: XCTestCase {
             builder.add(meter)
         }
 
-        builder.add(Tempo(90), at: 0/>4)
-        builder.add(Tempo(60), at: 4/>4, interpolating: true)
-        builder.add(Tempo(120), at: 24/>4, interpolating: false)
+        builder.add(Tempo(90), at: .zero)
+        builder.add(Tempo(60), at: Fraction(4,4), interpolating: true)
+        builder.add(Tempo(120), at: Fraction(24,4), interpolating: false)
         
         let model = builder.build()
         print(model)
