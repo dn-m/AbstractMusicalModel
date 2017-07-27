@@ -48,10 +48,10 @@ extension Instrument: CustomStringConvertible {
     }
 }
 
-extension Instrument: AnyCollectionWrapping {
+extension Instrument: CollectionWrapping {
     
-    public var collection: AnyCollection<Voice> {
-        return AnyCollection(voices.values)
+    public var base: [Voice.Identifier: Voice] {
+        return voices
     }
 }
 

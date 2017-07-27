@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Algebra
 import Collections
 import ArithmeticTools
 import Rhythm
@@ -38,12 +39,9 @@ public final class Model {
     internal var rhythms: [Rhythm<UUID>] {
         return byLabel["rhythm"]!.map { values[$0] as! Rhythm<UUID> }
     }
-    
-    /// `Meter.Structure` overlay.
-    ///
-    /// - TODO: Implement `TemporalStructure` enum (`Meter.Structure` / `Seconds` / etc.)
-    /// - TODO: Refactor this into `temporalStructures: [TemporalStructure]`
-    public var meterStructure: Meter.Structure?
+
+    public let tempi: Tempo.Interpolation.Collection
+    public let meters: Meter.Collection
     
     // MARK: - Initializers
     
@@ -53,7 +51,8 @@ public final class Model {
         intervals: [UUID: ClosedRange<Fraction>],
         events: [UUID: [UUID]],
         byLabel: [String: [UUID]],
-        meterStructure: Meter.Structure?
+        meters: Meter.Collection,
+        tempi: Tempo.Interpolation.Collection
     )
     {
         self.values = values
@@ -61,7 +60,8 @@ public final class Model {
         self.intervals = intervals
         self.events = events
         self.byLabel = byLabel
-        self.meterStructure = meterStructure
+        self.meters = meters
+        self.tempi = tempi
     }
 
     // MARK: - Instance Methods
@@ -104,8 +104,7 @@ extension Model: CustomStringConvertible {
     /// Printed description.
     public var description: String {
         var result = "MODEL:\n"
-        result += "- meter: \(meterStructure)\n"
-        for (label,entities) in byLabel {
+        for (label, entities) in byLabel {
             result += "\(label): \(entities.map { values[$0] })\n"
         }
         for (id, event) in events {
@@ -115,8 +114,8 @@ extension Model: CustomStringConvertible {
     }
 }
 
-// TODO: Move down to `Collections`
-infix operator ∩: AdditionPrecedence
-func ∩ <T> (a: Set<T>, b: Set<T>) -> Set<T> {
-    return a.intersection(b)
-}
+//// TODO: Move down to `Collections`
+//infix operator ∩: AdditionPrecedence
+//func ∩ <T> (a: Set<T>, b: Set<T>) -> Set<T> {
+//    return a.intersection(b)
+//}

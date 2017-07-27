@@ -56,12 +56,12 @@ extension Performer: CustomStringConvertible {
     }
 }
 
-extension Performer: AnyCollectionWrapping {
+extension Performer: CollectionWrapping {
     
-    // MARK: - AnyCollectionWrapping
+    // MARK: - CollectionWrapping
     
-    public var collection: AnyCollection<Instrument> {
-        return AnyCollection(instruments.values)
+    public var base: [Instrument.Identifier: Instrument] {
+        return instruments
     }
 }
 
